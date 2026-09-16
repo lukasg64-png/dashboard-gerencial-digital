@@ -752,7 +752,7 @@ def build():
     .chart-container {{
       position: relative;
       width: 100%;
-      height: 260px;
+      height: 285px;
     }}
 
     /* ==========================================================================
@@ -1627,7 +1627,7 @@ def build():
                 display: true,
                 align: 'top',
                 anchor: 'end',
-                offset: 4,
+                offset: 5,
                 font: {{ size: 10, weight: '700' }},
                 color: ctx => ctx.dataset.data[ctx.dataIndex] >= cData.tkm.meta[ctx.dataIndex] ? (currentTheme === 'dark' ? '#38bdf8' : '#0056b3') : '#ef4444',
                 formatter: val => val.toFixed(2).replace('.', ',')
@@ -1648,7 +1648,7 @@ def build():
         options: {{
           responsive: true,
           maintainAspectRatio: false,
-          layout: {{ padding: {{ top: 20, bottom: 10 }} }},
+          layout: {{ padding: {{ top: 25, bottom: 12, left: 16, right: 16 }} }},
           plugins: {{
             legend: {{ display: false }},
             tooltip: {{
@@ -1663,6 +1663,7 @@ def build():
               ticks: {{ color: getTextColor() }}
             }},
             x: {{
+              offset: true,
               grid: {{ display: false }},
               ticks: {{ color: getTextColor() }}
             }}
@@ -1670,7 +1671,7 @@ def build():
         }}
       }});
 
-      // 2. Chart Rentabilidade Operacional (Eixo Duplo)
+      // 2. Chart Rentabilidade Operacional (Eixo Duplo Harmonizado)
       if (chartRentInstance) chartRentInstance.destroy();
       const ctxRent = document.getElementById('chartRent').getContext('2d');
       chartRentInstance = new Chart(ctxRent, {{
@@ -1690,7 +1691,7 @@ def build():
               datalabels: {{
                 display: true,
                 align: 'top',
-                offset: 4,
+                offset: 6,
                 font: {{ size: 10, weight: '700' }},
                 color: () => currentTheme === 'dark' ? '#f8fafc' : '#003875',
                 formatter: val => val.toFixed(1).replace('.', ',') + '%'
@@ -1708,8 +1709,11 @@ def build():
               datalabels: {{
                 display: true,
                 align: 'bottom',
-                offset: 4,
-                font: {{ size: 10, weight: '700' }},
+                offset: 6,
+                borderRadius: 4,
+                padding: {{ top: 2, bottom: 2, left: 4, right: 4 }},
+                backgroundColor: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? (currentTheme === 'dark' ? 'rgba(34,197,94,0.2)' : '#dcfce7') : (currentTheme === 'dark' ? 'rgba(239,68,68,0.2)' : '#fee2e2'),
+                font: {{ size: 9.5, weight: '800' }},
                 color: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? '#16a34a' : '#dc2626',
                 formatter: val => (val > 0 ? '+' : '') + val.toFixed(1).replace('.', ',') + '%'
               }}
@@ -1719,7 +1723,7 @@ def build():
         options: {{
           responsive: true,
           maintainAspectRatio: false,
-          layout: {{ padding: {{ top: 22, bottom: 15 }} }},
+          layout: {{ padding: {{ top: 25, bottom: 15, left: 16, right: 16 }} }},
           plugins: {{
             legend: {{ display: false }},
             tooltip: {{
@@ -1732,8 +1736,8 @@ def build():
             y: {{
               position: 'left',
               grid: {{ color: getGridColor() }},
-              suggestedMin: 10,
-              suggestedMax: 35,
+              suggestedMin: -15,
+              suggestedMax: 38,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return val + '%'; }}
@@ -1743,13 +1747,14 @@ def build():
               position: 'right',
               grid: {{ display: false }},
               suggestedMin: -15,
-              suggestedMax: 5,
+              suggestedMax: 38,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return val + '%'; }}
               }}
             }},
             x: {{
+              offset: true,
               grid: {{ display: false }},
               ticks: {{ color: getTextColor() }}
             }}
@@ -1757,7 +1762,7 @@ def build():
         }}
       }});
 
-      // 3. Chart Faturamento & Desvio GAP (Eixo Duplo)
+      // 3. Chart Faturamento & Desvio GAP (Eixo Harmonizado - Sem Sobreposição)
       if (chartFatInstance) chartFatInstance.destroy();
       const ctxFat = document.getElementById('chartFat').getContext('2d');
       chartFatInstance = new Chart(ctxFat, {{
@@ -1776,8 +1781,9 @@ def build():
                 display: true,
                 anchor: 'end',
                 align: 'top',
+                offset: 4,
                 font: {{ size: 10, weight: '700' }},
-                color: () => currentTheme === 'dark' ? '#cbd5e1' : '#475569',
+                color: () => currentTheme === 'dark' ? '#f8fafc' : '#1e293b',
                 formatter: val => Math.round(val / 1000) + ' K'
               }}
             }},
@@ -1795,9 +1801,12 @@ def build():
               datalabels: {{
                 display: true,
                 align: 'top',
-                offset: 4,
-                font: {{ size: 10, weight: '700' }},
-                color: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? '#0077ff' : '#dc2626',
+                offset: 6,
+                borderRadius: 4,
+                padding: {{ top: 2, bottom: 2, left: 5, right: 5 }},
+                backgroundColor: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? '#0077ff' : '#dc2626',
+                font: {{ size: 9.5, weight: '800' }},
+                color: '#ffffff',
                 formatter: val => (val > 0 ? '+' : '') + Math.round(val / 1000) + 'K'
               }}
             }}
@@ -1806,7 +1815,7 @@ def build():
         options: {{
           responsive: true,
           maintainAspectRatio: false,
-          layout: {{ padding: {{ top: 22, bottom: 10 }} }},
+          layout: {{ padding: {{ top: 28, bottom: 12, left: 16, right: 16 }} }},
           plugins: {{
             legend: {{ display: false }},
             tooltip: {{
@@ -1819,7 +1828,8 @@ def build():
             y: {{
               position: 'left',
               grid: {{ color: getGridColor() }},
-              suggestedMax: 800000,
+              suggestedMin: -50000,
+              suggestedMax: 820000,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return 'R$ ' + (val/1000).toFixed(0) + 'K'; }}
@@ -1828,14 +1838,15 @@ def build():
             y1: {{
               position: 'right',
               grid: {{ display: false }},
-              suggestedMin: -60000,
-              suggestedMax: 300000,
+              suggestedMin: -50000,
+              suggestedMax: 820000,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return (val/1000).toFixed(0) + 'K'; }}
               }}
             }},
             x: {{
+              offset: true,
               grid: {{ display: false }},
               ticks: {{ color: getTextColor() }}
             }}
@@ -1885,7 +1896,7 @@ def build():
               datalabels: {{
                 display: true,
                 align: 'top',
-                offset: 4,
+                offset: 5,
                 font: {{ size: 10, weight: '700' }},
                 color: () => currentTheme === 'dark' ? '#38bdf8' : '#0077ff',
                 formatter: val => val.toFixed(1).replace('.', ',') + '%'
@@ -1906,7 +1917,7 @@ def build():
         options: {{
           responsive: true,
           maintainAspectRatio: false,
-          layout: {{ padding: {{ top: 22, bottom: 10 }} }},
+          layout: {{ padding: {{ top: 25, bottom: 12, left: 16, right: 16 }} }},
           plugins: {{
             legend: {{ display: false }},
             tooltip: {{
@@ -1918,14 +1929,15 @@ def build():
           scales: {{
             y: {{
               grid: {{ color: getGridColor() }},
-              suggestedMin: 8,
-              suggestedMax: 18,
+              suggestedMin: channelKey === 'site' ? 1 : 7,
+              suggestedMax: channelKey === 'site' ? 4.5 : 18,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return val + '%'; }}
               }}
             }},
             x: {{
+              offset: true,
               grid: {{ display: false }},
               ticks: {{ color: getTextColor() }}
             }}
@@ -1933,7 +1945,7 @@ def build():
         }}
       }});
 
-      // 2. Chart Sessões (Eixo Duplo)
+      // 2. Chart Sessões (Eixo Duplo com Separação de Zonas)
       if (chartSessInstance) chartSessInstance.destroy();
       const ctxSess = document.getElementById('chartSess').getContext('2d');
       chartSessInstance = new Chart(ctxSess, {{
@@ -1952,8 +1964,9 @@ def build():
                 display: true,
                 anchor: 'end',
                 align: 'top',
+                offset: 4,
                 font: {{ size: 10, weight: '700' }},
-                color: () => currentTheme === 'dark' ? '#cbd5e1' : '#475569',
+                color: () => currentTheme === 'dark' ? '#f8fafc' : '#1e293b',
                 formatter: val => val.toLocaleString('pt-BR')
               }}
             }},
@@ -1964,15 +1977,18 @@ def build():
               borderColor: '#003875',
               borderWidth: 2.8,
               tension: 0.2,
-              pointRadius: 4.5,
+              pointRadius: 5,
               yAxisID: 'y1',
               order: 1,
               datalabels: {{
                 display: true,
                 align: 'top',
                 offset: 5,
-                font: {{ size: 10, weight: '700' }},
-                color: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? '#16a34a' : '#dc2626',
+                borderRadius: 4,
+                padding: {{ top: 2, bottom: 2, left: 4, right: 4 }},
+                backgroundColor: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? '#16a34a' : '#dc2626',
+                font: {{ size: 9.5, weight: '800' }},
+                color: '#ffffff',
                 formatter: val => (val > 0 ? '+' : '') + val + '%'
               }}
             }}
@@ -1981,7 +1997,7 @@ def build():
         options: {{
           responsive: true,
           maintainAspectRatio: false,
-          layout: {{ padding: {{ top: 22, bottom: 10 }} }},
+          layout: {{ padding: {{ top: 28, bottom: 12, left: 16, right: 16 }} }},
           plugins: {{
             legend: {{ display: false }},
             tooltip: {{
@@ -1994,7 +2010,8 @@ def build():
             y: {{
               position: 'left',
               grid: {{ color: getGridColor() }},
-              suggestedMax: 100000,
+              min: 0,
+              max: channelKey === 'site' ? 120000 : 100000,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return (val/1000).toFixed(0) + ' Mil'; }}
@@ -2003,14 +2020,15 @@ def build():
             y1: {{
               position: 'right',
               grid: {{ display: false }},
-              suggestedMin: -25,
-              suggestedMax: 20,
+              min: channelKey === 'site' ? -45 : -25,
+              max: channelKey === 'site' ? 25 : 65,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return val + '%'; }}
               }}
             }},
             x: {{
+              offset: true,
               grid: {{ display: false }},
               ticks: {{ color: getTextColor() }}
             }}
