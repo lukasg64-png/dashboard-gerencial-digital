@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+logs/
+~$*.xlsx
+data/qlik_cloud_storage_state.json
