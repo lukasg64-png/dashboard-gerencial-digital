@@ -48,9 +48,23 @@ if errorlevel 1 (
 )
 
 echo.
+echo [6/6] Publicando Atualizacoes no GitHub Pages...
+git add index.html data/*.json *.py *.png >nul 2>&1
+git diff --staged --quiet
+if errorlevel 1 (
+    git commit -m "Auto-sync Dashboard Gerencial (%date% %time%)"
+    git push github main --quiet
+    git push github HEAD:gh-pages --quiet
+    echo Atualizacoes enviadas para o GitHub Pages com sucesso!
+) else (
+    echo Nenhum arquivo alterado para publicacao.
+)
+
+echo.
 echo ==============================================================================
 echo    ATUALIZACAO CONCLUIDA COM SUCESSO!
-echo    Arquivo: %~dp0index.html
+echo    Local : %~dp0index.html
+echo    Online: https://lukasg64-png.github.io/dashboard-gerencial-digital/
 echo ==============================================================================
 echo.
 
