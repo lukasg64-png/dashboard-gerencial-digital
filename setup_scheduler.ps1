@@ -21,8 +21,8 @@ if ($ExistingTask) {
     Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
 }
 
-# Define a Ação (executar atualizar_dashboard.bat)
-$Action = New-ScheduledTaskAction -Execute $BatPath -WorkingDirectory $ScriptDir
+# Define a Ação (executar atualizar_dashboard.bat com modo não-interativo)
+$Action = New-ScheduledTaskAction -Execute $BatPath -Argument "--unattended" -WorkingDirectory $ScriptDir
 
 # Define o Gatilho (diário às 06:30)
 $Trigger = New-ScheduledTaskTrigger -Daily -At "06:30"
