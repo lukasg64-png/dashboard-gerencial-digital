@@ -38,6 +38,52 @@ def build():
     data_corte = dash_data.get('data_corte', '01 a 15/09/2026')
     atualizacao = dash_data.get('atualizacao', time.strftime('%Y-%m-%d %H:%M:%S'))
 
+    # Pré-geração dos cards da Visão 4 com IDs para atualização dinâmica do Figital
+    proj_cards_list = []
+    for ch in ['ecommerce_total', 'canais_digitais', 'app', 'site', 'marketplace', 'figital']:
+        if ch in proj:
+            p = proj[ch]
+            ch_title = ch.replace('_', ' ').upper()
+            fig_badge = f'<span class="badge-figital-pill" id="proj-{ch}-figital-badge" style="display: none;">+ Figital</span>' if ch in ['ecommerce_total', 'canais_digitais'] else ''
+            val_pos_class = 'val-positive' if p['atingimento_projetado_pct'] >= 100 else 'val-negative'
+            card_html = f'''
+        <div class="proj-card" id="proj-card-{ch}">
+          <div class="proj-card-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <h4 style="font-size: 16px; font-weight: 800; font-family: \'Outfit\';">{ch_title}</h4>
+              {fig_badge}
+            </div>
+            <span class="hero-part-badge" id="proj-metames-{ch}">Meta Mês: R$ {p['meta_mes']/1e6:.3f} Mi</span>
+          </div>
+          <div class="proj-metrics-row">
+            <div class="proj-box">
+              <div class="lbl">Realizado (15 Dias)</div>
+              <div class="val" id="proj-real-{ch}">R$ {p['venda_realizada']/1e6:.3f} Mi</div>
+            </div>
+            <div class="proj-box">
+              <div class="lbl">Meta Restante</div>
+              <div class="val" id="proj-restante-{ch}">R$ {p['meta_restante']/1e6:.3f} Mi</div>
+            </div>
+            <div class="proj-box">
+              <div class="lbl">Meta Diária Necessária</div>
+              <div class="val" id="proj-diaria-{ch}" style="color: var(--fsj-blue-light);">R$ {p['venda_diaria_necessaria']/1e3:,.0f} K/dia</div>
+            </div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 4px;">
+              <span>Fechamento Projetado: <strong id="proj-fechamento-{ch}">R$ {p['fechamento_projetado']/1e6:.3f} Mi</strong></span>
+              <span class="{val_pos_class}" id="proj-ating-{ch}">
+                {p['atingimento_projetado_pct']:.1f}% da Meta
+              </span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="proj-progress-{ch}" style="width: {min(100, p['atingimento_projetado_pct'])}%;"></div>
+            </div>
+          </div>
+        </div>'''
+            proj_cards_list.append(card_html)
+    proj_cards_html = "".join(proj_cards_list)
+
     html_content = f"""<!DOCTYPE html>
 <html lang="pt-BR" data-theme="light">
 <head>
@@ -418,6 +464,184 @@ def build():
       right: 0;
       height: 4px;
       background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    }}
+
+    /* SWITCH BAR EM CIMA NO BLOCO DO FIGITAL */
+    .figital-switch-bar {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 7px 10px;
+      margin-bottom: 4px;
+      transition: var(--transition);
+      cursor: pointer;
+      user-select: none;
+    }}
+
+    .figital-switch-bar:hover {{
+      border-color: #8b5cf6;
+      background: rgba(139, 92, 246, 0.06);
+    }}
+
+    .figital-switch-bar.active-on {{
+      border-color: rgba(139, 92, 246, 0.6);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(59, 130, 246, 0.08));
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+    }}
+
+    .figital-switch-info {{
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }}
+
+    .switch-pulse-indicator {{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #94a3b8;
+      transition: var(--transition);
+    }}
+
+    .figital-switch-bar.active-on .switch-pulse-indicator {{
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulseGreen 2s infinite;
+    }}
+
+    @keyframes pulseGreen {{
+      0%, 100% {{ opacity: 1; transform: scale(1); }}
+      50% {{ opacity: 0.6; transform: scale(1.2); }}
+    }}
+
+    .switch-text-group {{
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }}
+
+    .switch-title-text {{
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: var(--text-primary);
+    }}
+
+    .switch-desc-text {{
+      font-size: 10px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }}
+
+    .figital-switch-action {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }}
+
+    .switch-mode-tag {{
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }}
+
+    .figital-switch-bar.active-on .switch-mode-tag {{
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      border-color: transparent;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(139, 92, 246, 0.4);
+    }}
+
+    /* Apple Switch Toggle */
+    .apple-switch {{
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 22px;
+      cursor: pointer;
+      margin: 0;
+    }}
+
+    .apple-switch input {{
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }}
+
+    .apple-slider {{
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1;
+      border-radius: 22px;
+      transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }}
+
+    [data-theme="dark"] .apple-slider {{
+      background-color: #334155;
+    }}
+
+    .apple-slider:before {{
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+      transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }}
+
+    .apple-switch input:checked + .apple-slider {{
+      background: linear-gradient(135deg, #8b5cf6, #22c55e);
+    }}
+
+    .apple-switch input:checked + .apple-slider:before {{
+      transform: translateX(16px);
+    }}
+
+    /* Active Figital Badge on Hero Cards 1 and 2 */
+    .badge-figital-pill {{
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.15));
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      color: #8b5cf6;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      animation: fadeInScale 0.3s ease;
+    }}
+
+    [data-theme="dark"] .badge-figital-pill {{
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(59, 130, 246, 0.25));
+      border-color: rgba(139, 92, 246, 0.6);
+      color: #c084fc;
+    }}
+
+    @keyframes fadeInScale {{
+      from {{ opacity: 0; transform: scale(0.9); }}
+      to {{ opacity: 1; transform: scale(1); }}
+    }}
+
+    .hero-card.figital-integrated {{
+      box-shadow: 0 0 0 1.5px rgba(139, 92, 246, 0.35), var(--shadow-sm);
     }}
 
     .hero-header {{
@@ -966,64 +1190,70 @@ def build():
       <!-- 4 Top Hero Cards -->
       <div class="top-hero-grid">
         <!-- Card 1: E-COMMERCE TOTAL -->
-        <div class="hero-card highlight-card">
+        <div class="hero-card highlight-card" id="cardEcommerce">
           <div class="hero-header">
             <div class="hero-title-group">
-              <h3>E-Commerce</h3>
-              <span class="hero-subtitle">Venda Efetiva</span>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3>E-Commerce</h3>
+                <span class="badge-figital-pill" id="ecomFigitalBadge" style="display: none;">+ Figital</span>
+              </div>
+              <span class="hero-subtitle" id="ecomSubtitle">Venda Efetiva</span>
             </div>
-            <span class="hero-part-badge">Part: {kpis['ecommerce_total']['share_empresa']:.2f}%</span>
+            <span class="hero-part-badge" id="ecomPartBadge">Part: {kpis['ecommerce_total']['share_empresa']:.2f}%</span>
           </div>
           <div class="hero-val-group">
-            <span class="hero-main-val">R$ 30.436 Mi</span>
-            <span class="hero-meta-mes">Meta Mês: <strong>55.845 Mi</strong></span>
+            <span class="hero-main-val" id="ecomMainVal">R$ 30.436 Mi</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="ecomMetaMes">55.845 Mi</strong></span>
           </div>
           <div class="hero-meta-pill">
-            <span>Meta: <strong>R$ 28,6 Mi</strong></span>
-            <span>Desvio (%): <strong class="val-positive">+{kpis['ecommerce_total']['desvio_venda_pct']:.2f}%</strong></span>
-            <span>Desvio (R$): <strong>+1,79 Mi</strong></span>
+            <span>Meta: <strong id="ecomMetaMTD">R$ 28,6 Mi</strong></span>
+            <span>Desvio (%): <strong class="val-positive" id="ecomDesvioPct">+{kpis['ecommerce_total']['desvio_venda_pct']:.2f}%</strong></span>
+            <span>Desvio (R$): <strong id="ecomDesvioVal">+1,79 Mi</strong></span>
           </div>
           <div class="hero-sub-indicators">
-            <span class="indicator-item">Evolução: <strong class="val-positive">⇑ 65,1%</strong></span>
-            <span class="indicator-item">Crescimento: <strong class="val-positive">⇑ 4,6%</strong></span>
+            <span class="indicator-item">Evolução: <strong class="val-positive" id="ecomEvol">⇑ 65,1%</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="val-positive" id="ecomCresc">⇑ 4,6%</strong></span>
           </div>
           <div class="hero-tkm-box">
-            <span>Ticket Médio: <strong>120,52</strong></span>
-            <span>Meta: <strong>131,25</strong></span>
-            <span>Desvio (%): <strong class="val-negative">-8,17%</strong></span>
-            <span>Desvio (R$): <strong>-10,73</strong></span>
+            <span>Ticket Médio: <strong id="ecomTkm">120,52</strong></span>
+            <span>Meta: <strong id="ecomTkmMeta">131,25</strong></span>
+            <span>Desvio (%): <strong class="val-negative" id="ecomTkmDesvioPct">-8,17%</strong></span>
+            <span>Desvio (R$): <strong id="ecomTkmDesvioVal">-10,73</strong></span>
           </div>
         </div>
 
         <!-- Card 2: CANAIS DIGITAIS -->
-        <div class="hero-card highlight-card">
+        <div class="hero-card highlight-card" id="cardDigitais">
           <div class="hero-header">
             <div class="hero-title-group">
-              <h3>Canais Digitais</h3>
-              <span class="hero-subtitle">Site + App + Marketplace</span>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3>Canais Digitais</h3>
+                <span class="badge-figital-pill" id="digFigitalBadge" style="display: none;">+ Figital</span>
+              </div>
+              <span class="hero-subtitle" id="digSubtitle">Site + App + Marketplace</span>
             </div>
-            <span class="hero-part-badge">Part: {kpis['canais_digitais']['share_empresa']:.2f}%</span>
+            <span class="hero-part-badge" id="digPartBadge">Part: {kpis['canais_digitais']['share_empresa']:.2f}%</span>
           </div>
           <div class="hero-val-group">
-            <span class="hero-main-val">R$ 29.766 Mi</span>
-            <span class="hero-meta-mes">Meta Mês: <strong>54.745 Mi</strong></span>
+            <span class="hero-main-val" id="digMainVal">R$ 29.766 Mi</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="digMetaMes">54.745 Mi</strong></span>
           </div>
           <div class="hero-meta-pill">
-            <span>Meta: <strong>R$ 28,084 Mi</strong></span>
-            <span>Desvio (%): <strong class="val-positive">+{kpis['canais_digitais']['desvio_venda_pct']:.2f}%</strong></span>
-            <span>Desvio (R$): <strong>+1,682 Mi</strong></span>
+            <span>Meta: <strong id="digMetaMTD">R$ 28,084 Mi</strong></span>
+            <span>Desvio (%): <strong class="val-positive" id="digDesvioPct">+{kpis['canais_digitais']['desvio_venda_pct']:.2f}%</strong></span>
+            <span>Desvio (R$): <strong id="digDesvioVal">+1,682 Mi</strong></span>
           </div>
           <div class="hero-sub-indicators">
-            <span class="indicator-item">Evolução: <strong class="val-positive">⇑ 63,7%</strong></span>
-            <span class="indicator-item">Crescimento: <strong class="val-positive">⇑ 5,1%</strong></span>
-            <span class="indicator-item">Rent. Op: <strong>20,47%</strong></span>
-            <span class="indicator-item">Rent. DRE: <strong>25,50%</strong></span>
+            <span class="indicator-item">Evolução: <strong class="val-positive" id="digEvol">⇑ 63,7%</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="val-positive" id="digCresc">⇑ 5,1%</strong></span>
+            <span class="indicator-item">Rent. Op: <strong id="digRentOp">20,47%</strong></span>
+            <span class="indicator-item">Rent. DRE: <strong id="digRentDre">25,50%</strong></span>
           </div>
           <div class="hero-tkm-box">
-            <span>Ticket Médio: <strong>118,79</strong></span>
-            <span>Meta: <strong>137,23</strong></span>
-            <span>Desvio (%): <strong class="val-negative">-13,44%</strong></span>
-            <span>Desvio (R$): <strong>-18,44</strong></span>
+            <span>Ticket Médio: <strong id="digTkm">118,79</strong></span>
+            <span>Meta: <strong id="digTkmMeta">137,23</strong></span>
+            <span>Desvio (%): <strong class="val-negative" id="digTkmDesvioPct">-13,44%</strong></span>
+            <span>Desvio (R$): <strong id="digTkmDesvioVal">-18,44</strong></span>
           </div>
         </div>
 
@@ -1058,10 +1288,31 @@ def build():
         </div>
 
         <!-- Card 4: FIGITAL (NOVO PILAR) -->
-        <div class="hero-card figital-card">
+        <div class="hero-card figital-card" id="cardFigital">
+          <!-- Switch Bar ON / OFF em cima no bloco do Figital -->
+          <div class="figital-switch-bar" id="figitalSwitchBar" title="Clique para Alternar: Incorporar Figital aos Totais de Canais Digitais e E-Commerce">
+            <div class="figital-switch-info">
+              <span class="switch-pulse-indicator"></span>
+              <div class="switch-text-group">
+                <span class="switch-title-text">Somar aos Totais</span>
+                <span class="switch-desc-text">Digitais & E-Commerce</span>
+              </div>
+            </div>
+            <div class="figital-switch-action">
+              <span class="switch-mode-tag" id="figitalStateBadge">OFF</span>
+              <label class="apple-switch" onclick="event.stopPropagation()">
+                <input type="checkbox" id="toggleFigitalInput" aria-label="Somar Figital aos Totais">
+                <span class="apple-slider"></span>
+              </label>
+            </div>
+          </div>
+
           <div class="hero-header">
             <div class="hero-title-group">
-              <h3>Figital (Omnichannel)</h3>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3>Figital (Omnichannel)</h3>
+                <span class="badge-figital-pill" id="figitalCardStatusBadge" style="display: none;">Integrado</span>
+              </div>
               <span class="hero-subtitle">Lojas Integradas & Clique e Retire</span>
             </div>
             <span class="hero-part-badge" style="background: var(--badge-purple-bg); color: var(--badge-purple-text);">Part: {kpis['figital']['share_empresa']:.2f}%</span>
@@ -1348,7 +1599,7 @@ def build():
       <div class="filter-pills-bar">
         <span style="font-weight: 700; font-size: 13px; text-transform: uppercase;">Canal Selecionado:</span>
         <div class="pill-group" id="channelPillsV2">
-          <button class="pill-btn" data-channel="canais_digitais">Canais Digitais (Total)</button>
+          <button class="pill-btn" data-channel="canais_digitais" id="btnPillCanaisDigitais">Canais Digitais (Total)</button>
           <button class="pill-btn" data-channel="app">App</button>
           <button class="pill-btn active" data-channel="marketplace">MKP</button>
           <button class="pill-btn" data-channel="site">Site</button>
@@ -1600,7 +1851,25 @@ def build():
     }}
 
     function renderDesviosCharts(channelKey) {{
-      const cData = dashData.charts[channelKey] || dashData.charts['marketplace'];
+      let cData = dashData.charts[channelKey] || dashData.charts['marketplace'];
+      if (channelKey === 'canais_digitais' && typeof toggleFigitalInput !== 'undefined' && toggleFigitalInput && toggleFigitalInput.checked && dashData.charts['figital']) {{
+        const digData = dashData.charts['canais_digitais'];
+        const figData = dashData.charts['figital'];
+        cData = {{
+          tkm: {{
+            real: digData.tkm.real.map((v, i) => Number(((v * 16704 + (figData.tkm.real[i] || 142) * 592) / (16704 + 592)).toFixed(2))),
+            meta: digData.tkm.meta
+          }},
+          rent_op: {{
+            real: digData.rent_op.real.map((v, i) => Number((v * 0.96 + (figData.rent_op.real[i] || 22.4) * 0.04).toFixed(1))),
+            desvio: digData.rent_op.desvio
+          }},
+          faturamento: {{
+            real: digData.faturamento.real.map((v, i) => Math.round(v + (figData.faturamento.real[i] || 0))),
+            desvio: digData.faturamento.desvio.map((v, i) => Math.round(v + (figData.faturamento.desvio ? (figData.faturamento.desvio[i] || 0) : 0)))
+          }}
+        }};
+      }}
       const labels = dashData.charts.labels;
 
       // 1. Chart Ticket Médio
@@ -2036,6 +2305,254 @@ def build():
         }}
       }});
     }}
+
+    // ==========================================================================
+    // LOGICA INTERATIVA: ON / OFF INCORPORACAO FIGITAL AOS TOTAIS
+    // ==========================================================================
+    const figitalDataset = {{
+      baseline: {{
+        ecom: {{
+          venda: "R$ 30.436 Mi",
+          metaMes: "55.845 Mi",
+          metaMTD: "R$ 28,6 Mi",
+          desvioPct: "+6,24%",
+          desvioVal: "+1,79 Mi",
+          share: "Part: 6.76%",
+          tkm: "120,52",
+          tkmMeta: "131,25",
+          tkmDesvioPct: "-8,17%",
+          tkmDesvioVal: "-10,73",
+          evol: "⇑ 65,1%",
+          cresc: "⇑ 4,6%",
+          subtitle: "Venda Efetiva"
+        }},
+        dig: {{
+          venda: "R$ 29.766 Mi",
+          metaMes: "54.745 Mi",
+          metaMTD: "R$ 28,084 Mi",
+          desvioPct: "+5,99%",
+          desvioVal: "+1,682 Mi",
+          share: "Part: 6.61%",
+          tkm: "118,79",
+          tkmMeta: "137,23",
+          tkmDesvioPct: "-13,44%",
+          tkmDesvioVal: "-18,44",
+          evol: "⇑ 63,7%",
+          cresc: "⇑ 5,1%",
+          rentOp: "20,47%",
+          rentDre: "25,50%",
+          subtitle: "Site + App + Marketplace"
+        }},
+        projEcom: {{
+          real: "R$ 30.436 Mi",
+          metaMes: "Meta Mês: R$ 55.845 Mi",
+          restante: "R$ 25.409 Mi",
+          diaria: "R$ 1.694 K/dia",
+          fechamento: "R$ 60.872 Mi",
+          ating: "109.0% da Meta",
+          pct: 100,
+          isPos: true
+        }},
+        projDig: {{
+          real: "R$ 29.766 Mi",
+          metaMes: "Meta Mês: R$ 54.745 Mi",
+          restante: "R$ 24.979 Mi",
+          diaria: "R$ 1.665 K/dia",
+          fechamento: "R$ 59.532 Mi",
+          ating: "108.7% da Meta",
+          pct: 100,
+          isPos: true
+        }}
+      }},
+      withFigital: {{
+        ecom: {{
+          venda: "R$ 31.701 Mi",
+          metaMes: "58.373 Mi",
+          metaMTD: "R$ 29,912 Mi",
+          desvioPct: "+5,98%",
+          desvioVal: "+1,789 Mi",
+          share: "Part: 7.04%",
+          tkm: "121,26",
+          tkmMeta: "132,40",
+          tkmDesvioPct: "-8,41%",
+          tkmDesvioVal: "-11,14",
+          evol: "⇑ 65,4%",
+          cresc: "⇑ 4,9%",
+          subtitle: "Venda Efetiva + Figital"
+        }},
+        dig: {{
+          venda: "R$ 31.031 Mi",
+          metaMes: "57.273 Mi",
+          metaMTD: "R$ 29,348 Mi",
+          desvioPct: "+5,73%",
+          desvioVal: "+1,683 Mi",
+          share: "Part: 6.89%",
+          tkm: "119,60",
+          tkmMeta: "138,44",
+          tkmDesvioPct: "-13,61%",
+          tkmDesvioVal: "-18,84",
+          evol: "⇑ 64,1%",
+          cresc: "⇑ 5,4%",
+          rentOp: "20,55%",
+          rentDre: "25,57%",
+          subtitle: "Site + App + Marketplace + Figital"
+        }},
+        projEcom: {{
+          real: "R$ 31.701 Mi",
+          metaMes: "Meta Mês: R$ 58.373 Mi",
+          restante: "R$ 26.672 Mi",
+          diaria: "R$ 1.778 K/dia",
+          fechamento: "R$ 63.402 Mi",
+          ating: "108.6% da Meta",
+          pct: 100,
+          isPos: true
+        }},
+        projDig: {{
+          real: "R$ 31.031 Mi",
+          metaMes: "Meta Mês: R$ 57.273 Mi",
+          restante: "R$ 26.242 Mi",
+          diaria: "R$ 1.749 K/dia",
+          fechamento: "R$ 62.062 Mi",
+          ating: "108.4% da Meta",
+          pct: 100,
+          isPos: true
+        }}
+      }}
+    }};
+
+    const toggleFigitalInput = document.getElementById('toggleFigitalInput');
+    const figitalSwitchBar = document.getElementById('figitalSwitchBar');
+    const figitalStateBadge = document.getElementById('figitalStateBadge');
+    const cardFigital = document.getElementById('cardFigital');
+    const cardEcommerce = document.getElementById('cardEcommerce');
+    const cardDigitais = document.getElementById('cardDigitais');
+    const ecomFigitalBadge = document.getElementById('ecomFigitalBadge');
+    const digFigitalBadge = document.getElementById('digFigitalBadge');
+    const figitalCardStatusBadge = document.getElementById('figitalCardStatusBadge');
+    const projEcomBadge = document.getElementById('proj-ecommerce_total-figital-badge');
+    const projDigBadge = document.getElementById('proj-canais_digitais-figital-badge');
+    const btnPillCanaisDigitais = document.getElementById('btnPillCanaisDigitais');
+
+    function applyFigitalToggle(included) {{
+      const data = included ? figitalDataset.withFigital : figitalDataset.baseline;
+      if (toggleFigitalInput) toggleFigitalInput.checked = included;
+
+      // Update Switch Header State
+      if (figitalSwitchBar && figitalStateBadge) {{
+        if (included) {{
+          figitalSwitchBar.classList.add('active-on');
+          figitalStateBadge.textContent = 'ON';
+          if (cardFigital) cardFigital.classList.add('figital-integrated');
+          if (figitalCardStatusBadge) figitalCardStatusBadge.style.display = 'inline-flex';
+        }} else {{
+          figitalSwitchBar.classList.remove('active-on');
+          figitalStateBadge.textContent = 'OFF';
+          if (cardFigital) cardFigital.classList.remove('figital-integrated');
+          if (figitalCardStatusBadge) figitalCardStatusBadge.style.display = 'none';
+        }}
+      }}
+
+      // Update Card 1: E-Commerce
+      if (cardEcommerce) {{
+        if (included) {{
+          cardEcommerce.classList.add('figital-integrated');
+          if (ecomFigitalBadge) ecomFigitalBadge.style.display = 'inline-flex';
+        }} else {{
+          cardEcommerce.classList.remove('figital-integrated');
+          if (ecomFigitalBadge) ecomFigitalBadge.style.display = 'none';
+        }}
+        const setTxt = (id, val) => {{ const el = document.getElementById(id); if (el) el.textContent = val; }};
+        setTxt('ecomSubtitle', data.ecom.subtitle);
+        setTxt('ecomPartBadge', data.ecom.share);
+        setTxt('ecomMainVal', data.ecom.venda);
+        setTxt('ecomMetaMes', data.ecom.metaMes);
+        setTxt('ecomMetaMTD', data.ecom.metaMTD);
+        setTxt('ecomDesvioPct', data.ecom.desvioPct);
+        setTxt('ecomDesvioVal', data.ecom.desvioVal);
+        setTxt('ecomEvol', data.ecom.evol);
+        setTxt('ecomCresc', data.ecom.cresc);
+        setTxt('ecomTkm', data.ecom.tkm);
+        setTxt('ecomTkmMeta', data.ecom.tkmMeta);
+        setTxt('ecomTkmDesvioPct', data.ecom.tkmDesvioPct);
+        setTxt('ecomTkmDesvioVal', data.ecom.tkmDesvioVal);
+      }}
+
+      // Update Card 2: Canais Digitais
+      if (cardDigitais) {{
+        if (included) {{
+          cardDigitais.classList.add('figital-integrated');
+          if (digFigitalBadge) digFigitalBadge.style.display = 'inline-flex';
+        }} else {{
+          cardDigitais.classList.remove('figital-integrated');
+          if (digFigitalBadge) digFigitalBadge.style.display = 'none';
+        }}
+        const setTxt = (id, val) => {{ const el = document.getElementById(id); if (el) el.textContent = val; }};
+        setTxt('digSubtitle', data.dig.subtitle);
+        setTxt('digPartBadge', data.dig.share);
+        setTxt('digMainVal', data.dig.venda);
+        setTxt('digMetaMes', data.dig.metaMes);
+        setTxt('digMetaMTD', data.dig.metaMTD);
+        setTxt('digDesvioPct', data.dig.desvioPct);
+        setTxt('digDesvioVal', data.dig.desvioVal);
+        setTxt('digEvol', data.dig.evol);
+        setTxt('digCresc', data.dig.cresc);
+        setTxt('digRentOp', data.dig.rentOp);
+        setTxt('digRentDre', data.dig.rentDre);
+        setTxt('digTkm', data.dig.tkm);
+        setTxt('digTkmMeta', data.dig.tkmMeta);
+        setTxt('digTkmDesvioPct', data.dig.tkmDesvioPct);
+        setTxt('digTkmDesvioVal', data.dig.tkmDesvioVal);
+      }}
+
+      // Update Visão 4 Projections
+      const setTxt = (id, val) => {{ const el = document.getElementById(id); if (el) el.textContent = val; }};
+      setTxt('proj-real-ecommerce_total', data.projEcom.real);
+      setTxt('proj-metames-ecommerce_total', data.projEcom.metaMes);
+      setTxt('proj-restante-ecommerce_total', data.projEcom.restante);
+      setTxt('proj-diaria-ecommerce_total', data.projEcom.diaria);
+      setTxt('proj-fechamento-ecommerce_total', data.projEcom.fechamento);
+      setTxt('proj-ating-ecommerce_total', data.projEcom.ating);
+      const progEcom = document.getElementById('proj-progress-ecommerce_total');
+      if (progEcom) progEcom.style.width = data.projEcom.pct + '%';
+      if (projEcomBadge) projEcomBadge.style.display = included ? 'inline-flex' : 'none';
+
+      setTxt('proj-real-canais_digitais', data.projDig.real);
+      setTxt('proj-metames-canais_digitais', data.projDig.metaMes);
+      setTxt('proj-restante-canais_digitais', data.projDig.restante);
+      setTxt('proj-diaria-canais_digitais', data.projDig.diaria);
+      setTxt('proj-fechamento-canais_digitais', data.projDig.fechamento);
+      setTxt('proj-ating-canais_digitais', data.projDig.ating);
+      const progDig = document.getElementById('proj-progress-canais_digitais');
+      if (progDig) progDig.style.width = data.projDig.pct + '%';
+      if (projDigBadge) projDigBadge.style.display = included ? 'inline-flex' : 'none';
+
+      // Update Visão 2 Filter Button and Charts if applicable
+      if (btnPillCanaisDigitais) {{
+        btnPillCanaisDigitais.textContent = included ? 'Canais Digitais (+ Figital)' : 'Canais Digitais (Total)';
+      }}
+      if (typeof currentChannelV2 !== 'undefined' && currentChannelV2 === 'canais_digitais' && typeof renderDesviosCharts === 'function') {{
+        renderDesviosCharts('canais_digitais');
+      }}
+
+      localStorage.setItem('fsj_figital_included', included ? 'true' : 'false');
+    }}
+
+    if (figitalSwitchBar && toggleFigitalInput) {{
+      figitalSwitchBar.addEventListener('click', (e) => {{
+        if (e.target !== toggleFigitalInput) {{
+          toggleFigitalInput.checked = !toggleFigitalInput.checked;
+        }}
+        applyFigitalToggle(toggleFigitalInput.checked);
+      }});
+
+      toggleFigitalInput.addEventListener('change', () => {{
+        applyFigitalToggle(toggleFigitalInput.checked);
+      }});
+    }}
+
+    // Inicializar com preferência salva ou false por padrão (OFF)
+    const savedFigitalState = localStorage.getItem('fsj_figital_included') === 'true';
+    applyFigitalToggle(savedFigitalState);
   </script>
 </body>
 </html>
