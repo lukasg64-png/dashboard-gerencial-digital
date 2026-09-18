@@ -56,7 +56,7 @@ USERNAME = "lucas.alves6"
 PASSWORD = "Eloise2025*"
 
 DIGITAL_CHANNELS_FILTER = "'APP', 'APP Tele Entrega', 'APP TELE ENTREGA', 'SITE', 'SITE Tele Entrega', 'SITE TELE ENTREGA', 'iFood', 'IFOOD', 'e_Commerce', 'E_COMMERCE', 'E-COMMERCE', 'RAPPI', 'Rappi', 'MERCADO LIVRE', 'Mercado Livre', 'Figital', 'FIGITAL', 'Televendas', 'TELEVENDAS'"
-MONTHS_2026 = "'2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09'"
+MONTHS_HISTORICAL = "'2025-01', '2025-02', '2025-03', '2025-04', '2025-05', '2025-06', '2025-07', '2025-08', '2025-09', '2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09'"
 
 def generate_televendas_series(max_dia):
     """Gera série diária calibrada de Televendas até max_dia."""
@@ -238,7 +238,7 @@ async def fetch_qlik_cloud():
                             const l2 = await send("GetLayout", c2.result.qReturn.qHandle, []);
                             const canais_mes = (l2.result.qLayout.qHyperCube.qDataPages[0]?.qMatrix || []).map(r => [r[0].qText, r[1].qText, r[2].qNum || 0]);
 
-                            // 3. Grupos x Mês 2026
+                            // 3. Grupos x Mês (2025 e 2026)
                             const c3 = await send("CreateSessionObject", docHandle, [{{
                                 "qInfo": {{ "qType": "q_grupos_mes" }},
                                 "qHyperCubeDef": {{
@@ -247,7 +247,7 @@ async def fetch_qlik_cloud():
                                         {{ "qDef": {{ "qFieldDefs": ["Desc_Grupo"] }} }}
                                     ],
                                     "qMeasures": [
-                                        {{ "qDef": {{ "qDef": "Sum({{1<[Ano-Mês Venda]={{{MONTHS_2026}}}, [Canal Detalhado]={{{DIGITAL_CHANNELS_FILTER}}}>}} [Vl_Mercadoria])" }} }}
+                                        {{ "qDef": {{ "qDef": "Sum({{1<[Ano-Mês Venda]={{{MONTHS_HISTORICAL}}}, [Canal Detalhado]={{{DIGITAL_CHANNELS_FILTER}}}>}} [Vl_Mercadoria])" }} }}
                                     ],
                                     "qInitialDataFetch": [{{ "qTop": 0, "qLeft": 0, "qHeight": 1000, "qWidth": 3 }}],
                                     "qSuppressZero": true
@@ -256,7 +256,7 @@ async def fetch_qlik_cloud():
                             const l3 = await send("GetLayout", c3.result.qReturn.qHandle, []);
                             const grupos_mes = (l3.result.qLayout.qHyperCube.qDataPages[0]?.qMatrix || []).map(r => [r[0].qText, r[1].qText, r[2].qNum || 0]);
 
-                            // 4. Linhas x Mês 2026
+                            // 4. Linhas x Mês (2025 e 2026)
                             const c4 = await send("CreateSessionObject", docHandle, [{{
                                 "qInfo": {{ "qType": "q_linhas_mes" }},
                                 "qHyperCubeDef": {{
@@ -266,7 +266,7 @@ async def fetch_qlik_cloud():
                                         {{ "qDef": {{ "qFieldDefs": ["Desc_Linha"] }} }}
                                     ],
                                     "qMeasures": [
-                                        {{ "qDef": {{ "qDef": "Sum({{1<[Ano-Mês Venda]={{{MONTHS_2026}}}, [Canal Detalhado]={{{DIGITAL_CHANNELS_FILTER}}}>}} [Vl_Mercadoria])" }} }}
+                                        {{ "qDef": {{ "qDef": "Sum({{1<[Ano-Mês Venda]={{{MONTHS_HISTORICAL}}}, [Canal Detalhado]={{{DIGITAL_CHANNELS_FILTER}}}>}} [Vl_Mercadoria])" }} }}
                                     ],
                                     "qInitialDataFetch": [{{ "qTop": 0, "qLeft": 0, "qHeight": 1500, "qWidth": 4 }}],
                                     "qSuppressZero": true

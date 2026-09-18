@@ -1,5 +1,5 @@
 {
-  "atualizacao": "2026-09-18 11:47:38",
+  "atualizacao": "2026-09-18 12:05:28",
   "data_corte": "01 a 17/09/2026",
   "max_dia": 17,
   "kpis": {
@@ -7274,13 +7274,241 @@
           "ritmo_diario_atual": 1525907.48,
           "ritmo_diario_ant": 1525907.48,
           "ritmo_diario_cresc_pct": 0.0,
-          "yoy_cresc_pct": 43.8,
+          "yoy_cresc_pct": 112.8,
+          "venda_yoy_base": 21515557.1,
+          "yoy_mes_label": "Jan/25",
           "grupos": [],
           "top_involucao_linhas": [],
           "top_evolucao_linhas": [],
-          "grupos_yoy": [],
-          "top_involucao_linhas_yoy": [],
-          "top_evolucao_linhas_yoy": []
+          "grupos_yoy": [
+            {
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 29298988.82,
+              "venda_ant": 9729790.65,
+              "delta_val": 19569198.17,
+              "delta_pct": 201.1,
+              "share_pct": 64.0,
+              "status": "alta"
+            },
+            {
+              "grupo": "PERFUMARIA",
+              "venda_mes": 11182582.52,
+              "venda_ant": 7298203.93,
+              "delta_val": 3884378.59,
+              "delta_pct": 53.2,
+              "share_pct": 24.4,
+              "status": "alta"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 2712008.62,
+              "venda_ant": 1969278.48,
+              "delta_val": 742730.14,
+              "delta_pct": 37.7,
+              "share_pct": 5.9,
+              "status": "alta"
+            },
+            {
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 656062.49,
+              "venda_ant": 482896.02,
+              "delta_val": 173166.47,
+              "delta_pct": 35.9,
+              "share_pct": 1.4,
+              "status": "alta"
+            },
+            {
+              "grupo": "DIVERSOS",
+              "venda_mes": 294709.58,
+              "venda_ant": 208863.11,
+              "delta_val": 85846.47,
+              "delta_pct": 41.1,
+              "share_pct": 0.6,
+              "status": "alta"
+            },
+            {
+              "grupo": "SERVICOS",
+              "venda_mes": 1249.1,
+              "venda_ant": 150.0,
+              "delta_val": 1099.1,
+              "delta_pct": 732.7,
+              "share_pct": 0.0,
+              "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 1631623.34,
+              "venda_ant": 1826374.91,
+              "delta_val": -194751.57,
+              "delta_pct": -10.7,
+              "share_pct": 3.6,
+              "status": "queda"
+            }
+          ],
+          "top_involucao_linhas_yoy": [
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 92901.34,
+              "venda_ant": 382011.89,
+              "delta_val": -289110.55,
+              "delta_pct": -75.7
+            },
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 892468.23,
+              "venda_ant": 1133956.73,
+              "delta_val": -241488.5,
+              "delta_pct": -21.3
+            },
+            {
+              "linha": "SOLAR - KIT",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 221360.58,
+              "venda_ant": 334021.83,
+              "delta_val": -112661.25,
+              "delta_pct": -33.7
+            },
+            {
+              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 505267.73,
+              "venda_ant": 566050.79,
+              "delta_val": -60783.06,
+              "delta_pct": -10.7
+            },
+            {
+              "linha": "BAZAR – PRAIA / PISCINA",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 53270.88,
+              "venda_ant": 104967.4,
+              "delta_val": -51696.52,
+              "delta_pct": -49.3
+            },
+            {
+              "linha": "BAZAR – TERMICOS COPOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 46897.86,
+              "venda_ant": 97590.23,
+              "delta_val": -50692.37,
+              "delta_pct": -51.9
+            },
+            {
+              "linha": "OTC- NUTRICOSMETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 21623.93,
+              "venda_ant": 60252.68,
+              "delta_val": -38628.75,
+              "delta_pct": -64.1
+            },
+            {
+              "linha": "ANTIDIARREICO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 38147.61,
+              "venda_ant": 67964.46,
+              "delta_val": -29816.85,
+              "delta_pct": -43.9
+            },
+            {
+              "linha": "CUIDADO - CORPO MASSAGEM",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 13810.75,
+              "venda_ant": 37926.79,
+              "delta_val": -24116.04,
+              "delta_pct": -63.6
+            },
+            {
+              "linha": "REPELENTES",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 65988.83,
+              "venda_ant": 86526.34,
+              "delta_val": -20537.51,
+              "delta_pct": -23.7
+            }
+          ],
+          "top_evolucao_linhas_yoy": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 15927076.92,
+              "venda_ant": 974791.76,
+              "delta_val": 14952285.16,
+              "delta_pct": 1533.9
+            },
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 3823111.68,
+              "venda_ant": 2715871.86,
+              "delta_val": 1107239.82,
+              "delta_pct": 40.8
+            },
+            {
+              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1268091.29,
+              "venda_ant": 682063.32,
+              "delta_val": 586027.97,
+              "delta_pct": 85.9
+            },
+            {
+              "linha": "ELETRODOMESTICOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 728580.82,
+              "venda_ant": 450275.2,
+              "delta_val": 278305.62,
+              "delta_pct": 61.8
+            },
+            {
+              "linha": "FRALDAS INFANTIS ROUPA",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 558019.22,
+              "venda_ant": 317607.8,
+              "delta_val": 240411.42,
+              "delta_pct": 75.7
+            },
+            {
+              "linha": "PROMOCIONAL GENERICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 430861.85,
+              "venda_ant": 190626.1,
+              "delta_val": 240235.75,
+              "delta_pct": 126.0
+            },
+            {
+              "linha": "ANTILIPEMICOS / REDUTORES COLESTEROL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 380299.72,
+              "venda_ant": 154942.5,
+              "delta_val": 225357.22,
+              "delta_pct": 145.4
+            },
+            {
+              "linha": "ANTI-HIPERTENSIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 383307.99,
+              "venda_ant": 175893.97,
+              "delta_val": 207414.02,
+              "delta_pct": 117.9
+            },
+            {
+              "linha": "KIT - CAPILAR",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 385236.35,
+              "venda_ant": 184405.38,
+              "delta_val": 200830.97,
+              "delta_pct": 108.9
+            },
+            {
+              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 526503.29,
+              "venda_ant": 337538.69,
+              "delta_val": 188964.6,
+              "delta_pct": 56.0
+            }
+          ]
         }
       },
       {
@@ -7320,7 +7548,9 @@
           "ritmo_diario_atual": 1563676.51,
           "ritmo_diario_ant": 1525907.48,
           "ritmo_diario_cresc_pct": 2.48,
-          "yoy_cresc_pct": 43.8,
+          "yoy_cresc_pct": 130.1,
+          "venda_yoy_base": 20383621.35,
+          "yoy_mes_label": "Fev/25",
           "grupos": [
             {
               "grupo": "PERFUMARIA",
@@ -7561,148 +7791,229 @@
             {
               "grupo": "MEDICAMENTOS",
               "venda_mes": 31107668.61,
-              "venda_ant": 20359068.14,
-              "delta_val": 10748600.47,
-              "delta_pct": 52.8,
+              "venda_ant": 8475011.04,
+              "delta_val": 22632657.57,
+              "delta_pct": 267.1,
               "share_pct": 66.3,
-              "status": "alta"
-            },
-            {
-              "grupo": "CONVENIENCIA",
-              "venda_mes": 2507843.57,
-              "venda_ant": 1149302.23,
-              "delta_val": 1358541.34,
-              "delta_pct": 118.2,
-              "share_pct": 5.3,
-              "status": "alta"
-            },
-            {
-              "grupo": "NUTRICAO",
-              "venda_mes": 1655548.86,
-              "venda_ant": 820930.17,
-              "delta_val": 834618.69,
-              "delta_pct": 101.7,
-              "share_pct": 3.5,
               "status": "alta"
             },
             {
               "grupo": "PERFUMARIA",
               "venda_mes": 10740850.1,
-              "venda_ant": 10507906.14,
-              "delta_val": 232943.96,
-              "delta_pct": 2.2,
+              "venda_ant": 7769138.59,
+              "delta_val": 2971711.51,
+              "delta_pct": 38.3,
               "share_pct": 22.9,
+              "status": "alta"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 2507843.57,
+              "venda_ant": 1815551.42,
+              "delta_val": 692292.15,
+              "delta_pct": 38.1,
+              "share_pct": 5.3,
               "status": "alta"
             },
             {
               "grupo": "DERMO-COSMETICOS",
               "venda_mes": 617692.33,
-              "venda_ant": 492558.1,
-              "delta_val": 125134.23,
-              "delta_pct": 25.4,
+              "venda_ant": 365361.11,
+              "delta_val": 252331.22,
+              "delta_pct": 69.1,
               "share_pct": 1.3,
               "status": "alta"
             },
             {
               "grupo": "DIVERSOS",
               "venda_mes": 279053.78,
-              "venda_ant": 164186.03,
-              "delta_val": 114867.75,
-              "delta_pct": 70.0,
+              "venda_ant": 193769.27,
+              "delta_val": 85284.51,
+              "delta_pct": 44.0,
               "share_pct": 0.6,
               "status": "alta"
             },
             {
               "grupo": "SERVICOS",
               "venda_mes": 1638.0,
-              "venda_ant": 656.74,
-              "delta_val": 981.26,
-              "delta_pct": 149.4,
+              "venda_ant": 180.0,
+              "delta_val": 1458.0,
+              "delta_pct": 810.0,
               "share_pct": 0.0,
               "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 1655548.86,
+              "venda_ant": 1764609.92,
+              "delta_val": -109061.06,
+              "delta_pct": -6.2,
+              "share_pct": 3.5,
+              "status": "queda"
             }
           ],
-          "top_involucao_linhas_yoy": [],
+          "top_involucao_linhas_yoy": [
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 954082.54,
+              "venda_ant": 1079410.19,
+              "delta_val": -125327.65,
+              "delta_pct": -11.6
+            },
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 160048.85,
+              "venda_ant": 252476.31,
+              "delta_val": -92427.46,
+              "delta_pct": -36.6
+            },
+            {
+              "linha": "BAZAR – TERMICOS COPOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 53980.1,
+              "venda_ant": 137223.1,
+              "delta_val": -83243.0,
+              "delta_pct": -60.7
+            },
+            {
+              "linha": "CUIDADO – LABIAL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 34032.1,
+              "venda_ant": 62453.11,
+              "delta_val": -28421.01,
+              "delta_pct": -45.5
+            },
+            {
+              "linha": "OTC- ANTITABAGISMO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 29368.08,
+              "venda_ant": 56202.38,
+              "delta_val": -26834.3,
+              "delta_pct": -47.7
+            },
+            {
+              "linha": "OTC- NUTRICOSMETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 27631.01,
+              "venda_ant": 51113.03,
+              "delta_val": -23482.02,
+              "delta_pct": -45.9
+            },
+            {
+              "linha": "DERMO - INFANTIL",
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 25686.29,
+              "venda_ant": 41545.62,
+              "delta_val": -15859.33,
+              "delta_pct": -38.2
+            },
+            {
+              "linha": "CUIDADO - CORPO MASSAGEM",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 11862.3,
+              "venda_ant": 25892.41,
+              "delta_val": -14030.11,
+              "delta_pct": -54.2
+            },
+            {
+              "linha": "ANTIDIARREICO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 36404.87,
+              "venda_ant": 49884.15,
+              "delta_val": -13479.28,
+              "delta_pct": -27.0
+            },
+            {
+              "linha": "BAZAR – TERMICOS LINHA MATE",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 15723.65,
+              "venda_ant": 28521.24,
+              "delta_val": -12797.59,
+              "delta_pct": -44.9
+            }
+          ],
           "top_evolucao_linhas_yoy": [
             {
               "linha": "ANTIDIABETICOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 18153591.27,
-              "venda_ant": 11255226.59,
-              "delta_val": 6898364.68,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "FRALDAS INFANTIS",
-              "grupo": "PERFUMARIA",
-              "venda_mes": 3753595.69,
-              "venda_ant": 2327229.33,
-              "delta_val": 1426366.36,
-              "delta_pct": 61.3
+              "venda_ant": 998757.84,
+              "delta_val": 17154833.43,
+              "delta_pct": 1717.6
             },
             {
               "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 1138474.3,
-              "venda_ant": 705854.07,
-              "delta_val": 432620.23,
-              "delta_pct": 61.3
+              "venda_ant": 483189.08,
+              "delta_val": 655285.22,
+              "delta_pct": 135.6
             },
             {
-              "linha": "NUTRICAO INFANTIL",
-              "grupo": "NUTRICAO",
-              "venda_mes": 954082.54,
-              "venda_ant": 591531.17,
-              "delta_val": 362551.37,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "CONTRACEPTIVOS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 817717.2,
-              "venda_ant": 506984.66,
-              "delta_val": 310732.54,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 657116.26,
-              "venda_ant": 407412.08,
-              "delta_val": 249704.18,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "FORMULAS INFANTIS",
-              "grupo": "NUTRICAO",
-              "venda_mes": 652499.21,
-              "venda_ant": 404549.51,
-              "delta_val": 247949.7,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "linha": "FRALDAS INFANTIS",
               "grupo": "PERFUMARIA",
-              "venda_mes": 483905.54,
-              "venda_ant": 300021.43,
-              "delta_val": 183884.11,
-              "delta_pct": 61.3
+              "venda_mes": 3753595.69,
+              "venda_ant": 3305435.87,
+              "delta_val": 448159.82,
+              "delta_pct": 13.6
             },
             {
-              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
+              "linha": "ANTILIPEMICOS / REDUTORES COLESTEROL",
               "grupo": "MEDICAMENTOS",
-              "venda_mes": 483557.87,
-              "venda_ant": 299805.88,
-              "delta_val": 183751.99,
-              "delta_pct": 61.3
+              "venda_mes": 394975.75,
+              "venda_ant": 125522.15,
+              "delta_val": 269453.6,
+              "delta_pct": 214.7
+            },
+            {
+              "linha": "PROMOCIONAL GENERICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 424595.4,
+              "venda_ant": 160521.46,
+              "delta_val": 264073.94,
+              "delta_pct": 164.5
             },
             {
               "linha": "KIT - CAPILAR",
               "grupo": "PERFUMARIA",
               "venda_mes": 443890.81,
-              "venda_ant": 275212.3,
-              "delta_val": 168678.51,
-              "delta_pct": 61.3
+              "venda_ant": 200361.27,
+              "delta_val": 243529.54,
+              "delta_pct": 121.5
+            },
+            {
+              "linha": "ANTI-HIPERTENSIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 375420.41,
+              "venda_ant": 143805.76,
+              "delta_val": 231614.65,
+              "delta_pct": 161.1
+            },
+            {
+              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 657116.26,
+              "venda_ant": 456595.92,
+              "delta_val": 200520.34,
+              "delta_pct": 43.9
+            },
+            {
+              "linha": "CONTRACEPTIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 817717.2,
+              "venda_ant": 639504.15,
+              "delta_val": 178213.05,
+              "delta_pct": 27.9
+            },
+            {
+              "linha": "MEDICAMENTOS FARMACIA POPULAR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 266349.44,
+              "venda_ant": 93171.99,
+              "delta_val": 173177.45,
+              "delta_pct": 185.9
             }
           ]
         }
@@ -7744,7 +8055,9 @@
           "ritmo_diario_atual": 1764089.48,
           "ritmo_diario_ant": 1563676.51,
           "ritmo_diario_cresc_pct": 12.82,
-          "yoy_cresc_pct": 43.8,
+          "yoy_cresc_pct": 105.8,
+          "venda_yoy_base": 25721238.91,
+          "yoy_mes_label": "Mar/25",
           "grupos": [
             {
               "grupo": "SERVICOS",
@@ -7985,148 +8298,229 @@
             {
               "grupo": "MEDICAMENTOS",
               "venda_mes": 33864878.04,
-              "venda_ant": 22968445.07,
-              "delta_val": 10896432.97,
-              "delta_pct": 47.4,
+              "venda_ant": 12139403.21,
+              "delta_val": 21725474.83,
+              "delta_pct": 179.0,
               "share_pct": 64.0,
               "status": "alta"
             },
             {
               "grupo": "PERFUMARIA",
               "venda_mes": 13306941.9,
-              "venda_ant": 11854681.33,
-              "delta_val": 1452260.57,
-              "delta_pct": 12.3,
+              "venda_ant": 9151056.04,
+              "delta_val": 4155885.86,
+              "delta_pct": 45.4,
               "share_pct": 25.1,
-              "status": "alta"
-            },
-            {
-              "grupo": "NUTRICAO",
-              "venda_mes": 2222190.39,
-              "venda_ant": 926146.98,
-              "delta_val": 1296043.41,
-              "delta_pct": 139.9,
-              "share_pct": 4.2,
               "status": "alta"
             },
             {
               "grupo": "CONVENIENCIA",
               "venda_mes": 2514194.17,
-              "venda_ant": 1296605.77,
-              "delta_val": 1217588.4,
-              "delta_pct": 93.9,
+              "venda_ant": 1679423.82,
+              "delta_val": 834770.35,
+              "delta_pct": 49.7,
               "share_pct": 4.8,
               "status": "alta"
             },
             {
               "grupo": "DERMO-COSMETICOS",
               "venda_mes": 707218.72,
-              "venda_ant": 555688.19,
-              "delta_val": 151530.53,
-              "delta_pct": 27.3,
+              "venda_ant": 464491.65,
+              "delta_val": 242727.07,
+              "delta_pct": 52.3,
               "share_pct": 1.3,
+              "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 2222190.39,
+              "venda_ant": 2055963.12,
+              "delta_val": 166227.27,
+              "delta_pct": 8.1,
+              "share_pct": 4.2,
               "status": "alta"
             },
             {
               "grupo": "DIVERSOS",
               "venda_mes": 304165.94,
-              "venda_ant": 185229.4,
-              "delta_val": 118936.54,
-              "delta_pct": 64.2,
+              "venda_ant": 230631.07,
+              "delta_val": 73534.87,
+              "delta_pct": 31.9,
               "share_pct": 0.6,
               "status": "alta"
             },
             {
               "grupo": "SERVICOS",
               "venda_mes": 3095.33,
-              "venda_ant": 740.92,
-              "delta_val": 2354.41,
-              "delta_pct": 317.8,
+              "venda_ant": 270.0,
+              "delta_val": 2825.33,
+              "delta_pct": 1046.4,
               "share_pct": 0.0,
               "status": "alta"
             }
           ],
-          "top_involucao_linhas_yoy": [],
+          "top_involucao_linhas_yoy": [
+            {
+              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 610984.19,
+              "venda_ant": 730429.86,
+              "delta_val": -119445.67,
+              "delta_pct": -16.4
+            },
+            {
+              "linha": "BAZAR – TERMICOS COPOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 30747.22,
+              "venda_ant": 127578.2,
+              "delta_val": -96830.98,
+              "delta_pct": -75.9
+            },
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 137133.99,
+              "venda_ant": 201619.76,
+              "delta_val": -64485.77,
+              "delta_pct": -32.0
+            },
+            {
+              "linha": "SOLAR - KIT",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 57137.32,
+              "venda_ant": 84998.7,
+              "delta_val": -27861.38,
+              "delta_pct": -32.8
+            },
+            {
+              "linha": "NUTRACEUTICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 18337.69,
+              "venda_ant": 39489.25,
+              "delta_val": -21151.56,
+              "delta_pct": -53.6
+            },
+            {
+              "linha": "ANTIDIARREICO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 54409.8,
+              "venda_ant": 67363.44,
+              "delta_val": -12953.64,
+              "delta_pct": -19.2
+            },
+            {
+              "linha": "DERMO - SOLAR FACIAL",
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 95480.27,
+              "venda_ant": 107569.97,
+              "delta_val": -12089.7,
+              "delta_pct": -11.2
+            },
+            {
+              "linha": "KIT - DERMO SOLAR",
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 4991.09,
+              "venda_ant": 16740.77,
+              "delta_val": -11749.68,
+              "delta_pct": -70.2
+            },
+            {
+              "linha": "CAFES",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 14599.23,
+              "venda_ant": 25272.38,
+              "delta_val": -10673.15,
+              "delta_pct": -42.2
+            },
+            {
+              "linha": "REPOSITOR FLORA INTESTINAL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 28187.38,
+              "venda_ant": 37961.79,
+              "delta_val": -9774.41,
+              "delta_pct": -25.7
+            }
+          ],
           "top_evolucao_linhas_yoy": [
             {
               "linha": "ANTIDIABETICOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 17172769.6,
-              "venda_ant": 10647117.15,
-              "delta_val": 6525652.45,
-              "delta_pct": 61.3
+              "venda_ant": 1451666.69,
+              "delta_val": 15721102.91,
+              "delta_pct": 1083.0
             },
             {
               "linha": "FRALDAS INFANTIS",
               "grupo": "PERFUMARIA",
               "venda_mes": 5207781.95,
-              "venda_ant": 3228824.81,
-              "delta_val": 1978957.14,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "NUTRICAO INFANTIL",
-              "grupo": "NUTRICAO",
-              "venda_mes": 1428169.8,
-              "venda_ant": 885465.28,
-              "delta_val": 542704.52,
-              "delta_pct": 61.3
+              "venda_ant": 4229613.13,
+              "delta_val": 978168.82,
+              "delta_pct": 23.1
             },
             {
               "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 1278830.34,
-              "venda_ant": 792874.81,
-              "delta_val": 485955.53,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "CONTRACEPTIVOS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 1134837.83,
-              "venda_ant": 703599.45,
-              "delta_val": 431238.38,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 842778.32,
-              "venda_ant": 522522.56,
-              "delta_val": 320255.76,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "FORMULAS INFANTIS",
-              "grupo": "NUTRICAO",
-              "venda_mes": 724732.32,
-              "venda_ant": 449334.04,
-              "delta_val": 275398.28,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
-              "grupo": "PERFUMARIA",
-              "venda_mes": 655437.16,
-              "venda_ant": 406371.04,
-              "delta_val": 249066.12,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 610984.19,
-              "venda_ant": 378810.2,
-              "delta_val": 232173.99,
-              "delta_pct": 61.3
+              "venda_ant": 842043.86,
+              "delta_val": 436786.48,
+              "delta_pct": 51.9
             },
             {
               "linha": "ANTILIPEMICOS / REDUTORES COLESTEROL",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 602681.76,
-              "venda_ant": 373662.69,
-              "delta_val": 229019.07,
-              "delta_pct": 61.3
+              "venda_ant": 210265.12,
+              "delta_val": 392416.64,
+              "delta_pct": 186.6
+            },
+            {
+              "linha": "CONTRACEPTIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1134837.83,
+              "venda_ant": 784664.12,
+              "delta_val": 350173.71,
+              "delta_pct": 44.6
+            },
+            {
+              "linha": "PROMOCIONAL GENERICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 460369.33,
+              "venda_ant": 160043.12,
+              "delta_val": 300326.21,
+              "delta_pct": 187.7
+            },
+            {
+              "linha": "KIT - CAPILAR",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 511787.79,
+              "venda_ant": 238638.94,
+              "delta_val": 273148.85,
+              "delta_pct": 114.5
+            },
+            {
+              "linha": "ANTI-HIPERTENSIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 526348.26,
+              "venda_ant": 255298.17,
+              "delta_val": 271050.09,
+              "delta_pct": 106.2
+            },
+            {
+              "linha": "CHOCOLATES",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 427317.37,
+              "venda_ant": 171166.6,
+              "delta_val": 256150.77,
+              "delta_pct": 149.6
+            },
+            {
+              "linha": "OTC- ANALGESICOS/ANTITERMICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 537306.35,
+              "venda_ant": 321845.86,
+              "delta_val": 215460.49,
+              "delta_pct": 66.9
             }
           ]
         }
@@ -8168,7 +8562,9 @@
           "ritmo_diario_atual": 1628190.84,
           "ritmo_diario_ant": 1764089.48,
           "ritmo_diario_cresc_pct": -7.7,
-          "yoy_cresc_pct": 43.8,
+          "yoy_cresc_pct": 86.6,
+          "venda_yoy_base": 26179621.88,
+          "yoy_mes_label": "Abr/25",
           "grupos": [
             {
               "grupo": "MEDICAMENTOS",
@@ -8409,148 +8805,229 @@
             {
               "grupo": "MEDICAMENTOS",
               "venda_mes": 31554386.58,
-              "venda_ant": 21199044.75,
-              "delta_val": 10355341.83,
-              "delta_pct": 48.8,
+              "venda_ant": 13488628.43,
+              "delta_val": 18065758.15,
+              "delta_pct": 133.9,
               "share_pct": 64.6,
-              "status": "alta"
-            },
-            {
-              "grupo": "CONVENIENCIA",
-              "venda_mes": 2495891.41,
-              "venda_ant": 1196720.27,
-              "delta_val": 1299171.14,
-              "delta_pct": 108.6,
-              "share_pct": 5.1,
-              "status": "alta"
-            },
-            {
-              "grupo": "NUTRICAO",
-              "venda_mes": 1916680.99,
-              "venda_ant": 854800.19,
-              "delta_val": 1061880.8,
-              "delta_pct": 124.2,
-              "share_pct": 3.9,
               "status": "alta"
             },
             {
               "grupo": "PERFUMARIA",
               "venda_mes": 11877695.4,
-              "venda_ant": 10941442.45,
-              "delta_val": 936252.95,
-              "delta_pct": 8.6,
+              "venda_ant": 8282929.32,
+              "delta_val": 3594766.08,
+              "delta_pct": 43.4,
               "share_pct": 24.3,
+              "status": "alta"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 2495891.41,
+              "venda_ant": 1514334.03,
+              "delta_val": 981557.38,
+              "delta_pct": 64.8,
+              "share_pct": 5.1,
               "status": "alta"
             },
             {
               "grupo": "DERMO-COSMETICOS",
               "venda_mes": 683268.99,
-              "venda_ant": 512880.12,
-              "delta_val": 170388.87,
-              "delta_pct": 33.2,
+              "venda_ant": 389170.9,
+              "delta_val": 294098.09,
+              "delta_pct": 75.6,
               "share_pct": 1.4,
               "status": "alta"
             },
             {
               "grupo": "DIVERSOS",
               "venda_mes": 313203.24,
-              "venda_ant": 170960.04,
-              "delta_val": 142243.2,
-              "delta_pct": 83.2,
+              "venda_ant": 230304.54,
+              "delta_val": 82898.7,
+              "delta_pct": 36.0,
               "share_pct": 0.6,
               "status": "alta"
             },
             {
               "grupo": "SERVICOS",
               "venda_mes": 4598.63,
-              "venda_ant": 683.84,
-              "delta_val": 3914.79,
-              "delta_pct": 572.5,
+              "venda_ant": 649.88,
+              "delta_val": 3948.75,
+              "delta_pct": 607.6,
               "share_pct": 0.0,
               "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 1916680.99,
+              "venda_ant": 2273604.78,
+              "delta_val": -356923.79,
+              "delta_pct": -15.7,
+              "share_pct": 3.9,
+              "status": "queda"
             }
           ],
-          "top_involucao_linhas_yoy": [],
-          "top_evolucao_linhas_yoy": [
+          "top_involucao_linhas_yoy": [
             {
-              "linha": "ANTIDIABETICOS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 14801575.15,
-              "venda_ant": 9176976.59,
-              "delta_val": 5624598.56,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "FRALDAS INFANTIS",
-              "grupo": "PERFUMARIA",
-              "venda_mes": 4243072.14,
-              "venda_ant": 2630704.73,
-              "delta_val": 1612367.41,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 1472731.7,
-              "venda_ant": 913093.65,
-              "delta_val": 559638.05,
-              "delta_pct": 61.3
+              "linha": "FORMULAS INFANTIS",
+              "grupo": "NUTRICAO",
+              "venda_mes": 661770.43,
+              "venda_ant": 860528.8,
+              "delta_val": -198758.37,
+              "delta_pct": -23.1
             },
             {
               "linha": "NUTRICAO INFANTIL",
               "grupo": "NUTRICAO",
               "venda_mes": 1190599.31,
-              "venda_ant": 738171.57,
-              "delta_val": 452427.74,
-              "delta_pct": 61.3
+              "venda_ant": 1339307.14,
+              "delta_val": -148707.83,
+              "delta_pct": -11.1
             },
             {
-              "linha": "CONTRACEPTIVOS",
+              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
               "grupo": "MEDICAMENTOS",
-              "venda_mes": 949320.0,
-              "venda_ant": 588578.4,
-              "delta_val": 360741.6,
-              "delta_pct": 61.3
+              "venda_mes": 556455.93,
+              "venda_ant": 654628.8,
+              "delta_val": -98172.87,
+              "delta_pct": -15.0
             },
             {
-              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
+              "linha": "CHOCOLATES - PASCOA",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 70440.22,
+              "venda_ant": 112595.54,
+              "delta_val": -42155.32,
+              "delta_pct": -37.4
+            },
+            {
+              "linha": "CAPILAR - FINALIZADORES FEMININOS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 32677.38,
+              "venda_ant": 67789.96,
+              "delta_val": -35112.58,
+              "delta_pct": -51.8
+            },
+            {
+              "linha": "MAQUIAGEM - GLOSS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 16765.47,
+              "venda_ant": 42939.67,
+              "delta_val": -26174.2,
+              "delta_pct": -61.0
+            },
+            {
+              "linha": "NUTRACEUTICOS",
               "grupo": "MEDICAMENTOS",
-              "venda_mes": 796573.11,
-              "venda_ant": 493875.33,
-              "delta_val": 302697.78,
-              "delta_pct": 61.3
+              "venda_mes": 12670.68,
+              "venda_ant": 30332.04,
+              "delta_val": -17661.36,
+              "delta_pct": -58.2
+            },
+            {
+              "linha": "OTC- ANTITABAGISMO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 47565.28,
+              "venda_ant": 63776.96,
+              "delta_val": -16211.68,
+              "delta_pct": -25.4
+            },
+            {
+              "linha": "ANTIDIARREICO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 40975.04,
+              "venda_ant": 56710.87,
+              "delta_val": -15735.83,
+              "delta_pct": -27.7
+            },
+            {
+              "linha": "NUTRICAO ADULTO",
+              "grupo": "NUTRICAO",
+              "venda_mes": 28914.43,
+              "venda_ant": 41079.1,
+              "delta_val": -12164.67,
+              "delta_pct": -29.6
+            }
+          ],
+          "top_evolucao_linhas_yoy": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 14801575.15,
+              "venda_ant": 2674772.89,
+              "delta_val": 12126802.26,
+              "delta_pct": 453.4
+            },
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 4243072.14,
+              "venda_ant": 3470031.65,
+              "delta_val": 773040.49,
+              "delta_pct": 22.3
+            },
+            {
+              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1472731.7,
+              "venda_ant": 848928.52,
+              "delta_val": 623803.18,
+              "delta_pct": 73.5
+            },
+            {
+              "linha": "ANTILIPEMICOS / REDUTORES COLESTEROL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 485009.34,
+              "venda_ant": 179007.55,
+              "delta_val": 306001.79,
+              "delta_pct": 170.9
+            },
+            {
+              "linha": "PROMOCIONAL GENERICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 480218.81,
+              "venda_ant": 190371.31,
+              "delta_val": 289847.5,
+              "delta_pct": 152.3
             },
             {
               "linha": "FRALDAS INFANTIS ROUPA",
               "grupo": "PERFUMARIA",
               "venda_mes": 705822.54,
-              "venda_ant": 437609.97,
-              "delta_val": 268212.57,
-              "delta_pct": 61.3
+              "venda_ant": 433491.61,
+              "delta_val": 272330.93,
+              "delta_pct": 62.8
             },
             {
-              "linha": "FORMULAS INFANTIS",
-              "grupo": "NUTRICAO",
-              "venda_mes": 661770.43,
-              "venda_ant": 410297.67,
-              "delta_val": 251472.76,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "linha": "KIT - CAPILAR",
               "grupo": "PERFUMARIA",
-              "venda_mes": 627023.2,
-              "venda_ant": 388754.38,
-              "delta_val": 238268.82,
-              "delta_pct": 61.3
+              "venda_mes": 485320.59,
+              "venda_ant": 223434.03,
+              "delta_val": 261886.56,
+              "delta_pct": 117.2
             },
             {
               "linha": "OTC- ANALGESICOS/ANTITERMICOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 561387.77,
-              "venda_ant": 348060.42,
-              "delta_val": 213327.35,
-              "delta_pct": 61.3
+              "venda_ant": 355384.9,
+              "delta_val": 206002.87,
+              "delta_pct": 58.0
+            },
+            {
+              "linha": "ANTI-HIPERTENSIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 430386.17,
+              "venda_ant": 225115.27,
+              "delta_val": 205270.9,
+              "delta_pct": 91.2
+            },
+            {
+              "linha": "LANCAMENTOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 267070.14,
+              "venda_ant": 74606.22,
+              "delta_val": 192463.92,
+              "delta_pct": 258.0
             }
           ]
         }
@@ -8592,7 +9069,9 @@
           "ritmo_diario_atual": 1807426.76,
           "ritmo_diario_ant": 1628190.84,
           "ritmo_diario_cresc_pct": 11.01,
-          "yoy_cresc_pct": 43.8,
+          "yoy_cresc_pct": 83.1,
+          "venda_yoy_base": 29612016.89,
+          "yoy_mes_label": "Mai/25",
           "grupos": [
             {
               "grupo": "SERVICOS",
@@ -8833,148 +9312,229 @@
             {
               "grupo": "MEDICAMENTOS",
               "venda_mes": 31836062.12,
-              "venda_ant": 23532696.39,
-              "delta_val": 8303365.73,
-              "delta_pct": 35.3,
+              "venda_ant": 16128802.08,
+              "delta_val": 15707260.04,
+              "delta_pct": 97.4,
               "share_pct": 58.7,
               "status": "alta"
             },
             {
               "grupo": "PERFUMARIA",
               "venda_mes": 14830349.93,
-              "venda_ant": 12145907.81,
-              "delta_val": 2684442.12,
-              "delta_pct": 22.1,
+              "venda_ant": 9204808.94,
+              "delta_val": 5625540.99,
+              "delta_pct": 61.1,
               "share_pct": 27.4,
               "status": "alta"
             },
             {
               "grupo": "CONVENIENCIA",
               "venda_mes": 3975642.97,
-              "venda_ant": 1328458.67,
-              "delta_val": 2647184.3,
-              "delta_pct": 199.3,
+              "venda_ant": 1604736.61,
+              "delta_val": 2370906.36,
+              "delta_pct": 147.7,
               "share_pct": 7.3,
-              "status": "alta"
-            },
-            {
-              "grupo": "NUTRICAO",
-              "venda_mes": 2335406.33,
-              "venda_ant": 948899.05,
-              "delta_val": 1386507.28,
-              "delta_pct": 146.1,
-              "share_pct": 4.3,
               "status": "alta"
             },
             {
               "grupo": "DERMO-COSMETICOS",
               "venda_mes": 862382.87,
-              "venda_ant": 569339.43,
-              "delta_val": 293043.44,
-              "delta_pct": 51.5,
+              "venda_ant": 398845.49,
+              "delta_val": 463537.38,
+              "delta_pct": 116.2,
               "share_pct": 1.6,
+              "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 2335406.33,
+              "venda_ant": 2038847.95,
+              "delta_val": 296558.38,
+              "delta_pct": 14.5,
+              "share_pct": 4.3,
               "status": "alta"
             },
             {
               "grupo": "DIVERSOS",
               "venda_mes": 378231.01,
-              "venda_ant": 189779.81,
-              "delta_val": 188451.2,
-              "delta_pct": 99.3,
+              "venda_ant": 235380.82,
+              "delta_val": 142850.19,
+              "delta_pct": 60.7,
               "share_pct": 0.7,
               "status": "alta"
             },
             {
               "grupo": "SERVICOS",
               "venda_mes": 4727.51,
-              "venda_ant": 759.12,
-              "delta_val": 3968.39,
-              "delta_pct": 522.8,
+              "venda_ant": 595.0,
+              "delta_val": 4132.51,
+              "delta_pct": 694.5,
               "share_pct": 0.0,
               "status": "alta"
             }
           ],
-          "top_involucao_linhas_yoy": [],
+          "top_involucao_linhas_yoy": [
+            {
+              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 598484.11,
+              "venda_ant": 681141.34,
+              "delta_val": -82657.23,
+              "delta_pct": -12.1
+            },
+            {
+              "linha": "MAQUIAGEM - GLOSS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 19103.17,
+              "venda_ant": 57170.91,
+              "delta_val": -38067.74,
+              "delta_pct": -66.6
+            },
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 69217.37,
+              "venda_ant": 106584.42,
+              "delta_val": -37367.05,
+              "delta_pct": -35.1
+            },
+            {
+              "linha": "NUTRACEUTICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 8708.07,
+              "venda_ant": 32814.68,
+              "delta_val": -24106.61,
+              "delta_pct": -73.5
+            },
+            {
+              "linha": "CONTROLE DE PESO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 32230.35,
+              "venda_ant": 50340.93,
+              "delta_val": -18110.58,
+              "delta_pct": -36.0
+            },
+            {
+              "linha": "BAZAR – TERMICOS COPOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 17618.98,
+              "venda_ant": 33731.81,
+              "delta_val": -16112.83,
+              "delta_pct": -47.8
+            },
+            {
+              "linha": "MAQUIAGEM - PO SOLTO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 10650.91,
+              "venda_ant": 24075.25,
+              "delta_val": -13424.34,
+              "delta_pct": -55.8
+            },
+            {
+              "linha": "MAQUIAGEM - BASE",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 35394.58,
+              "venda_ant": 47296.71,
+              "delta_val": -11902.13,
+              "delta_pct": -25.2
+            },
+            {
+              "linha": "PSICOESTIMULANTES",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 85777.86,
+              "venda_ant": 97300.46,
+              "delta_val": -11522.6,
+              "delta_pct": -11.8
+            },
+            {
+              "linha": "PERFUMES FEMININO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 22573.48,
+              "venda_ant": 32853.48,
+              "delta_val": -10280.0,
+              "delta_pct": -31.3
+            }
+          ],
           "top_evolucao_linhas_yoy": [
             {
               "linha": "ANTIDIABETICOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 14751946.33,
-              "venda_ant": 9146206.72,
-              "delta_val": 5605739.61,
-              "delta_pct": 61.3
+              "venda_ant": 4989398.07,
+              "delta_val": 9762548.26,
+              "delta_pct": 195.7
             },
             {
               "linha": "FRALDAS INFANTIS",
               "grupo": "PERFUMARIA",
               "venda_mes": 6442946.54,
-              "venda_ant": 3994626.85,
-              "delta_val": 2448319.69,
-              "delta_pct": 61.3
+              "venda_ant": 4070518.44,
+              "delta_val": 2372428.1,
+              "delta_pct": 58.3
             },
             {
               "linha": "LIVROS - ALBUM",
               "grupo": "CONVENIENCIA",
               "venda_mes": 1553387.25,
-              "venda_ant": 963100.09,
-              "delta_val": 590287.16,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "NUTRICAO INFANTIL",
-              "grupo": "NUTRICAO",
-              "venda_mes": 1453207.2,
-              "venda_ant": 900988.46,
-              "delta_val": 552218.74,
-              "delta_pct": 61.3
+              "venda_ant": 303.8,
+              "delta_val": 1553083.45,
+              "delta_pct": 511219.0
             },
             {
               "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 1216670.27,
-              "venda_ant": 754335.57,
-              "delta_val": 462334.7,
-              "delta_pct": 61.3
+              "venda_ant": 803334.14,
+              "delta_val": 413336.13,
+              "delta_pct": 51.5
             },
             {
               "linha": "CONTRACEPTIVOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 1089788.61,
-              "venda_ant": 675668.94,
-              "delta_val": 414119.67,
-              "delta_pct": 61.3
+              "venda_ant": 728719.78,
+              "delta_val": 361068.83,
+              "delta_pct": 49.5
             },
             {
-              "linha": "FORMULAS INFANTIS",
-              "grupo": "NUTRICAO",
-              "venda_mes": 817646.36,
-              "venda_ant": 506940.74,
-              "delta_val": 310705.62,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
+              "linha": "PROMOCIONAL GENERICOS",
               "grupo": "MEDICAMENTOS",
-              "venda_mes": 809280.34,
-              "venda_ant": 501753.81,
-              "delta_val": 307526.53,
-              "delta_pct": 61.3
+              "venda_mes": 470677.63,
+              "venda_ant": 171354.13,
+              "delta_val": 299323.5,
+              "delta_pct": 174.7
             },
             {
               "linha": "TOALHAS UMEDECIDAS - INFANTIL",
               "grupo": "PERFUMARIA",
               "venda_mes": 733872.81,
-              "venda_ant": 455001.14,
-              "delta_val": 278871.67,
-              "delta_pct": 61.3
+              "venda_ant": 449535.27,
+              "delta_val": 284337.54,
+              "delta_pct": 63.3
             },
             {
               "linha": "OTC- ANTIGRIPAIS/ANTITUSSIGENOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 694643.39,
-              "venda_ant": 430678.9,
-              "delta_val": 263964.49,
-              "delta_pct": 61.3
+              "venda_ant": 422819.92,
+              "delta_val": 271823.47,
+              "delta_pct": 64.3
+            },
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 1453207.2,
+              "venda_ant": 1199386.51,
+              "delta_val": 253820.69,
+              "delta_pct": 21.2
+            },
+            {
+              "linha": "ANTILIPEMICOS / REDUTORES COLESTEROL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 404684.4,
+              "venda_ant": 172974.49,
+              "delta_val": 231709.91,
+              "delta_pct": 134.0
             }
           ]
         }
@@ -9016,7 +9576,9 @@
           "ritmo_diario_atual": 1822838.68,
           "ritmo_diario_ant": 1807426.76,
           "ritmo_diario_cresc_pct": 0.85,
-          "yoy_cresc_pct": 43.8,
+          "yoy_cresc_pct": 52.5,
+          "venda_yoy_base": 35866267.64,
+          "yoy_mes_label": "Jun/25",
           "grupos": [
             {
               "grupo": "MEDICAMENTOS",
@@ -9257,148 +9819,229 @@
             {
               "grupo": "MEDICAMENTOS",
               "venda_mes": 30818928.72,
-              "venda_ant": 23733359.67,
-              "delta_val": 7085569.05,
-              "delta_pct": 29.9,
+              "venda_ant": 20604553.93,
+              "delta_val": 10214374.79,
+              "delta_pct": 49.6,
               "share_pct": 56.4,
               "status": "alta"
             },
             {
               "grupo": "PERFUMARIA",
               "venda_mes": 16512698.49,
-              "venda_ant": 12249475.96,
-              "delta_val": 4263222.53,
-              "delta_pct": 34.8,
+              "venda_ant": 9706095.26,
+              "delta_val": 6806603.23,
+              "delta_pct": 70.1,
               "share_pct": 30.2,
               "status": "alta"
             },
             {
               "grupo": "CONVENIENCIA",
               "venda_mes": 4170807.08,
-              "venda_ant": 1339786.43,
-              "delta_val": 2831020.65,
-              "delta_pct": 211.3,
+              "venda_ant": 2482143.47,
+              "delta_val": 1688663.61,
+              "delta_pct": 68.0,
               "share_pct": 7.6,
-              "status": "alta"
-            },
-            {
-              "grupo": "NUTRICAO",
-              "venda_mes": 2045087.36,
-              "venda_ant": 956990.31,
-              "delta_val": 1088097.05,
-              "delta_pct": 113.7,
-              "share_pct": 3.7,
               "status": "alta"
             },
             {
               "grupo": "DERMO-COSMETICOS",
               "venda_mes": 768408.14,
-              "venda_ant": 574194.19,
-              "delta_val": 194213.95,
-              "delta_pct": 33.8,
+              "venda_ant": 448530.46,
+              "delta_val": 319877.68,
+              "delta_pct": 71.3,
               "share_pct": 1.4,
               "status": "alta"
             },
             {
               "grupo": "DIVERSOS",
               "venda_mes": 365478.44,
-              "venda_ant": 191398.06,
-              "delta_val": 174080.38,
-              "delta_pct": 91.0,
+              "venda_ant": 274729.89,
+              "delta_val": 90748.55,
+              "delta_pct": 33.0,
               "share_pct": 0.7,
               "status": "alta"
             },
             {
               "grupo": "SERVICOS",
               "venda_mes": 3752.29,
-              "venda_ant": 765.59,
-              "delta_val": 2986.7,
-              "delta_pct": 390.1,
+              "venda_ant": 620.0,
+              "delta_val": 3132.29,
+              "delta_pct": 505.2,
               "share_pct": 0.0,
               "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 2045087.36,
+              "venda_ant": 2349594.63,
+              "delta_val": -304507.27,
+              "delta_pct": -13.0,
+              "share_pct": 3.7,
+              "status": "queda"
             }
           ],
-          "top_involucao_linhas_yoy": [],
-          "top_evolucao_linhas_yoy": [
+          "top_involucao_linhas_yoy": [
             {
-              "linha": "ANTIDIABETICOS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 14338715.97,
-              "venda_ant": 8890003.9,
-              "delta_val": 5448712.07,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "FRALDAS INFANTIS",
-              "grupo": "PERFUMARIA",
-              "venda_mes": 7428481.67,
-              "venda_ant": 4605658.64,
-              "delta_val": 2822823.03,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "LIVROS - ALBUM",
+              "linha": "ELETRODOMESTICOS",
               "grupo": "CONVENIENCIA",
-              "venda_mes": 1382488.06,
-              "venda_ant": 857142.6,
-              "delta_val": 525345.46,
-              "delta_pct": 61.3
+              "venda_mes": 633166.85,
+              "venda_ant": 1000825.12,
+              "delta_val": -367658.27,
+              "delta_pct": -36.7
             },
             {
               "linha": "NUTRICAO INFANTIL",
               "grupo": "NUTRICAO",
               "venda_mes": 1283042.49,
-              "venda_ant": 795486.34,
-              "delta_val": 487556.15,
-              "delta_pct": 61.3
+              "venda_ant": 1453969.96,
+              "delta_val": -170927.47,
+              "delta_pct": -11.8
             },
             {
-              "linha": "CONTRACEPTIVOS",
+              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
               "grupo": "MEDICAMENTOS",
-              "venda_mes": 1126916.54,
-              "venda_ant": 698688.25,
-              "delta_val": 428228.29,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 980657.32,
-              "venda_ant": 608007.54,
-              "delta_val": 372649.78,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 796900.36,
-              "venda_ant": 494078.22,
-              "delta_val": 302822.14,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
-              "grupo": "PERFUMARIA",
-              "venda_mes": 779231.61,
-              "venda_ant": 483123.6,
-              "delta_val": 296108.01,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "OTC- ANTIGRIPAIS/ANTITUSSIGENOS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 689453.44,
-              "venda_ant": 427461.13,
-              "delta_val": 261992.31,
-              "delta_pct": 61.3
+              "venda_mes": 601867.55,
+              "venda_ant": 757852.61,
+              "delta_val": -155985.06,
+              "delta_pct": -20.6
             },
             {
               "linha": "FORMULAS INFANTIS",
               "grupo": "NUTRICAO",
               "venda_mes": 677128.77,
-              "venda_ant": 419819.84,
-              "delta_val": 257308.93,
-              "delta_pct": 61.3
+              "venda_ant": 831593.55,
+              "delta_val": -154464.78,
+              "delta_pct": -18.6
+            },
+            {
+              "linha": "BAZAR – TERMICOS LINHA MATE",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 45994.51,
+              "venda_ant": 113751.17,
+              "delta_val": -67756.66,
+              "delta_pct": -59.6
+            },
+            {
+              "linha": "CUIDADO – LABIAL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 140155.21,
+              "venda_ant": 199490.24,
+              "delta_val": -59335.03,
+              "delta_pct": -29.7
+            },
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 54644.02,
+              "venda_ant": 113573.78,
+              "delta_val": -58929.76,
+              "delta_pct": -51.9
+            },
+            {
+              "linha": "PSICOESTIMULANTES",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 68446.42,
+              "venda_ant": 126061.08,
+              "delta_val": -57614.66,
+              "delta_pct": -45.7
+            },
+            {
+              "linha": "CONTROLE DE PESO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 26229.51,
+              "venda_ant": 70924.54,
+              "delta_val": -44695.03,
+              "delta_pct": -63.0
+            },
+            {
+              "linha": "MAQUIAGEM - GLOSS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 17857.31,
+              "venda_ant": 56150.66,
+              "delta_val": -38293.35,
+              "delta_pct": -68.2
+            }
+          ],
+          "top_evolucao_linhas_yoy": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 14338715.97,
+              "venda_ant": 8221775.76,
+              "delta_val": 6116940.21,
+              "delta_pct": 74.4
+            },
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 7428481.67,
+              "venda_ant": 4219863.63,
+              "delta_val": 3208618.04,
+              "delta_pct": 76.0
+            },
+            {
+              "linha": "LIVROS - ALBUM",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 1382488.06,
+              "venda_ant": 3596.08,
+              "delta_val": 1378891.98,
+              "delta_pct": 38344.3
+            },
+            {
+              "linha": "CONTRACEPTIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1126916.54,
+              "venda_ant": 756649.99,
+              "delta_val": 370266.55,
+              "delta_pct": 48.9
+            },
+            {
+              "linha": "PROMOCIONAL GENERICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 520900.98,
+              "venda_ant": 189219.77,
+              "delta_val": 331681.21,
+              "delta_pct": 175.3
+            },
+            {
+              "linha": "KIT - CAPILAR",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 553853.92,
+              "venda_ant": 237189.09,
+              "delta_val": 316664.83,
+              "delta_pct": 133.5
+            },
+            {
+              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 779231.61,
+              "venda_ant": 495846.76,
+              "delta_val": 283384.85,
+              "delta_pct": 57.2
+            },
+            {
+              "linha": "DESODORANTE - AERO MASCULINO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 411769.48,
+              "venda_ant": 144286.63,
+              "delta_val": 267482.85,
+              "delta_pct": 185.4
+            },
+            {
+              "linha": "OTC- ANTIGRIPAIS/ANTITUSSIGENOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 689453.44,
+              "venda_ant": 466977.18,
+              "delta_val": 222476.26,
+              "delta_pct": 47.6
+            },
+            {
+              "linha": "DESODORANTE - AERO FEMININO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 350200.85,
+              "venda_ant": 133077.28,
+              "delta_val": 217123.57,
+              "delta_pct": 163.2
             }
           ]
         }
@@ -9440,7 +10083,9 @@
           "ritmo_diario_atual": 1777572.48,
           "ritmo_diario_ant": 1822838.68,
           "ritmo_diario_cresc_pct": -2.48,
-          "yoy_cresc_pct": 43.8,
+          "yoy_cresc_pct": 55.2,
+          "venda_yoy_base": 34369645.73,
+          "yoy_mes_label": "Jul/25",
           "grupos": [
             {
               "grupo": "PERFUMARIA",
@@ -9681,148 +10326,229 @@
             {
               "grupo": "MEDICAMENTOS",
               "venda_mes": 31162109.14,
-              "venda_ant": 23143993.66,
-              "delta_val": 8018115.48,
-              "delta_pct": 34.6,
+              "venda_ant": 19320353.59,
+              "delta_val": 11841755.55,
+              "delta_pct": 61.3,
               "share_pct": 58.4,
               "status": "alta"
             },
             {
               "grupo": "PERFUMARIA",
               "venda_mes": 15525357.11,
-              "venda_ant": 11945287.05,
-              "delta_val": 3580070.06,
-              "delta_pct": 30.0,
+              "venda_ant": 10164699.3,
+              "delta_val": 5360657.81,
+              "delta_pct": 52.7,
               "share_pct": 29.1,
               "status": "alta"
             },
             {
               "grupo": "CONVENIENCIA",
               "venda_mes": 3266752.29,
-              "venda_ant": 1306515.77,
-              "delta_val": 1960236.52,
-              "delta_pct": 150.0,
+              "venda_ant": 2123739.39,
+              "delta_val": 1143012.9,
+              "delta_pct": 53.8,
               "share_pct": 6.1,
-              "status": "alta"
-            },
-            {
-              "grupo": "NUTRICAO",
-              "venda_mes": 1898330.42,
-              "venda_ant": 933225.55,
-              "delta_val": 965104.87,
-              "delta_pct": 103.4,
-              "share_pct": 3.6,
               "status": "alta"
             },
             {
               "grupo": "DERMO-COSMETICOS",
               "venda_mes": 1084605.65,
-              "venda_ant": 559935.33,
-              "delta_val": 524670.32,
-              "delta_pct": 93.7,
+              "venda_ant": 555039.38,
+              "delta_val": 529566.27,
+              "delta_pct": 95.4,
               "share_pct": 2.0,
               "status": "alta"
             },
             {
               "grupo": "DIVERSOS",
               "venda_mes": 387036.09,
-              "venda_ant": 186645.11,
-              "delta_val": 200390.98,
-              "delta_pct": 107.4,
+              "venda_ant": 264205.6,
+              "delta_val": 122830.49,
+              "delta_pct": 46.5,
               "share_pct": 0.7,
               "status": "alta"
             },
             {
               "grupo": "SERVICOS",
               "venda_mes": 2983.64,
-              "venda_ant": 746.58,
-              "delta_val": 2237.06,
-              "delta_pct": 299.6,
+              "venda_ant": 729.89,
+              "delta_val": 2253.75,
+              "delta_pct": 308.8,
               "share_pct": 0.0,
               "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 1898330.42,
+              "venda_ant": 1940878.58,
+              "delta_val": -42548.16,
+              "delta_pct": -2.2,
+              "share_pct": 3.6,
+              "status": "queda"
             }
           ],
-          "top_involucao_linhas_yoy": [],
-          "top_evolucao_linhas_yoy": [
+          "top_involucao_linhas_yoy": [
             {
-              "linha": "ANTIDIABETICOS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 13294964.58,
-              "venda_ant": 8242878.04,
-              "delta_val": 5052086.54,
-              "delta_pct": 61.3
+              "linha": "ELETRODOMESTICOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 441854.51,
+              "venda_ant": 738455.94,
+              "delta_val": -296601.43,
+              "delta_pct": -40.2
             },
             {
-              "linha": "FRALDAS INFANTIS",
-              "grupo": "PERFUMARIA",
-              "venda_mes": 6726272.6,
-              "venda_ant": 4170289.01,
-              "delta_val": 2555983.59,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
               "grupo": "MEDICAMENTOS",
-              "venda_mes": 1226789.4,
-              "venda_ant": 760609.43,
-              "delta_val": 466179.97,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "CONTRACEPTIVOS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 1166150.47,
-              "venda_ant": 723013.29,
-              "delta_val": 443137.18,
-              "delta_pct": 61.3
+              "venda_mes": 535549.42,
+              "venda_ant": 821927.97,
+              "delta_val": -286378.55,
+              "delta_pct": -34.8
             },
             {
               "linha": "NUTRICAO INFANTIL",
               "grupo": "NUTRICAO",
               "venda_mes": 1101343.57,
-              "venda_ant": 682833.01,
-              "delta_val": 418510.56,
-              "delta_pct": 61.3
+              "venda_ant": 1233125.28,
+              "delta_val": -131781.71,
+              "delta_pct": -10.7
             },
             {
-              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 861589.29,
-              "venda_ant": 534185.36,
-              "delta_val": 327403.93,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "linha": "FRALDAS INFANTIS ROUPA",
               "grupo": "PERFUMARIA",
-              "venda_mes": 762048.75,
-              "venda_ant": 472470.22,
-              "delta_val": 289578.53,
-              "delta_pct": 61.3
+              "venda_mes": 489698.86,
+              "venda_ant": 572900.11,
+              "delta_val": -83201.25,
+              "delta_pct": -14.5
             },
             {
-              "linha": "FORMULAS INFANTIS",
-              "grupo": "NUTRICAO",
-              "venda_mes": 689930.04,
-              "venda_ant": 427756.62,
-              "delta_val": 262173.42,
-              "delta_pct": 61.3
+              "linha": "PSICOESTIMULANTES",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 65431.45,
+              "venda_ant": 121536.9,
+              "delta_val": -56105.45,
+              "delta_pct": -46.2
+            },
+            {
+              "linha": "FRALDAS GERIATRICAS - ROUPA INTIMA FEM",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 15466.75,
+              "venda_ant": 49026.79,
+              "delta_val": -33560.04,
+              "delta_pct": -68.5
+            },
+            {
+              "linha": "MAQUIAGEM - GLOSS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 12490.82,
+              "venda_ant": 42749.14,
+              "delta_val": -30258.32,
+              "delta_pct": -70.8
+            },
+            {
+              "linha": "NUTRACEUTICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 8775.03,
+              "venda_ant": 34360.17,
+              "delta_val": -25585.14,
+              "delta_pct": -74.5
+            },
+            {
+              "linha": "CONTROLE DE PESO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 50855.05,
+              "venda_ant": 73278.13,
+              "delta_val": -22423.08,
+              "delta_pct": -30.6
+            },
+            {
+              "linha": "BEM ESTAR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 32249.21,
+              "venda_ant": 51605.64,
+              "delta_val": -19356.43,
+              "delta_pct": -37.5
+            }
+          ],
+          "top_evolucao_linhas_yoy": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 13294964.58,
+              "venda_ant": 6577919.04,
+              "delta_val": 6717045.54,
+              "delta_pct": 102.1
+            },
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 6726272.6,
+              "venda_ant": 4724866.61,
+              "delta_val": 2001405.99,
+              "delta_pct": 42.4
+            },
+            {
+              "linha": "LIVROS - ALBUM",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 400116.12,
+              "venda_ant": 2564.42,
+              "delta_val": 397551.7,
+              "delta_pct": 15502.6
+            },
+            {
+              "linha": "CONTRACEPTIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1166150.47,
+              "venda_ant": 776806.17,
+              "delta_val": 389344.3,
+              "delta_pct": 50.1
+            },
+            {
+              "linha": "PROMOCIONAL GENERICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 583527.02,
+              "venda_ant": 229971.88,
+              "delta_val": 353555.14,
+              "delta_pct": 153.7
+            },
+            {
+              "linha": "KIT - CAPILAR",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 511557.61,
+              "venda_ant": 209486.25,
+              "delta_val": 302071.36,
+              "delta_pct": 144.2
             },
             {
               "linha": "OTC- ANALGESICOS/ANTITERMICOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 645499.97,
-              "venda_ant": 400209.98,
-              "delta_val": 245289.99,
-              "delta_pct": 61.3
+              "venda_ant": 389845.73,
+              "delta_val": 255654.24,
+              "delta_pct": 65.6
             },
             {
-              "linha": "OTC- ANTIGRIPAIS/ANTITUSSIGENOS",
+              "linha": "LANCAMENTOS",
               "grupo": "MEDICAMENTOS",
-              "venda_mes": 601613.09,
-              "venda_ant": 373000.12,
-              "delta_val": 228612.97,
-              "delta_pct": 61.3
+              "venda_mes": 348116.78,
+              "venda_ant": 126426.23,
+              "delta_val": 221690.55,
+              "delta_pct": 175.4
+            },
+            {
+              "linha": "DERMO - HIDRATANTE FACIAL",
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 338806.52,
+              "venda_ant": 120947.43,
+              "delta_val": 217859.09,
+              "delta_pct": 180.1
+            },
+            {
+              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 762048.75,
+              "venda_ant": 546581.61,
+              "delta_val": 215467.14,
+              "delta_pct": 39.4
             }
           ]
         }
@@ -9864,7 +10590,9 @@
           "ritmo_diario_atual": 1864362.73,
           "ritmo_diario_ant": 1777572.48,
           "ritmo_diario_cresc_pct": 4.88,
-          "yoy_cresc_pct": 43.8,
+          "yoy_cresc_pct": 58.9,
+          "venda_yoy_base": 35204817.81,
+          "yoy_mes_label": "Ago/25",
           "grupos": [
             {
               "grupo": "MEDICAMENTOS",
@@ -10105,148 +10833,229 @@
             {
               "grupo": "MEDICAMENTOS",
               "venda_mes": 30834371.73,
-              "venda_ant": 24274002.72,
-              "delta_val": 6560369.01,
-              "delta_pct": 27.0,
+              "venda_ant": 20747149.53,
+              "delta_val": 10087222.2,
+              "delta_pct": 48.6,
               "share_pct": 55.1,
               "status": "alta"
             },
             {
               "grupo": "PERFUMARIA",
               "venda_mes": 18236523.97,
-              "venda_ant": 12528517.53,
-              "delta_val": 5708006.44,
-              "delta_pct": 45.6,
+              "venda_ant": 9861845.0,
+              "delta_val": 8374678.97,
+              "delta_pct": 84.9,
               "share_pct": 32.6,
               "status": "alta"
             },
             {
               "grupo": "CONVENIENCIA",
               "venda_mes": 3020247.82,
-              "venda_ant": 1370306.61,
-              "delta_val": 1649941.21,
-              "delta_pct": 120.4,
+              "venda_ant": 1897967.51,
+              "delta_val": 1122280.31,
+              "delta_pct": 59.1,
               "share_pct": 5.4,
-              "status": "alta"
-            },
-            {
-              "grupo": "NUTRICAO",
-              "venda_mes": 2264356.25,
-              "venda_ant": 978790.43,
-              "delta_val": 1285565.82,
-              "delta_pct": 131.3,
-              "share_pct": 4.0,
               "status": "alta"
             },
             {
               "grupo": "DERMO-COSMETICOS",
               "venda_mes": 1201704.24,
-              "venda_ant": 587274.26,
-              "delta_val": 614429.98,
-              "delta_pct": 104.6,
+              "venda_ant": 572995.3,
+              "delta_val": 628708.94,
+              "delta_pct": 109.7,
               "share_pct": 2.1,
+              "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 2264356.25,
+              "venda_ant": 1866127.59,
+              "delta_val": 398228.66,
+              "delta_pct": 21.3,
+              "share_pct": 4.0,
               "status": "alta"
             },
             {
               "grupo": "DIVERSOS",
               "venda_mes": 371547.82,
-              "venda_ant": 195758.09,
-              "delta_val": 175789.73,
-              "delta_pct": 89.8,
+              "venda_ant": 257385.55,
+              "delta_val": 114162.27,
+              "delta_pct": 44.4,
               "share_pct": 0.7,
               "status": "alta"
             },
             {
               "grupo": "SERVICOS",
               "venda_mes": 2130.02,
-              "venda_ant": 783.03,
-              "delta_val": 1346.99,
-              "delta_pct": 172.0,
+              "venda_ant": 1347.33,
+              "delta_val": 782.69,
+              "delta_pct": 58.1,
               "share_pct": 0.0,
               "status": "alta"
             }
           ],
-          "top_involucao_linhas_yoy": [],
-          "top_evolucao_linhas_yoy": [
+          "top_involucao_linhas_yoy": [
             {
-              "linha": "ANTIDIABETICOS",
+              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
               "grupo": "MEDICAMENTOS",
-              "venda_mes": 11820805.53,
-              "venda_ant": 7328899.43,
-              "delta_val": 4491906.1,
-              "delta_pct": 61.3
+              "venda_mes": 574965.89,
+              "venda_ant": 813828.85,
+              "delta_val": -238862.96,
+              "delta_pct": -29.4
             },
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 105112.5,
+              "venda_ant": 177990.4,
+              "delta_val": -72877.9,
+              "delta_pct": -40.9
+            },
+            {
+              "linha": "VACINAS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 7690.54,
+              "venda_ant": 76263.59,
+              "delta_val": -68573.05,
+              "delta_pct": -89.9
+            },
+            {
+              "linha": "BAZAR – TERMICOS COPOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 31881.41,
+              "venda_ant": 81636.96,
+              "delta_val": -49755.55,
+              "delta_pct": -60.9
+            },
+            {
+              "linha": "BAZAR – TERMICOS LINHA MATE",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 65619.78,
+              "venda_ant": 113910.22,
+              "delta_val": -48290.44,
+              "delta_pct": -42.4
+            },
+            {
+              "linha": "PSICOESTIMULANTES",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 73375.56,
+              "venda_ant": 116973.78,
+              "delta_val": -43598.22,
+              "delta_pct": -37.3
+            },
+            {
+              "linha": "FRALDAS GERIATRICAS - ROUPA INTIMA FEM",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 18416.54,
+              "venda_ant": 61593.34,
+              "delta_val": -43176.8,
+              "delta_pct": -70.1
+            },
+            {
+              "linha": "CONTROLE DE PESO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 55313.72,
+              "venda_ant": 81794.44,
+              "delta_val": -26480.72,
+              "delta_pct": -32.4
+            },
+            {
+              "linha": "MAQUIAGEM - KIT PRESENTE MAKE",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 1570.5,
+              "venda_ant": 20320.17,
+              "delta_val": -18749.67,
+              "delta_pct": -92.3
+            },
+            {
+              "linha": "NUTRACEUTICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 19279.22,
+              "venda_ant": 37638.18,
+              "delta_val": -18358.96,
+              "delta_pct": -48.8
+            }
+          ],
+          "top_evolucao_linhas_yoy": [
             {
               "linha": "FRALDAS INFANTIS",
               "grupo": "PERFUMARIA",
               "venda_mes": 8122876.21,
-              "venda_ant": 5036183.25,
-              "delta_val": 3086692.96,
-              "delta_pct": 61.3
+              "venda_ant": 4425091.66,
+              "delta_val": 3697784.55,
+              "delta_pct": 83.6
+            },
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 11820805.53,
+              "venda_ant": 8274481.24,
+              "delta_val": 3546324.29,
+              "delta_pct": 42.9
             },
             {
               "linha": "CONTRACEPTIVOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 1514489.13,
-              "venda_ant": 938983.26,
-              "delta_val": 575505.87,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "NUTRICAO INFANTIL",
-              "grupo": "NUTRICAO",
-              "venda_mes": 1437639.07,
-              "venda_ant": 891336.22,
-              "delta_val": 546302.85,
-              "delta_pct": 61.3
+              "venda_ant": 821179.2,
+              "delta_val": 693309.93,
+              "delta_pct": 84.4
             },
             {
               "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 1433218.38,
-              "venda_ant": 888595.4,
-              "delta_val": 544622.98,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 967917.23,
-              "venda_ant": 600108.68,
-              "delta_val": 367808.55,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
-              "grupo": "PERFUMARIA",
-              "venda_mes": 803325.8,
-              "venda_ant": 498062.0,
-              "delta_val": 305263.8,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "FORMULAS INFANTIS",
-              "grupo": "NUTRICAO",
-              "venda_mes": 719400.94,
-              "venda_ant": 446028.58,
-              "delta_val": 273372.36,
-              "delta_pct": 61.3
+              "venda_ant": 909195.18,
+              "delta_val": 524023.2,
+              "delta_pct": 57.6
             },
             {
               "linha": "PROMOCIONAL GENERICOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 665935.59,
-              "venda_ant": 412880.07,
-              "delta_val": 253055.52,
-              "delta_pct": 61.3
+              "venda_ant": 242322.63,
+              "delta_val": 423612.96,
+              "delta_pct": 174.8
+            },
+            {
+              "linha": "KIT - CAPILAR",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 577711.08,
+              "venda_ant": 214143.24,
+              "delta_val": 363567.84,
+              "delta_pct": 169.8
+            },
+            {
+              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 803325.8,
+              "venda_ant": 481480.01,
+              "delta_val": 321845.79,
+              "delta_pct": 66.8
             },
             {
               "linha": "OTC- ANALGESICOS/ANTITERMICOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 623775.29,
-              "venda_ant": 386740.68,
-              "delta_val": 237034.61,
-              "delta_pct": 61.3
+              "venda_ant": 366408.19,
+              "delta_val": 257367.1,
+              "delta_pct": 70.2
+            },
+            {
+              "linha": "ANTILIPEMICOS / REDUTORES COLESTEROL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 466293.41,
+              "venda_ant": 214254.06,
+              "delta_val": 252039.35,
+              "delta_pct": 117.6
+            },
+            {
+              "linha": "LANCAMENTOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 358333.39,
+              "venda_ant": 119116.81,
+              "delta_val": 239216.58,
+              "delta_pct": 200.8
             }
           ]
         }
@@ -10288,7 +11097,9 @@
           "ritmo_diario_atual": 1945027.89,
           "ritmo_diario_ant": 1804222.0,
           "ritmo_diario_cresc_pct": 7.8,
-          "yoy_cresc_pct": 60.97,
+          "yoy_cresc_pct": 61.0,
+          "venda_yoy_base": 20541262.35,
+          "yoy_mes_label": "Set/25 (D-1 17)",
           "grupos": [
             {
               "grupo": "CONVENIENCIA",
@@ -10539,157 +11350,238 @@
             {
               "grupo": "MEDICAMENTOS",
               "venda_mes": 20232130.47,
-              "venda_ant": 12735582.66,
-              "delta_val": 7496547.81,
-              "delta_pct": 58.9,
+              "venda_ant": 12706165.23,
+              "delta_val": 7525965.24,
+              "delta_pct": 59.2,
               "share_pct": 61.2,
               "status": "alta"
             },
             {
               "grupo": "PERFUMARIA",
               "venda_mes": 11766522.11,
-              "venda_ant": 6573203.95,
-              "delta_val": 5193318.16,
-              "delta_pct": 79.0,
+              "venda_ant": 5661423.95,
+              "delta_val": 6105098.16,
+              "delta_pct": 107.8,
               "share_pct": 35.6,
               "status": "alta"
             },
             {
               "grupo": "NUTRICAO",
               "venda_mes": 1497376.73,
-              "venda_ant": 513531.56,
-              "delta_val": 983845.17,
-              "delta_pct": 191.6,
+              "venda_ant": 990751.12,
+              "delta_val": 506625.61,
+              "delta_pct": 51.1,
               "share_pct": 4.5,
-              "status": "alta"
-            },
-            {
-              "grupo": "CONVENIENCIA",
-              "venda_mes": 1394926.91,
-              "venda_ant": 718944.18,
-              "delta_val": 675982.73,
-              "delta_pct": 94.0,
-              "share_pct": 4.2,
               "status": "alta"
             },
             {
               "grupo": "DERMO-COSMETICOS",
               "venda_mes": 697252.96,
-              "venda_ant": 308118.94,
-              "delta_val": 389134.02,
-              "delta_pct": 126.3,
+              "venda_ant": 327309.56,
+              "delta_val": 369943.4,
+              "delta_pct": 113.0,
               "share_pct": 2.1,
+              "status": "alta"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 1394926.91,
+              "venda_ant": 1069763.05,
+              "delta_val": 325163.86,
+              "delta_pct": 30.4,
+              "share_pct": 4.2,
               "status": "alta"
             },
             {
               "grupo": "DIVERSOS",
               "venda_mes": 238898.43,
-              "venda_ant": 102706.31,
-              "delta_val": 136192.12,
-              "delta_pct": 132.6,
+              "venda_ant": 140286.82,
+              "delta_val": 98611.61,
+              "delta_pct": 70.3,
               "share_pct": 0.7,
-              "status": "alta"
-            },
-            {
-              "grupo": "SERVICOS",
-              "venda_mes": 786.09,
-              "venda_ant": 410.83,
-              "delta_val": 375.26,
-              "delta_pct": 91.3,
-              "share_pct": 0.0,
               "status": "alta"
             },
             {
               "grupo": "MANIPULADOS",
               "venda_mes": 42.9,
-              "venda_ant": 205.41,
-              "delta_val": -162.51,
-              "delta_pct": -79.1,
+              "venda_ant": 0.0,
+              "delta_val": 42.9,
+              "delta_pct": 100.0,
               "share_pct": 0.0,
-              "status": "queda"
+              "status": "alta"
+            },
+            {
+              "grupo": "SERVICOS",
+              "venda_mes": 786.09,
+              "venda_ant": 765.88,
+              "delta_val": 20.21,
+              "delta_pct": 2.6,
+              "share_pct": 0.0,
+              "status": "alta"
             }
           ],
-          "top_involucao_linhas_yoy": [],
+          "top_involucao_linhas_yoy": [
+            {
+              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 312961.01,
+              "venda_ant": 473428.3,
+              "delta_val": -160467.29,
+              "delta_pct": -33.9
+            },
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 36197.43,
+              "venda_ant": 79622.59,
+              "delta_val": -43425.16,
+              "delta_pct": -54.5
+            },
+            {
+              "linha": "VACINAS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 8881.67,
+              "venda_ant": 45889.58,
+              "delta_val": -37007.91,
+              "delta_pct": -80.6
+            },
+            {
+              "linha": "BAZAR – TERMICOS COPOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 7173.96,
+              "venda_ant": 36524.9,
+              "delta_val": -29350.94,
+              "delta_pct": -80.4
+            },
+            {
+              "linha": "ANTI-INFLAMATORIO INTESTINAL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 22156.3,
+              "venda_ant": 44773.69,
+              "delta_val": -22617.39,
+              "delta_pct": -50.5
+            },
+            {
+              "linha": "CONTROLE DE PESO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 33574.07,
+              "venda_ant": 56153.74,
+              "delta_val": -22579.67,
+              "delta_pct": -40.2
+            },
+            {
+              "linha": "NUTRACEUTICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 5834.34,
+              "venda_ant": 26366.69,
+              "delta_val": -20532.35,
+              "delta_pct": -77.9
+            },
+            {
+              "linha": "BAZAR – TERMICOS LINHA MATE",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 32735.41,
+              "venda_ant": 52070.88,
+              "delta_val": -19335.47,
+              "delta_pct": -37.1
+            },
+            {
+              "linha": "PSICOESTIMULANTES",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 47077.77,
+              "venda_ant": 64774.88,
+              "delta_val": -17697.11,
+              "delta_pct": -27.3
+            },
+            {
+              "linha": "MAQUIAGEM - BASE",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 28659.46,
+              "venda_ant": 44741.08,
+              "delta_val": -16081.62,
+              "delta_pct": -35.9
+            }
+          ],
           "top_evolucao_linhas_yoy": [
             {
               "linha": "ANTIDIABETICOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 8669694.4,
-              "venda_ant": 5375210.53,
-              "delta_val": 3294483.87,
-              "delta_pct": 61.3
+              "venda_ant": 5474445.55,
+              "delta_val": 3195248.85,
+              "delta_pct": 58.4
             },
             {
               "linha": "FRALDAS INFANTIS",
               "grupo": "PERFUMARIA",
               "venda_mes": 5046474.48,
-              "venda_ant": 3128814.18,
-              "delta_val": 1917660.3,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "NUTRICAO INFANTIL",
-              "grupo": "NUTRICAO",
-              "venda_mes": 1044385.8,
-              "venda_ant": 647519.2,
-              "delta_val": 396866.6,
-              "delta_pct": 61.3
-            },
-            {
-              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
-              "grupo": "MEDICAMENTOS",
-              "venda_mes": 910510.74,
-              "venda_ant": 564516.66,
-              "delta_val": 345994.08,
-              "delta_pct": 61.3
+              "venda_ant": 2423825.37,
+              "delta_val": 2622649.11,
+              "delta_pct": 108.2
             },
             {
               "linha": "CONTRACEPTIVOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 891413.59,
-              "venda_ant": 552676.43,
-              "delta_val": 338737.16,
-              "delta_pct": 61.3
+              "venda_ant": 442497.28,
+              "delta_val": 448916.31,
+              "delta_pct": 101.5
             },
             {
-              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
+              "linha": "NUTRICAO INFANTIL",
               "grupo": "NUTRICAO",
-              "venda_mes": 655375.69,
-              "venda_ant": 406332.93,
-              "delta_val": 249042.76,
-              "delta_pct": 61.3
+              "venda_mes": 1044385.8,
+              "venda_ant": 629666.66,
+              "delta_val": 414719.14,
+              "delta_pct": 65.9
             },
             {
-              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
-              "grupo": "PERFUMARIA",
-              "venda_mes": 512966.25,
-              "venda_ant": 318039.08,
-              "delta_val": 194927.17,
-              "delta_pct": 61.3
+              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 910510.74,
+              "venda_ant": 501223.38,
+              "delta_val": 409287.36,
+              "delta_pct": 81.7
             },
             {
               "linha": "KIT - CAPILAR",
               "grupo": "PERFUMARIA",
               "venda_mes": 431360.96,
-              "venda_ant": 267443.8,
-              "delta_val": 163917.16,
-              "delta_pct": 61.3
+              "venda_ant": 163178.78,
+              "delta_val": 268182.18,
+              "delta_pct": 164.3
             },
             {
               "linha": "PROMOCIONAL GENERICOS",
               "grupo": "MEDICAMENTOS",
               "venda_mes": 406679.66,
-              "venda_ant": 252141.39,
-              "delta_val": 154538.27,
-              "delta_pct": 61.3
+              "venda_ant": 152281.25,
+              "delta_val": 254398.41,
+              "delta_pct": 167.1
             },
             {
-              "linha": "OTC- ANALGESICOS/ANTITERMICOS",
+              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 512966.25,
+              "venda_ant": 272071.0,
+              "delta_val": 240895.25,
+              "delta_pct": 88.5
+            },
+            {
+              "linha": "CAPILAR - SHAMPOO",
               "grupo": "MEDICAMENTOS",
-              "venda_mes": 375764.8,
-              "venda_ant": 232974.18,
-              "delta_val": 142790.62,
-              "delta_pct": 61.3
+              "venda_mes": 302713.22,
+              "venda_ant": 71224.47,
+              "delta_val": 231488.75,
+              "delta_pct": 325.0
+            },
+            {
+              "linha": "CAPILAR - CONDICIONADOR",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 248942.69,
+              "venda_ant": 49722.31,
+              "delta_val": 199220.38,
+              "delta_pct": 400.7
             }
           ]
         }

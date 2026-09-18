@@ -3634,12 +3634,17 @@ def build():
 
       }} else {{
         // Modo YoY
-        if (subTitle) subTitle.textContent = 'Comparativo estrutural de evolução anual (YoY) em relação ao mesmo período de 2025.';
+        const yoyPct = (diagData && diagData.yoy_cresc_pct != null) ? diagData.yoy_cresc_pct : 0;
+        const yoySign = yoyPct >= 0 ? '+' : '';
+        const yoyMesLbl = (diagData && diagData.yoy_mes_label) ? diagData.yoy_mes_label : '2025';
+        const yoyBaseVal = (diagData && diagData.venda_yoy_base) ? diagData.venda_yoy_base : 0;
+
+        if (subTitle) subTitle.textContent = `Comparativo estrutural de evolução anual (YoY) em relação a ${{yoyMesLbl}}.`;
         if (noticeBox) noticeBox.style.display = 'flex';
-        if (noticeText) noticeText.innerHTML = `<strong>Evolução Anual (YoY):</strong> Comparação direta com o mesmo período de 2025 (+60,9% de expansão digital) para mensurar ganho de escala e tração por categoria.`;
+        if (noticeText) noticeText.innerHTML = `<strong>Evolução Anual (YoY):</strong> Comparação direta com ${{yoyMesLbl}} (${{yoySign}}${{yoyPct.toFixed(1).replace('.', ',')}}% de expansão digital) para mensurar ganho de escala e tração por categoria e linha.`;
         if (metric4Lbl) metric4Lbl.textContent = 'Evolução YoY';
-        setEl('diagMoM', '+60,9% vs Set/25', 'val-positive');
-        setEl('diagYoY', 'Base 2025: R$ 20,54 Mi', '');
+        setEl('diagMoM', `${{yoySign}}${{yoyPct.toFixed(1).replace('.', ',')}}% vs ${{yoyMesLbl}}`, yoyPct >= 0 ? 'val-positive' : 'val-negative');
+        setEl('diagYoY', `Base ${{yoyMesLbl}}: ${{fmtCurrency(yoyBaseVal)}}`, '');
 
         if (diagCol1Title) diagCol1Title.textContent = 'Evolução Anual por Categoria (YoY)';
         if (diagCol1Desc) diagCol1Desc.textContent = 'Avanço nominal e percentual sobre o mesmo período de 2025';
@@ -3711,7 +3716,7 @@ def build():
               </div>
               <div class="line-delta-pill">
                 <span class="val ${{cls}}">${{fmtGapVal(l.delta_val)}}</span>
-                <span class="pct ${{cls}}">${{arrow}} ${{Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}}%</span>
+                <span class="pct ${{cls}}">${{arrow}} ${{isDrop ? '-' : '+'}}${{Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}}%</span>
               </div>
             </div>`;
           }}).join('');
@@ -3743,7 +3748,7 @@ def build():
               </div>
               <div class="line-delta-pill">
                 <span class="val ${{cls}}">${{fmtGapVal(l.delta_val)}}</span>
-                <span class="pct ${{cls}}">${{arrow}} +${{Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}}%</span>
+                <span class="pct ${{cls}}">${{arrow}} ${{isDrop ? '-' : '+'}}${{Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}}%</span>
               </div>
             </div>`;
           }}).join('');

@@ -541,22 +541,40 @@ def main():
     meses_canais['2026-09']['televendas'] = kpis_mtd['televendas']['venda']
     meses_canais['2026-09']['figital'] = kpis_mtd['figital']['venda']
 
-    # Agrupar grupos por mês
+    # Agrupar grupos por mês (2025 e 2026)
     meses_grupos = defaultdict(lambda: defaultdict(float))
     for r in grupos_mes_raw:
         if len(r) < 3: continue
         m_str, g_str, v_val = str(r[0]).strip(), str(r[1]).strip(), float(r[2] or 0)
-        if m_str.startswith('2026-'):
+        if m_str.startswith('2025-') or m_str.startswith('2026-'):
             meses_grupos[m_str][g_str] += v_val
 
-    # Agrupar linhas por mês
+    # Agrupar linhas por mês (2025 e 2026)
     meses_linhas = defaultdict(lambda: defaultdict(lambda: {'grupo': '', 'venda': 0.0}))
     for r in linhas_mes_raw:
         if len(r) < 4: continue
         m_str, g_str, l_str, v_val = str(r[0]).strip(), str(r[1]).strip(), str(r[2]).strip(), float(r[3] or 0)
-        if m_str.startswith('2026-'):
+        if m_str.startswith('2025-') or m_str.startswith('2026-'):
             meses_linhas[m_str][l_str]['grupo'] = g_str
             meses_linhas[m_str][l_str]['venda'] += v_val
+
+    # Agrupar canais 2025 para totalização YoY
+    meses_canais_2025 = defaultdict(lambda: {'app': 0.0, 'site': 0.0, 'marketplace': 0.0, 'figital': 0.0, 'televendas': 0.0})
+    for r in canais_mes_raw:
+        if len(r) < 3: continue
+        m_str, c_raw, v_val = str(r[0]).strip(), str(r[1]).strip(), float(r[2] or 0)
+        if not m_str.startswith('2025-'): continue
+        c_up = c_raw.upper()
+        if c_up in ['APP', 'APP TELE ENTREGA']:
+            meses_canais_2025[m_str]['app'] += v_val
+        elif c_up in ['SITE', 'SITE TELE ENTREGA']:
+            meses_canais_2025[m_str]['site'] += v_val
+        elif c_up in ['IFOOD', 'RAPPI', 'MERCADO LIVRE', 'E_COMMERCE', 'E-COMMERCE']:
+            meses_canais_2025[m_str]['marketplace'] += v_val
+        elif c_up in ['FIGITAL', 'PHYGITAL']:
+            meses_canais_2025[m_str]['figital'] += v_val
+        elif c_up in ['TELEVENDAS']:
+            meses_canais_2025[m_str]['televendas'] += v_val
 
     # Montagem da série mensal 2026
     month_keys = sorted([k for k in meses_canais.keys() if k <= '2026-09'])
@@ -626,12 +644,25 @@ def main():
             run_rate_cur = v_dig / max_dia
             run_rate_prev = v_dig_prev / 31.0
             mom_dig_pct = round(((run_rate_cur / run_rate_prev) - 1.0) * 100, 2)
-            yoy_dig_pct = 60.97  # Base auditada Qlik canais_dia Set/26 vs Set/25 (17 dias: 33.06M vs 20.54M)
         else:
             run_rate_cur = v_dig / 30.0
             run_rate_prev = v_dig_prev / 30.0
             mom_dig_pct = round(((v_dig / v_dig_prev) - 1.0) * 100, 2) if (meses_detalhe and v_dig_prev > 0) else 0.0
-            yoy_dig_pct = 43.8
+
+        # Base YoY 2025 Real
+        yoy_k = f"2025-{m_k[5:7]}"
+        yoy_prorata = (max_dia / 30.0) if is_cur else 1.0
+        c_25 = meses_canais_2025[yoy_k]
+        v_dig_25_raw = c_25['app'] + c_25['site'] + c_25['marketplace']
+        if v_dig_25_raw == 0 and yoy_k in meses_grupos:
+            v_dig_25_raw = sum(meses_grupos[yoy_k].values())
+
+        if is_cur:
+            v_dig_25 = 20541262.35  # Base auditada Qlik para 17 dias de Set/25
+        else:
+            v_dig_25 = v_dig_25_raw * yoy_prorata
+
+        yoy_dig_pct = round(((v_dig / v_dig_25) - 1.0) * 100, 1) if v_dig_25 > 0 else 0.0
 
         # Diagnóstico de Grupos & Linhas
         diagnostico_m = {
@@ -641,6 +672,8 @@ def main():
             "ritmo_diario_ant": round(run_rate_prev, 2),
             "ritmo_diario_cresc_pct": mom_dig_pct,
             "yoy_cresc_pct": yoy_dig_pct,
+            "venda_yoy_base": round(v_dig_25, 2),
+            "yoy_mes_label": month_names[m_k]['curto'].replace('/26', '/25'),
             "grupos": [],
             "top_involucao_linhas": [],
             "top_evolucao_linhas": [],
@@ -706,61 +739,73 @@ def main():
             l_evol = sorted([it for it in l_list if it['delta_val'] > 0], key=lambda x: x['delta_val'], reverse=True)
             diagnostico_m["top_evolucao_linhas"] = l_evol[:10]
 
-            # 3. Comparativo YoY (Ano Atual vs Ano Anterior - Set/26 vs Set/25)
-            # Pesos históricos da base 2025 (Setembro/2025: 20.54M total)
-            yoy_shares = {
-                'MEDICAMENTOS': 0.620,
-                'PERFUMARIA': 0.320,
-                'CONVENIENCIA': 0.035,
-                'NUTRICAO': 0.025,
-                'DERMO-COSMETICOS': 0.015,
-                'DIVERSOS': 0.005,
-                'SERVICOS': 0.00002,
-                'MANIPULADOS': 0.00001
-            }
-            tot_yoy_base = 20541262.35 if is_cur else v_dig * 0.70
+        # 3. Comparativo YoY (100% Real do Qlik - Ano Atual vs Ano Anterior)
+        if yoy_k in meses_grupos and len(meses_grupos[yoy_k]) > 0:
+            all_g_yoy = sorted(set(meses_grupos[m_k].keys()) | set(meses_grupos[yoy_k].keys()))
             g_list_yoy = []
-            for g_item in g_list:
-                g_n = g_item['grupo']
-                sh = yoy_shares.get(g_n, 0.02)
-                v_yoy_est = tot_yoy_base * sh
-                d_yoy_val = g_item['venda_mes'] - v_yoy_est
-                d_yoy_pct = round(((d_yoy_val / v_yoy_est) * 100), 1) if v_yoy_est > 0 else 0.0
-                g_list_yoy.append({
-                    "grupo": g_n,
-                    "venda_mes": g_item['venda_mes'],
-                    "venda_ant": round(v_yoy_est, 2),
-                    "delta_val": round(d_yoy_val, 2),
-                    "delta_pct": d_yoy_pct,
-                    "share_pct": g_item['share_pct'],
-                    "status": "alta" if d_yoy_val >= 0 else "queda"
-                })
-            # Em YoY, ordenar por maior crescimento
+            for g_n in all_g_yoy:
+                vg_cur = meses_grupos[m_k].get(g_n, 0.0)
+                vg_prev_raw = meses_grupos[yoy_k].get(g_n, 0.0)
+                vg_prev = vg_prev_raw * yoy_prorata
+                if vg_cur > 0 or vg_prev > 0:
+                    d_yoy_val = vg_cur - vg_prev
+                    d_yoy_pct = round(((d_yoy_val / vg_prev) * 100), 1) if vg_prev > 0 else (100.0 if vg_cur > 0 else 0.0)
+                    share_g = round((vg_cur / v_dig * 100), 1) if v_dig > 0 else 0.0
+                    g_list_yoy.append({
+                        "grupo": g_n,
+                        "venda_mes": round(vg_cur, 2),
+                        "venda_ant": round(vg_prev, 2),
+                        "delta_val": round(d_yoy_val, 2),
+                        "delta_pct": d_yoy_pct,
+                        "share_pct": share_g,
+                        "status": "alta" if d_yoy_val >= 0 else "queda"
+                    })
+            # Ordenar grupos por maior crescimento nominal
             g_list_yoy.sort(key=lambda x: x['delta_val'], reverse=True)
             diagnostico_m["grupos_yoy"] = g_list_yoy
 
-            # Linhas YoY
-            l_list_yoy_evol = []
+        if yoy_k in meses_linhas and len(meses_linhas[yoy_k]) > 0:
+            all_l_yoy = set(meses_linhas[m_k].keys()) | set(meses_linhas[yoy_k].keys())
             l_list_yoy_inv = []
-            for l_item in l_list:
-                sh_l = 0.62  # Base 2025 era ~62% do tamanho de 2026
-                v_l_yoy = l_item['venda_mes'] * sh_l
-                d_l_val = l_item['venda_mes'] - v_l_yoy
-                d_l_pct = round(((d_l_val / v_l_yoy) * 100), 1) if v_l_yoy > 0 else 0.0
-                l_obj = {
-                    "linha": l_item['linha'],
-                    "grupo": l_item['grupo'],
-                    "venda_mes": l_item['venda_mes'],
-                    "venda_ant": round(v_l_yoy, 2),
-                    "delta_val": round(d_l_val, 2),
-                    "delta_pct": d_l_pct
-                }
-                if d_l_val >= 0:
-                    l_list_yoy_evol.append(l_obj)
-                else:
-                    l_list_yoy_inv.append(l_obj)
-            diagnostico_m["top_evolucao_linhas_yoy"] = sorted(l_list_yoy_evol, key=lambda x: x['delta_val'], reverse=True)[:10]
-            diagnostico_m["top_involucao_linhas_yoy"] = sorted(l_list_yoy_inv, key=lambda x: x['delta_val'])[:10]
+            l_list_yoy_evol = []
+            for l_name in all_l_yoy:
+                vl_cur = meses_linhas[m_k].get(l_name, {}).get('venda', 0.0)
+                vl_prev_raw = meses_linhas[yoy_k].get(l_name, {}).get('venda', 0.0)
+                vl_prev = vl_prev_raw * yoy_prorata
+                grp_name = meses_linhas[m_k].get(l_name, {}).get('grupo', '') or meses_linhas[yoy_k].get(l_name, {}).get('grupo', '')
+                dl_val = vl_cur - vl_prev
+                dl_pct = round(((dl_val / vl_prev) * 100), 1) if vl_prev > 0 else (100.0 if vl_cur > 0 else 0.0)
+                
+                # Filtrar movimentos relevantes (>= R$ 1.000 ou vendas relevantes)
+                if abs(dl_val) >= 1000.0 or vl_cur >= 10000.0 or vl_prev >= 10000.0:
+                    l_obj = {
+                        "linha": l_name,
+                        "grupo": grp_name,
+                        "venda_mes": round(vl_cur, 2),
+                        "venda_ant": round(vl_prev, 2),
+                        "delta_val": round(dl_val, 2),
+                        "delta_pct": dl_pct
+                    }
+                    if dl_val < 0:
+                        l_list_yoy_inv.append(l_obj)
+                    else:
+                        l_list_yoy_evol.append(l_obj)
+            
+            # Ordenar involuções pela maior queda nominal (mais negativo no topo)
+            l_list_yoy_inv.sort(key=lambda x: x['delta_val'])
+            # Se houver menos de 10 linhas em queda nominal estrita, complementa com as de menor tração
+            if len(l_list_yoy_inv) < 10:
+                slow_growers = sorted(l_list_yoy_evol, key=lambda x: x['delta_pct'])
+                for item in slow_growers:
+                    if len(l_list_yoy_inv) >= 10: break
+                    if item not in l_list_yoy_inv:
+                        l_list_yoy_inv.append(item)
+            
+            # Ordenar evoluções pelo maior ganho nominal (maior expansão)
+            l_list_yoy_evol.sort(key=lambda x: x['delta_val'], reverse=True)
+
+            diagnostico_m["top_involucao_linhas_yoy"] = l_list_yoy_inv[:10]
+            diagnostico_m["top_evolucao_linhas_yoy"] = l_list_yoy_evol[:10]
 
         mes_obj = {
             "key": m_k,
