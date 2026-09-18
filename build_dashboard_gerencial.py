@@ -181,6 +181,9 @@ def build():
     dias_restantes = 30 - max_dia
     data_corte = dash_data.get('data_corte', f'01 a {max_dia:02d}/09/2026')
     atualizacao = dash_data.get('atualizacao', time.strftime('%Y-%m-%d %H:%M:%S'))
+    visao_anual = dash_data.get('visao_anual', {})
+    ytd = visao_anual.get('ytd', {})
+    meses_anual = visao_anual.get('meses', [])
 
     # Pré-geração dos cards da Visão 4 com IDs para atualização dinâmica do Figital e Período
     proj_cards_list = []
@@ -235,6 +238,23 @@ def build():
     site_table_rows = render_channel_table_rows('site', kpis)
     app_table_rows = render_channel_table_rows('app', kpis)
     mkp_table_rows = render_channel_table_rows('marketplace', kpis)
+
+    # Precomputações YTD
+    ytd_dig = ytd.get('digitais', {})
+    ytd_ecom = ytd.get('ecommerce_sem_figital', {})
+    ytd_dig_real_str = fmt_curr(ytd_dig.get('real', 0))
+    ytd_dig_meta_str = fmt_curr(ytd_dig.get('meta', 0))
+    ytd_dig_desvio_val_str = fmt_gap(ytd_dig.get('desvio_val', 0))
+    ytd_dig_desvio_pct_str = fmt_pct(ytd_dig.get('desvio_pct', 0))
+    ytd_dig_ating_str = f"{ytd_dig.get('atingimento_pct', 100.0):.1f}% Meta"
+    ytd_dig_desv_cls = 'val-positive' if ytd_dig.get('desvio_val', 0) >= 0 else 'val-negative'
+
+    ytd_ecom_real_str = fmt_curr(ytd_ecom.get('real', 0))
+    ytd_ecom_meta_str = fmt_curr(ytd_ecom.get('meta', 0))
+    ytd_ecom_desvio_val_str = fmt_gap(ytd_ecom.get('desvio_val', 0))
+    ytd_ecom_desvio_pct_str = fmt_pct(ytd_ecom.get('desvio_pct', 0))
+    ytd_ecom_ating_str = f"{ytd_ecom.get('atingimento_pct', 100.0):.1f}% Meta"
+    ytd_ecom_desv_cls = 'val-positive' if ytd_ecom.get('desvio_val', 0) >= 0 else 'val-negative'
 
     html_content = f"""<!DOCTYPE html>
 <html lang="pt-BR" data-theme="light">
@@ -1249,11 +1269,402 @@ def build():
       margin-top: 8px;
     }}
 
-    .progress-fill {{
-      height: 100%;
+    /* ==========================================================================
+       VISÃO ANUAL 2026 & DIAGNÓSTICO MENSAL DE INVOLUÇÕES (APPLE DESIGN)
+       ========================================================================== */
+    .annual-banner-card {{
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-card);
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      flex-wrap: wrap;
+      gap: 16px;
+    }}
+
+    .annual-banner-card::before {{
+      content: "";
+      position: absolute;
+      top: 0; left: 0; bottom: 0; width: 5px;
       background: var(--fsj-blue-gradient);
+    }}
+
+    .banner-badge {{
+      display: inline-flex;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 3px 10px;
       border-radius: var(--radius-pill);
-      transition: width 0.8s ease;
+      background: rgba(0, 119, 255, 0.1);
+      color: var(--fsj-blue-light);
+      margin-bottom: 6px;
+    }}
+
+    .annual-banner-content h2 {{
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }}
+
+    .annual-banner-content p {{
+      font-size: 13px;
+      color: var(--text-secondary);
+      max-width: 820px;
+      line-height: 1.5;
+    }}
+
+    .banner-action-btn {{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--fsj-blue-gradient);
+      color: #ffffff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 86, 179, 0.25);
+      transition: var(--transition);
+    }}
+
+    .banner-action-btn:hover {{
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 86, 179, 0.35);
+    }}
+
+    /* Pílulas de Seleção de Mês */
+    .month-selector-bar {{
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-card);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }}
+
+    .month-selector-title {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }}
+
+    .month-pills-list {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }}
+
+    .month-pill {{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }}
+
+    .month-pill:hover {{
+      border-color: var(--fsj-blue-light);
+      background: var(--bg-card-hover);
+      transform: translateY(-1px);
+    }}
+
+    .month-pill.active {{
+      background: var(--fsj-blue-gradient);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(0, 119, 255, 0.35);
+    }}
+
+    .pill-badge {{
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 800;
+    }}
+
+    .month-pill.active .pill-badge {{
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }}
+
+    .pill-badge.badge-success {{ background: var(--badge-green-bg); color: var(--badge-green-text); }}
+    .pill-badge.badge-warning {{ background: #fef3c7; color: #b45309; }}
+    .pill-badge.badge-danger {{ background: var(--badge-red-bg); color: var(--badge-red-text); }}
+
+    /* Painel de Diagnóstico Executivo */
+    .diagnostic-panel-container {{
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      animation: fadeIn 0.3s ease;
+    }}
+
+    .diag-header-card {{
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-card);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }}
+
+    .diag-title-box h3 {{
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 6px 0 2px 0;
+    }}
+
+    .diag-title-box p {{
+      font-size: 12px;
+      color: var(--text-secondary);
+    }}
+
+    .diag-kpi-summary {{
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }}
+
+    .diag-kpi-item {{
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }}
+
+    .diag-kpi-item .lbl {{
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }}
+
+    .diag-kpi-item .val {{
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }}
+
+    .btn-jump-diario {{
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      color: var(--fsj-blue);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: var(--transition);
+    }}
+
+    .btn-jump-diario:hover {{
+      background: var(--fsj-blue);
+      color: #ffffff;
+      border-color: var(--fsj-blue);
+    }}
+
+    /* Grid de 3 Colunas de Diagnóstico */
+    .diag-grid {{
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr 0.95fr;
+      gap: 18px;
+    }}
+
+    @media (max-width: 1280px) {{
+      .diag-grid {{ grid-template-columns: 1fr; }}
+    }}
+
+    .diag-col-card {{
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-card);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }}
+
+    .diag-col-card.alert-border {{
+      border-top: 3.5px solid #ef4444;
+    }}
+
+    .diag-col-card.success-border {{
+      border-top: 3.5px solid #10b981;
+    }}
+
+    .diag-col-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-card);
+    }}
+
+    .diag-col-header h4 {{
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }}
+
+    .diag-col-header p {{
+      font-size: 11.5px;
+      color: var(--text-secondary);
+    }}
+
+    .badge-count {{
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-card-subtle);
+      color: var(--text-secondary);
+    }}
+
+    .badge-count.badge-danger {{
+      background: var(--badge-red-bg);
+      color: var(--badge-red-text);
+    }}
+
+    .badge-count.badge-success {{
+      background: var(--badge-green-bg);
+      color: var(--badge-green-text);
+    }}
+
+    /* Tabela de Grupos Diagnóstico */
+    .diag-table-wrapper {{
+      overflow-x: auto;
+    }}
+
+    .diag-table {{
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }}
+
+    .diag-table th {{
+      background: var(--bg-card-subtle);
+      padding: 8px 10px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-card);
+      white-space: nowrap;
+    }}
+
+    .diag-table td {{
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border-card);
+      color: var(--text-primary);
+      white-space: nowrap;
+    }}
+
+    .diag-table tr:hover td {{
+      background: var(--bg-card-subtle);
+    }}
+
+    /* Linhas Cards */
+    .diag-lines-list {{
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }}
+
+    .line-card-item {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      transition: var(--transition);
+    }}
+
+    .line-card-item:hover {{
+      transform: translateX(3px);
+      background: var(--bg-card-hover);
+      border-color: var(--fsj-blue-light);
+    }}
+
+    .line-info-left {{
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }}
+
+    .line-name {{
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }}
+
+    .line-meta {{
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }}
+
+    .line-grp-tag {{
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--text-secondary);
+    }}
+
+    .line-delta-pill {{
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1px;
+    }}
+
+    .line-delta-pill .val {{
+      font-size: 13px;
+      font-weight: 800;
+    }}
+
+    .line-delta-pill .pct {{
+      font-size: 11px;
+      font-weight: 700;
     }}
   </style>
 </head>
@@ -1266,31 +1677,38 @@ def build():
       <span>DIGITAL</span>
     </div>
     <div class="nav-items">
-      <!-- Visão 1: Visão Geral -->
-      <button class="nav-btn active" data-view="view-geral" title="Visão Geral & Cards Executivos">
+      <!-- Visão 0: Visão Anual 2026 & Diagnóstico -->
+      <button class="nav-btn active" data-view="view-anual" title="Visão Anual 2026 & Diagnóstico de Involuções">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+      </button>
+
+      <!-- Visão 1: Visão Geral -->
+      <button class="nav-btn" data-view="view-geral" title="Visão Geral & Cards Executivos MTD/Diário">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
         </svg>
       </button>
 
       <!-- Visão 2: Tendências & Desvios Diários -->
       <button class="nav-btn" data-view="view-desvios" title="Tendências & Desvios Diários">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
         </svg>
       </button>
 
       <!-- Visão 3: Tráfego e Conversão -->
       <button class="nav-btn" data-view="view-trafego" title="Tráfego, Conversão e Origens">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
         </svg>
       </button>
 
       <!-- Visão 4: Projeção & Run Rate -->
       <button class="nav-btn" data-view="view-projecoes" title="Projeção de Fechamento & Fechamento Mês">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
         </svg>
       </button>
     </div>
@@ -1309,6 +1727,24 @@ def build():
         <p>Acompanhamento Oficial de Metas, Venda Efetiva, Tráfego e Rentabilidade | Atualizado: {atualizacao}</p>
       </div>
       <div class="header-controls">
+        <!-- TOGGLE INTEGRAR FIGITAL (GLOBAL) -->
+        <div class="figital-switch-bar" id="figitalSwitchBar" title="Clique para Alternar: Incorporar Figital aos Totais de Canais Digitais e E-Commerce">
+          <div class="figital-switch-info">
+            <span class="switch-pulse-indicator"></span>
+            <div class="switch-text-group">
+              <span class="switch-title-text">+ Figital</span>
+              <span class="switch-desc-text">Integrar Totais</span>
+            </div>
+          </div>
+          <div class="figital-switch-action">
+            <span class="switch-mode-tag" id="figitalStateBadge">OFF</span>
+            <label class="apple-switch" onclick="event.stopPropagation()">
+              <input type="checkbox" id="toggleFigitalInput" aria-label="Somar Figital aos Totais">
+              <span class="apple-slider"></span>
+            </label>
+          </div>
+        </div>
+
         <!-- CONTROLES DE FILTRO DE DATA & HISTÓRICO -->
         <div class="period-control-group">
           <div class="period-select-box">
@@ -1341,9 +1777,260 @@ def build():
     </header>
 
     <!-- ====================================================================
+         VISÃO 0: VISÃO ANUAL 2026 & DIAGNÓSTICO MENSAL DE INVOLUÇÕES
+         ==================================================================== -->
+    <section class="view-panel active" id="view-anual">
+      <!-- Banner Estratégico Superior -->
+      <div class="annual-banner-card">
+        <div class="annual-banner-content">
+          <div class="banner-badge">Visão Executiva YTD 2026</div>
+          <h2>Consolidado Anual 2026 — Canais Digitais & Figital</h2>
+          <p>Evolução acumulada de Janeiro a Setembro, comparativo de metas mês a mês e diagnóstico analítico de involuções por categoria e linha de produto.</p>
+        </div>
+        <div class="annual-banner-actions">
+          <button class="banner-action-btn" id="btnSwitchToGeral" onclick="switchView('view-geral')">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+            Ir para Acompanhamento Diário / MTD
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Hero Cards Anuais (YTD) -->
+      <div class="top-hero-grid">
+        <!-- Card 1: Faturamento Digital YTD -->
+        <div class="hero-card highlight-card" id="cardAnualDigital">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3>Canais Digitais (YTD)</h3>
+                <span class="badge-figital-pill" id="ytdDigFigitalBadge" style="display: none;">+ Figital</span>
+              </div>
+              <span class="hero-subtitle">Acumulado Jan a Set/2026</span>
+            </div>
+            <span class="hero-part-badge" style="background: var(--badge-green-bg); color: var(--badge-green-text);" id="ytdDigAting">
+              {ytd_dig_ating_str}
+            </span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" id="ytdDigReal">{ytd_dig_real_str}</span>
+            <span class="hero-meta-mes">Meta YTD: <strong id="ytdDigMeta">{ytd_dig_meta_str}</strong></span>
+          </div>
+          <div class="hero-meta-pill">
+            <span>Desvio (R$): <strong id="ytdDigDesvioVal" class="{ytd_dig_desv_cls}">{ytd_dig_desvio_val_str}</strong></span>
+            <span>Desvio (%): <strong id="ytdDigDesvioPct" class="{ytd_dig_desv_cls}">{ytd_dig_desvio_pct_str}</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Crescimento YoY: <strong class="val-positive">⇑ +43.8%</strong></span>
+            <span class="indicator-item">Meses Acima da Meta: <strong class="val-positive">5 de 9</strong></span>
+          </div>
+        </div>
+
+        <!-- Card 2: E-Commerce Total YTD -->
+        <div class="hero-card highlight-card" id="cardAnualEcom">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3>E-Commerce Total (YTD)</h3>
+                <span class="badge-figital-pill" id="ytdEcomFigitalBadge" style="display: none;">+ Figital</span>
+              </div>
+              <span class="hero-subtitle">Digitais + Televendas</span>
+            </div>
+            <span class="hero-part-badge" style="background: var(--badge-green-bg); color: var(--badge-green-text);" id="ytdEcomAting">
+              {ytd_ecom_ating_str}
+            </span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" id="ytdEcomReal">{ytd_ecom_real_str}</span>
+            <span class="hero-meta-mes">Meta YTD: <strong id="ytdEcomMeta">{ytd_ecom_meta_str}</strong></span>
+          </div>
+          <div class="hero-meta-pill">
+            <span>Desvio (R$): <strong id="ytdEcomDesvioVal" class="{ytd_ecom_desv_cls}">{ytd_ecom_desvio_val_str}</strong></span>
+            <span>Desvio (%): <strong id="ytdEcomDesvioPct" class="{ytd_ecom_desv_cls}">{ytd_ecom_desvio_pct_str}</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Crescimento YoY: <strong class="val-positive">⇑ +42.5%</strong></span>
+            <span class="indicator-item">Pilar Figital (Set): <strong>R$ 2.762 Mi</strong></span>
+          </div>
+        </div>
+
+        <!-- Card 3: Balanço de Desempenho -->
+        <div class="hero-card">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <h3>Balanço de Metas</h3>
+              <span class="hero-subtitle">Consistência Mensal 2026</span>
+            </div>
+            <span class="hero-part-badge" style="background: #e0f2fe; color: #0284c7;">55.6% Sucesso</span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" style="color: var(--badge-green-text);">5 Meses Batidos</span>
+            <span class="hero-meta-mes">4 meses em recuperação (Abr, Mai, Jun, Jul)</span>
+          </div>
+          <div class="hero-meta-pill">
+            <span>Melhor Mês: <strong class="val-positive">Fev/26 (+109.5%)</strong></span>
+            <span>Mês Recorde: <strong style="color: var(--fsj-blue-light);">Ago/26 (R$ 55.9M)</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Média Mensal: <strong>R$ 51.7 Mi/mês</strong></span>
+            <span class="indicator-item">Ritmo Atual (Set): <strong class="val-positive">103.5% da Meta</strong></span>
+          </div>
+        </div>
+
+        <!-- Card 4: Projeção Anual 2026 -->
+        <div class="hero-card">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <h3>Projeção de Ano (FY26)</h3>
+              <span class="hero-subtitle">Projeção Linear 12 Meses</span>
+            </div>
+            <span class="hero-part-badge" style="background: #fef3c7; color: #b45309;">Run-Rate Anual</span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" style="color: var(--fsj-blue);">~R$ 621 Mi</span>
+            <span class="hero-meta-mes">Projeção Digital para Fechamento 2026</span>
+          </div>
+          <div class="hero-meta-pill">
+            <span>Meta Anual Estimada: <strong>R$ 610.0 Mi</strong></span>
+            <span>Previsão Superação: <strong class="val-positive">+R$ 11.0 Mi</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Atingimento Projetado: <strong class="val-positive">101.8%</strong></span>
+            <span class="indicator-item">Black Friday (Nov): <strong style="color: var(--fsj-accent);">Pico Sazonal</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráfico Comparativo Mês a Mês: Meta vs Realizado -->
+      <div class="card-chart-full">
+        <div class="card-chart-header">
+          <div>
+            <h3>Evolução Mensal 2026 — Realizado vs Meta Oficial</h3>
+            <p>Comparativo consolidado de faturamento mês a mês. Clique em qualquer coluna do gráfico ou use as opções abaixo para inspecionar o diagnóstico do mês.</p>
+          </div>
+          <div class="chart-legend-box">
+            <div class="legend-item"><span class="legend-color" style="background: #0077ff;"></span> Realizado Digital</div>
+            <div class="legend-item" id="annualLegendFigital" style="display: none;"><span class="legend-color" style="background: #8b5cf6;"></span> Figital</div>
+            <div class="legend-item"><span class="legend-color" style="background: #94a3b8; border-top: 2px dashed #003875;"></span> Meta Oficial</div>
+          </div>
+        </div>
+        <div style="height: 320px; width: 100%; position: relative;">
+          <canvas id="chartAnualMeses"></canvas>
+        </div>
+      </div>
+
+      <!-- Pílulas de Seleção de Mês para Diagnóstico -->
+      <div class="month-selector-bar">
+        <div class="month-selector-title">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
+          </svg>
+          Selecione o Mês para Diagnóstico de Involuções:
+        </div>
+        <div class="month-pills-list" id="annualMonthPills">
+          <!-- Gerado dinamicamente via JS com status de cor -->
+        </div>
+      </div>
+
+      <!-- PAINEL DE DIAGNÓSTICO DO MÊS SELECIONADO -->
+      <div class="diagnostic-panel-container" id="diagnosticPanel">
+        <!-- Header do Mês Selecionado -->
+        <div class="diag-header-card">
+          <div class="diag-title-box">
+            <span class="diag-badge-pill" id="diagStatusBadge">🟢 Meta Superada</span>
+            <h3 id="diagMonthTitle">Diagnóstico Executivo — Setembro de 2026</h3>
+            <p id="diagSubtitle">Comparativo analítico em relação a Agosto de 2026 e detalhamento de motores de crescimento e perdas.</p>
+          </div>
+          <div class="diag-kpi-summary">
+            <div class="diag-kpi-item">
+              <span class="lbl">Realizado Digitais</span>
+              <span class="val" id="diagRealDigitais">R$ 33.065 Mi</span>
+            </div>
+            <div class="diag-kpi-item">
+              <span class="lbl">Meta Oficial</span>
+              <span class="val" id="diagMetaDigitais">R$ 31.956 Mi</span>
+            </div>
+            <div class="diag-kpi-item">
+              <span class="lbl">Desvio (R$ / %)</span>
+              <span class="val val-positive" id="diagDesvioDigitais">+R$ 1.109 Mi (+3.47%)</span>
+            </div>
+            <div class="diag-kpi-item">
+              <span class="lbl">Variação MoM</span>
+              <span class="val" id="diagMoM">-40.9% (17 dias vs 31 dias)</span>
+            </div>
+            <div class="diag-kpi-item" style="border-left: 1px solid var(--border-card); padding-left: 14px;">
+              <button class="btn-jump-diario" id="btnJumpDiario" title="Abrir Visão Diária detalhada deste mês" onclick="switchView('view-geral')">
+                Ver Acompanhamento Diário ➜
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid com 3 Colunas de Diagnóstico -->
+        <div class="diag-grid">
+          <!-- Coluna 1: Categorias / Grupos (Ranking de Involução / Desempenho) -->
+          <div class="diag-col-card">
+            <div class="diag-col-header">
+              <div>
+                <h4>Categorias & Grupos</h4>
+                <p>Ordenadas pelas maiores involuções (quedas nominais vs mês anterior)</p>
+              </div>
+              <span class="badge-count" id="countGrupos">Grupos</span>
+            </div>
+            <div class="diag-table-wrapper">
+              <table class="diag-table" id="tableGruposDiag">
+                <thead>
+                  <tr>
+                    <th>Categoria</th>
+                    <th style="text-align: right;">Venda Mês</th>
+                    <th style="text-align: right;">Mês Anterior</th>
+                    <th style="text-align: right;">Delta (R$)</th>
+                    <th style="text-align: right;">Var %</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyGruposDiag">
+                  <!-- Inserido dinamicamente via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Coluna 2: Top Linhas em Involução / Queda (Ofensores) -->
+          <div class="diag-col-card alert-border">
+            <div class="diag-col-header">
+              <div>
+                <h4 style="color: #b91c1c;">⚠️ Linhas com Maior Queda (Ofensores)</h4>
+                <p>Produtos/Linhas que mais puxaram o faturamento para baixo no mês</p>
+              </div>
+              <span class="badge-count badge-danger">Top Quedas</span>
+            </div>
+            <div class="diag-lines-list" id="listLinhasInvolucao">
+              <!-- Inserido dinamicamente via JS -->
+            </div>
+          </div>
+
+          <!-- Coluna 3: Top Linhas em Evolução / Crescimento (Alavancas) -->
+          <div class="diag-col-card success-border">
+            <div class="diag-col-header">
+              <div>
+                <h4 style="color: #15803d;">🚀 Linhas com Maior Crescimento (Alavancas)</h4>
+                <p>Produtos/Linhas com maior avanço nominal para compensar</p>
+              </div>
+              <span class="badge-count badge-success">Top Altas</span>
+            </div>
+            <div class="diag-lines-list" id="listLinhasEvolucao">
+              <!-- Inserido dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
          VISÃO 1: VISÃO GERAL & CARDS EXECUTIVOS
          ==================================================================== -->
-    <section class="view-panel active" id="view-geral">
+    <section class="view-panel" id="view-geral">
       <!-- 4 Top Hero Cards -->
       <div class="top-hero-grid">
         <!-- Card 1: E-COMMERCE TOTAL -->
@@ -1446,24 +2133,6 @@ def build():
 
         <!-- Card 4: FIGITAL (NOVO PILAR) -->
         <div class="hero-card figital-card" id="cardFigital">
-          <!-- Switch Bar ON / OFF em cima no bloco do Figital -->
-          <div class="figital-switch-bar" id="figitalSwitchBar" title="Clique para Alternar: Incorporar Figital aos Totais de Canais Digitais e E-Commerce">
-            <div class="figital-switch-info">
-              <span class="switch-pulse-indicator"></span>
-              <div class="switch-text-group">
-                <span class="switch-title-text">Somar aos Totais</span>
-                <span class="switch-desc-text">Digitais & E-Commerce</span>
-              </div>
-            </div>
-            <div class="figital-switch-action">
-              <span class="switch-mode-tag" id="figitalStateBadge">OFF</span>
-              <label class="apple-switch" onclick="event.stopPropagation()">
-                <input type="checkbox" id="toggleFigitalInput" aria-label="Somar Figital aos Totais">
-                <span class="apple-slider"></span>
-              </label>
-            </div>
-          </div>
-
           <div class="hero-header">
             <div class="hero-title-group">
               <div style="display: flex; align-items: center; gap: 6px;">
@@ -1750,25 +2419,36 @@ def build():
     const navBtns = document.querySelectorAll('.nav-btn');
     const viewPanels = document.querySelectorAll('.view-panel');
 
+    function switchView(targetViewId) {{
+      navBtns.forEach(b => {{
+        if (b.getAttribute('data-view') === targetViewId) {{
+          b.classList.add('active');
+        }} else {{
+          b.classList.remove('active');
+        }}
+      }});
+
+      viewPanels.forEach(p => {{
+        if (p.id === targetViewId) {{
+          p.classList.add('active');
+        }} else {{
+          p.classList.remove('active');
+        }}
+      }});
+
+      if (targetViewId === 'view-anual') {{
+        renderAnnualChart();
+      }} else if (targetViewId === 'view-desvios') {{
+        renderDesviosCharts(currentChannelV2);
+      }} else if (targetViewId === 'view-trafego') {{
+        renderTrafficCharts(currentTrafficCh);
+      }}
+    }}
+
     navBtns.forEach(btn => {{
       btn.addEventListener('click', () => {{
-        navBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
         const targetViewId = btn.getAttribute('data-view');
-        viewPanels.forEach(p => {{
-          if (p.id === targetViewId) {{
-            p.classList.add('active');
-          }} else {{
-            p.classList.remove('active');
-          }}
-        }});
-
-        if (targetViewId === 'view-desvios') {{
-          renderDesviosCharts(currentChannelV2);
-        }} else if (targetViewId === 'view-trafego') {{
-          renderTrafficCharts(currentTrafficCh);
-        }}
+        switchView(targetViewId);
       }});
     }});
 
@@ -1781,6 +2461,7 @@ def build():
       currentTheme = currentTheme === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', currentTheme);
       localStorage.setItem('fsj_theme', currentTheme);
+      if (chartAnualInstance) renderAnnualChart();
       if (chartTkmInstance) renderDesviosCharts(currentChannelV2);
       if (chartConvInstance) renderTrafficCharts(currentTrafficCh);
     }});
@@ -2109,6 +2790,9 @@ def build():
 
       localStorage.setItem('fsj_figital_included', included ? 'true' : 'false');
       updateDashboardState();
+      if (typeof updateAnnualViewFigital === 'function') {{
+        updateAnnualViewFigital(included);
+      }}
     }}
 
     if (figitalSwitchBar && toggleFigitalInput) {{
@@ -2171,6 +2855,426 @@ def build():
 
     function getTextColor() {{
       return currentTheme === 'dark' ? '#94a3b8' : '#64748b';
+    }}
+
+    // =========================================================================
+    // VISÃO 0: VISÃO ANUAL 2026 & DIAGNÓSTICO DE INVOLUÇÕES
+    // =========================================================================
+    let selectedAnnualMonthKey = '2026-09';
+    let chartAnualInstance = null;
+
+    function initAnnualView() {{
+      const vAnual = dashData.visao_anual;
+      if (!vAnual || !vAnual.meses || vAnual.meses.length === 0) return;
+      
+      selectedAnnualMonthKey = vAnual.meses[vAnual.meses.length - 1].key;
+      renderAnnualMonthPills();
+      renderAnnualChart();
+      selectAnnualMonth(selectedAnnualMonthKey);
+    }}
+
+    function renderAnnualMonthPills() {{
+      const container = document.getElementById('annualMonthPills');
+      if (!container || !dashData.visao_anual || !dashData.visao_anual.meses) return;
+      const meses = dashData.visao_anual.meses;
+
+      container.innerHTML = meses.map(m => {{
+        const isActive = m.key === selectedAnnualMonthKey;
+        const ating = isFigitalOn ? m.atingimento_total_com_figital_pct : m.atingimento_digitais_pct;
+        const isSuccess = ating >= 100;
+        const badgeClass = isSuccess ? 'badge-success' : 'badge-danger';
+        return `<button class="month-pill ${{isActive ? 'active' : ''}}" data-month="${{m.key}}" onclick="selectAnnualMonth('${{m.key}}')">
+          <span>${{m.label}}</span>
+          <span class="pill-badge ${{badgeClass}}">${{ating.toFixed(1)}}%</span>
+        </button>`;
+      }}).join('');
+    }}
+
+    function renderAnnualChart() {{
+      const ctx = document.getElementById('chartAnualMeses');
+      if (!ctx || !dashData.visao_anual || !dashData.visao_anual.meses) return;
+      const meses = dashData.visao_anual.meses;
+      const labels = meses.map(m => m.label);
+
+      if (chartAnualInstance) {{
+        chartAnualInstance.destroy();
+      }}
+
+      let datasets = [];
+
+      if (isFigitalOn) {{
+        datasets = [
+          {{
+            type: 'bar',
+            label: 'Canais Digitais (Site+App+MKP)',
+            data: meses.map(m => Number((m.real_digitais / 1e6).toFixed(3))),
+            backgroundColor: currentTheme === 'dark' ? '#38bdf8' : '#0077ff',
+            borderRadius: {{ topLeft: 0, topRight: 0, bottomLeft: 6, bottomRight: 6 }},
+            stack: 'vendas',
+            order: 2,
+            datalabels: {{ display: false }}
+          }},
+          {{
+            type: 'bar',
+            label: 'Figital',
+            data: meses.map(m => Number(((m.real_figital || 0) / 1e6).toFixed(3))),
+            backgroundColor: currentTheme === 'dark' ? '#c084fc' : '#8b5cf6',
+            borderRadius: {{ topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 }},
+            stack: 'vendas',
+            order: 2,
+            datalabels: {{
+              display: true,
+              anchor: 'end',
+              align: 'top',
+              offset: 4,
+              font: {{ size: 10, weight: '700' }},
+              color: () => currentTheme === 'dark' ? '#f8fafc' : '#1e293b',
+              formatter: (val, ctx) => {{
+                const total = (meses[ctx.dataIndex].real_digitais + (meses[ctx.dataIndex].real_figital || 0)) / 1e6;
+                return 'R$ ' + total.toFixed(1).replace('.', ',') + 'M';
+              }}
+            }}
+          }},
+          {{
+            type: 'line',
+            label: 'Meta Oficial (+ Figital)',
+            data: meses.map(m => Number(((m.meta_total_com_figital || m.meta_digitais) / 1e6).toFixed(3))),
+            borderColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
+            backgroundColor: 'transparent',
+            borderWidth: 2.8,
+            borderDash: [6, 4],
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
+            tension: 0.15,
+            order: 1,
+            datalabels: {{ display: false }}
+          }}
+        ];
+      }} else {{
+        datasets = [
+          {{
+            type: 'bar',
+            label: 'Realizado Canais Digitais',
+            data: meses.map(m => Number((m.real_digitais / 1e6).toFixed(3))),
+            backgroundColor: meses.map(m => m.atingimento_digitais_pct >= 100 
+              ? (currentTheme === 'dark' ? '#38bdf8' : '#0077ff') 
+              : (currentTheme === 'dark' ? '#f87171' : '#ef4444')),
+            borderRadius: 6,
+            order: 2,
+            datalabels: {{
+              display: true,
+              anchor: 'end',
+              align: 'top',
+              offset: 4,
+              font: {{ size: 10, weight: '700' }},
+              color: () => currentTheme === 'dark' ? '#f8fafc' : '#1e293b',
+              formatter: val => 'R$ ' + val.toFixed(1).replace('.', ',') + 'M'
+            }}
+          }},
+          {{
+            type: 'line',
+            label: 'Meta Oficial Digitais',
+            data: meses.map(m => Number((m.meta_digitais / 1e6).toFixed(3))),
+            borderColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
+            backgroundColor: 'transparent',
+            borderWidth: 2.8,
+            borderDash: [6, 4],
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
+            tension: 0.15,
+            order: 1,
+            datalabels: {{ display: false }}
+          }}
+        ];
+      }}
+
+      chartAnualInstance = new Chart(ctx.getContext('2d'), {{
+        data: {{
+          labels: labels,
+          datasets: datasets
+        }},
+        options: {{
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {{ padding: {{ top: 30, bottom: 12, left: 16, right: 16 }} }},
+          interaction: {{
+            mode: 'index',
+            intersect: false
+          }},
+          onClick: (event, elements) => {{
+            if (elements && elements.length > 0) {{
+              const idx = elements[0].index;
+              const m = meses[idx];
+              if (m) {{
+                selectAnnualMonth(m.key);
+                const diagEl = document.getElementById('diagnosticPanel');
+                if (diagEl) diagEl.scrollIntoView({{ behavior: 'smooth', block: 'nearest' }});
+              }}
+            }}
+          }},
+          plugins: {{
+            legend: {{ display: false }},
+            tooltip: {{
+              callbacks: {{
+                label: ctx => `${{ctx.dataset.label}}: R$ ${{ctx.raw.toFixed(2).replace('.', ',')}} Mi`,
+                afterBody: (tooltipItems) => {{
+                  if (tooltipItems.length === 0) return '';
+                  const idx = tooltipItems[0].dataIndex;
+                  const m = meses[idx];
+                  const ating = isFigitalOn ? m.atingimento_total_com_figital_pct : m.atingimento_digitais_pct;
+                  const gap = isFigitalOn ? m.desvio_total_com_figital_val : m.desvio_digitais_val;
+                  const gapStr = (gap >= 0 ? '+R$ ' : '-R$ ') + (Math.abs(gap)/1e6).toFixed(2).replace('.', ',') + ' Mi';
+                  return [
+                    '--------------------------',
+                    `Atingimento: ${{ating.toFixed(1).replace('.', ',')}}%`,
+                    `Desvio: ${{gapStr}}`,
+                    '👉 Clique para abrir diagnóstico'
+                  ];
+                }}
+              }}
+            }}
+          }},
+          scales: {{
+            y: {{
+              grid: {{ color: getGridColor() }},
+              ticks: {{
+                color: getTextColor(),
+                callback: val => 'R$ ' + val + 'M'
+              }}
+            }},
+            x: {{
+              offset: true,
+              grid: {{ display: false }},
+              ticks: {{ color: getTextColor(), font: {{ weight: '700' }} }}
+            }}
+          }}
+        }}
+      }});
+    }}
+
+    function selectAnnualMonth(monthKey) {{
+      if (!dashData.visao_anual || !dashData.visao_anual.meses) return;
+      selectedAnnualMonthKey = monthKey;
+      const meses = dashData.visao_anual.meses;
+      const m = meses.find(item => item.key === monthKey) || meses[meses.length - 1];
+
+      // Atualiza pílulas
+      document.querySelectorAll('#annualMonthPills .month-pill').forEach(btn => {{
+        if (btn.getAttribute('data-month') === monthKey) {{
+          btn.classList.add('active');
+        }} else {{
+          btn.classList.remove('active');
+        }}
+      }});
+
+      // Dados de faturamento
+      const real = isFigitalOn ? (m.real_digitais + (m.real_figital || 0)) : m.real_digitais;
+      const meta = isFigitalOn ? (m.meta_total_com_figital || m.meta_digitais) : m.meta_digitais;
+      const desvioVal = real - meta;
+      const desvioPct = meta > 0 ? ((real / meta) - 1) * 100 : 0;
+      const atingPct = meta > 0 ? (real / meta) * 100 : 100;
+      const isSuccess = atingPct >= 100;
+
+      // Status Badge
+      const statusBadge = document.getElementById('diagStatusBadge');
+      if (statusBadge) {{
+        if (isSuccess) {{
+          statusBadge.className = 'diag-badge-pill';
+          statusBadge.style.background = 'var(--badge-green-bg)';
+          statusBadge.style.color = 'var(--badge-green-text)';
+          statusBadge.textContent = '🟢 Meta Superada (' + atingPct.toFixed(1).replace('.', ',') + '%)';
+        }} else {{
+          statusBadge.className = 'diag-badge-pill';
+          statusBadge.style.background = 'var(--badge-red-bg)';
+          statusBadge.style.color = 'var(--badge-red-text)';
+          statusBadge.textContent = '🔴 Abaixo da Meta (' + atingPct.toFixed(1).replace('.', ',') + '%)';
+        }}
+      }}
+
+      // Título e Subtítulo
+      const monthTitle = document.getElementById('diagMonthTitle');
+      if (monthTitle) monthTitle.textContent = 'Diagnóstico Executivo — ' + m.nome_completo;
+
+      const subTitle = document.getElementById('diagSubtitle');
+      if (subTitle) {{
+        if (m.key === '2026-09') {{
+          subTitle.textContent = 'Setembro em andamento (' + (dashData.max_dia || 17) + ' dias apurados). Comparativo com meta pró-rata MTD e principais ofensores.';
+        }} else {{
+          subTitle.textContent = 'Comparativo de desempenho vs mês anterior e detalhamento das categorias e linhas em evolução e involução.';
+        }}
+      }}
+
+      // Valores Resumo
+      const setEl = (id, val, cls) => {{
+        const el = document.getElementById(id);
+        if (el) {{
+          el.textContent = val;
+          if (cls !== undefined) {{
+            el.className = 'val ' + cls;
+          }}
+        }}
+      }};
+
+      setEl('diagRealDigitais', fmtCurrency(real));
+      setEl('diagMetaDigitais', fmtCurrency(meta));
+      const gapSign = desvioVal >= 0 ? '+' : '';
+      const gapCls = desvioVal >= 0 ? 'val-positive' : 'val-negative';
+      setEl('diagDesvioDigitais', gapSign + fmtCurrency(desvioVal) + ' (' + fmtPctStr(desvioPct) + ')', gapCls);
+
+      // MoM
+      if (m.key === '2026-01') {{
+        setEl('diagMoM', 'Mês Base 2026', '');
+      }} else {{
+        const momSign = m.mom_digitais_pct >= 0 ? '⇑ +' : '⇓ ';
+        const momExtra = m.key === '2026-09' ? ' (17d parciais)' : '';
+        const momCls = m.mom_digitais_pct >= 0 ? 'val-positive' : 'val-negative';
+        setEl('diagMoM', momSign + Math.abs(m.mom_digitais_pct).toFixed(1).replace('.', ',') + '%' + momExtra, momCls);
+      }}
+
+      // 1. Tabela de Grupos / Categorias
+      const tbodyGrupos = document.getElementById('tbodyGruposDiag');
+      const countGrupos = document.getElementById('countGrupos');
+      const grupos = (m.diagnostico && m.diagnostico.grupos) ? m.diagnostico.grupos : [];
+
+      if (!grupos || grupos.length === 0) {{
+        if (tbodyGrupos) {{
+          tbodyGrupos.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 28px;">
+            Janeiro é o mês inicial de referência (sem histórico anterior para cálculo de variação).
+          </td></tr>`;
+        }}
+        if (countGrupos) countGrupos.textContent = 'Mês Inicial';
+      }} else {{
+        if (countGrupos) countGrupos.textContent = grupos.length + ' Categorias';
+        if (tbodyGrupos) {{
+          tbodyGrupos.innerHTML = grupos.map(g => {{
+            const isDrop = g.delta_val < 0;
+            const cls = isDrop ? 'val-negative' : 'val-positive';
+            const arrow = isDrop ? '⇓' : '⇑';
+            return `<tr>
+              <td style="font-weight: 700;">${{g.grupo}}</td>
+              <td style="text-align: right; font-weight: 700;">${{fmtCurrency(g.venda_mes)}}</td>
+              <td style="text-align: right; color: var(--text-secondary);">${{fmtCurrency(g.venda_ant)}}</td>
+              <td style="text-align: right;" class="${{cls}}"><strong>${{fmtGapVal(g.delta_val)}}</strong></td>
+              <td style="text-align: right;" class="${{cls}}"><strong>${{arrow}} ${{Math.abs(g.delta_pct).toFixed(1).replace('.', ',')}}%</strong></td>
+            </tr>`;
+          }}).join('');
+        }}
+      }}
+
+      // 2. Coluna Top Linhas em Involução
+      const listInv = document.getElementById('listLinhasInvolucao');
+      const linhasInv = (m.diagnostico && m.diagnostico.top_involucao_linhas) ? m.diagnostico.top_involucao_linhas : [];
+      if (listInv) {{
+        if (!linhasInv || linhasInv.length === 0) {{
+          listInv.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 24px;">
+            Nenhuma involução de linha registrada neste mês.
+          </div>`;
+        }} else {{
+          listInv.innerHTML = linhasInv.map(l => {{
+            return `<div class="line-card-item">
+              <div class="line-info-left">
+                <span class="line-name">${{l.linha}}</span>
+                <div class="line-meta">
+                  <span class="line-grp-tag">${{l.grupo}}</span>
+                  <span>Mês: <strong>${{fmtCurrency(l.venda_mes)}}</strong></span>
+                  <span>(Ant: ${{fmtCurrency(l.venda_ant)}})</span>
+                </div>
+              </div>
+              <div class="line-delta-pill">
+                <span class="val val-negative">${{fmtGapVal(l.delta_val)}}</span>
+                <span class="pct val-negative">⇓ ${{Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}}%</span>
+              </div>
+            </div>`;
+          }}).join('');
+        }}
+      }}
+
+      // 3. Coluna Top Linhas em Evolução
+      const listEvo = document.getElementById('listLinhasEvolucao');
+      const linhasEvo = (m.diagnostico && m.diagnostico.top_evolucao_linhas) ? m.diagnostico.top_evolucao_linhas : [];
+      if (listEvo) {{
+        if (!linhasEvo || linhasEvo.length === 0) {{
+          listEvo.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 24px;">
+            Nenhum crescimento expressivo de linhas registrado neste mês.
+          </div>`;
+        }} else {{
+          listEvo.innerHTML = linhasEvo.map(l => {{
+            return `<div class="line-card-item">
+              <div class="line-info-left">
+                <span class="line-name">${{l.linha}}</span>
+                <div class="line-meta">
+                  <span class="line-grp-tag">${{l.grupo}}</span>
+                  <span>Mês: <strong>${{fmtCurrency(l.venda_mes)}}</strong></span>
+                  <span>(Ant: ${{fmtCurrency(l.venda_ant)}})</span>
+                </div>
+              </div>
+              <div class="line-delta-pill">
+                <span class="val val-positive">${{fmtGapVal(l.delta_val)}}</span>
+                <span class="pct val-positive">⇑ +${{Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}}%</span>
+              </div>
+            </div>`;
+          }}).join('');
+        }}
+      }}
+    }}
+
+    function updateAnnualViewFigital(included) {{
+      if (!dashData.visao_anual || !dashData.visao_anual.ytd) return;
+      const ytd = dashData.visao_anual.ytd;
+
+      // Badges
+      const digFig = document.getElementById('ytdDigFigitalBadge');
+      const ecomFig = document.getElementById('ytdEcomFigitalBadge');
+      const legendFig = document.getElementById('annualLegendFigital');
+      if (digFig) digFig.style.display = included ? 'inline-flex' : 'none';
+      if (ecomFig) ecomFig.style.display = included ? 'inline-flex' : 'none';
+      if (legendFig) legendFig.style.display = included ? 'inline-flex' : 'none';
+
+      // YTD Card E-Commerce
+      const ecomData = included ? ytd.ecommerce_com_figital : ytd.ecommerce_sem_figital;
+      if (ecomData) {{
+        const setT = (id, val) => {{ const el = document.getElementById(id); if (el) el.textContent = val; }};
+        setT('ytdEcomReal', fmtCurrency(ecomData.real));
+        setT('ytdEcomMeta', fmtCurrency(ecomData.meta));
+        setT('ytdEcomDesvioVal', fmtGapVal(ecomData.desvio_val));
+        setT('ytdEcomDesvioPct', fmtPctStr(ecomData.desvio_pct));
+        setT('ytdEcomAting', ecomData.atingimento_pct.toFixed(1).replace('.', ',') + '% Meta');
+
+        const desvValEl = document.getElementById('ytdEcomDesvioVal');
+        const desvPctEl = document.getElementById('ytdEcomDesvioPct');
+        const cls = ecomData.desvio_val >= 0 ? 'val-positive' : 'val-negative';
+        if (desvValEl) desvValEl.className = 'val ' + cls;
+        if (desvPctEl) desvPctEl.className = 'val ' + cls;
+      }}
+
+      // YTD Card Digitais
+      if (ytd.digitais) {{
+        const digReal = included ? (ytd.digitais.real + (ytd.ecommerce_com_figital.real - ytd.ecommerce_sem_figital.real)) : ytd.digitais.real;
+        const digMeta = included ? (ytd.digitais.meta + (ytd.ecommerce_com_figital.meta - ytd.ecommerce_sem_figital.meta)) : ytd.digitais.meta;
+        const digDesvVal = digReal - digMeta;
+        const digDesvPct = digMeta > 0 ? ((digReal / digMeta) - 1) * 100 : 0;
+        const digAting = digMeta > 0 ? (digReal / digMeta) * 100 : 100;
+
+        const setT = (id, val) => {{ const el = document.getElementById(id); if (el) el.textContent = val; }};
+        setT('ytdDigReal', fmtCurrency(digReal));
+        setT('ytdDigMeta', fmtCurrency(digMeta));
+        setT('ytdDigDesvioVal', fmtGapVal(digDesvVal));
+        setT('ytdDigDesvioPct', fmtPctStr(digDesvPct));
+        setT('ytdDigAting', digAting.toFixed(1).replace('.', ',') + '% Meta');
+
+        const desvValEl = document.getElementById('ytdDigDesvioVal');
+        const desvPctEl = document.getElementById('ytdDigDesvioPct');
+        const cls = digDesvVal >= 0 ? 'val-positive' : 'val-negative';
+        if (desvValEl) desvValEl.className = 'val ' + cls;
+        if (desvPctEl) desvPctEl.className = 'val ' + cls;
+      }}
+
+      // Atualiza pílulas e re-renderiza gráfico e diagnóstico
+      renderAnnualMonthPills();
+      renderAnnualChart();
+      selectAnnualMonth(selectedAnnualMonthKey);
     }}
 
     function renderDesviosCharts(channelKey) {{
@@ -2623,6 +3727,7 @@ def build():
 
     // Inicialização da UI com preferências salvas
     applyFigitalToggle(isFigitalOn);
+    initAnnualView();
   </script>
 </body>
 </html>

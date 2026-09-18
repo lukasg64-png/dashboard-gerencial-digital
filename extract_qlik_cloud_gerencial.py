@@ -56,6 +56,7 @@ USERNAME = "lucas.alves6"
 PASSWORD = "Eloise2025*"
 
 DIGITAL_CHANNELS_FILTER = "'APP', 'APP Tele Entrega', 'APP TELE ENTREGA', 'SITE', 'SITE Tele Entrega', 'SITE TELE ENTREGA', 'iFood', 'IFOOD', 'e_Commerce', 'E_COMMERCE', 'E-COMMERCE', 'RAPPI', 'Rappi', 'MERCADO LIVRE', 'Mercado Livre', 'Figital', 'FIGITAL', 'Televendas', 'TELEVENDAS'"
+MONTHS_2026 = "'2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09'"
 
 def generate_televendas_series(max_dia):
     """Gera série diária calibrada de Televendas até max_dia."""
@@ -79,16 +80,35 @@ def generate_televendas_series(max_dia):
 def load_fallback_snapshot():
     print("Carregando snapshot auditado e validado do ecossistema...", flush=True)
     src_raw = os.path.abspath(os.path.join(BASE_DIR, '..', 'Acompanhamento Categorias Digital', 'data', 'qlik_digital_raw.json'))
-    if os.path.exists(src_raw):
-        with open(src_raw, 'r', encoding='utf-8') as f:
-            raw_data = json.load(f)
-    elif os.path.exists(OUTPUT_RAW_JSON):
+    full_cache = os.path.join(DATA_DIR, 'test_full_extracted.json')
+    raw_data = {}
+    if os.path.exists(OUTPUT_RAW_JSON):
         with open(OUTPUT_RAW_JSON, 'r', encoding='utf-8') as f:
+            raw_data = json.load(f)
+    elif os.path.exists(full_cache):
+        with open(full_cache, 'r', encoding='utf-8') as f:
+            raw_data = json.load(f)
+    elif os.path.exists(src_raw):
+        with open(src_raw, 'r', encoding='utf-8') as f:
             raw_data = json.load(f)
     else:
         raw_data = {"canais_dia": [], "maxDia": 17}
 
     canais_dia = raw_data.get('canais_dia', [])
+    canais_mes = raw_data.get('canais_mes', [])
+    grupos_mes = raw_data.get('grupos_mes', [])
+    linhas_mes = raw_data.get('linhas_mes', [])
+
+    # Se ainda não tiver histórico anual carregado, tenta importar do test_full_extracted
+    if not canais_mes and os.path.exists(full_cache):
+        try:
+            with open(full_cache, 'r', encoding='utf-8') as f:
+                c_data = json.load(f)
+                canais_mes = c_data.get('canais_mes', [])
+                grupos_mes = c_data.get('grupos_mes', [])
+                linhas_mes = c_data.get('linhas_mes', [])
+        except Exception:
+            pass
     
     # Detecta dinamicamente o maior dia com faturamento real registrado em Setembro/2026
     detected_days = [int(r[1]) for r in canais_dia if len(r) > 2 and float(r[2] or 0) > 0]
@@ -100,13 +120,16 @@ def load_fallback_snapshot():
     payload = {
         "maxDia": max_dia,
         "canais_dia": all_canais,
+        "canais_mes": canais_mes,
+        "grupos_mes": grupos_mes,
+        "linhas_mes": linhas_mes,
         "atualizacao": time.strftime('%Y-%m-%d %H:%M:%S')
     }
 
     with open(OUTPUT_RAW_JSON, 'w', encoding='utf-8') as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
-    print(f"✅ Snapshot salvo com sucesso em: {OUTPUT_RAW_JSON} (D-1 Oficial: Dia {max_dia})")
+    print(f"✅ Snapshot salvo com sucesso em: {OUTPUT_RAW_JSON} (D-1 Oficial: Dia {max_dia}, Meses: {len(canais_mes)}, Grupos: {len(grupos_mes)}, Linhas: {len(linhas_mes)})")
     return payload
 
 async def fetch_qlik_cloud():
@@ -197,8 +220,74 @@ async def fetch_qlik_cloud():
                             const l1 = await send("GetLayout", h1, []);
                             const canais_dia = (l1.result.qLayout.qHyperCube.qDataPages[0]?.qMatrix || []).map(r => r.map(c => c.qNum !== 'NaN' && typeof c.qNum === 'number' ? c.qNum : c.qText));
 
+                            // 2. Canais x Mês 2026
+                            const c2 = await send("CreateSessionObject", docHandle, [{{
+                                "qInfo": {{ "qType": "q_canais_mes" }},
+                                "qHyperCubeDef": {{
+                                    "qDimensions": [
+                                        {{ "qDef": {{ "qFieldDefs": ["Ano-Mês Venda"] }} }},
+                                        {{ "qDef": {{ "qFieldDefs": ["Canal Detalhado"] }} }}
+                                    ],
+                                    "qMeasures": [
+                                        {{ "qDef": {{ "qDef": "Sum({{1<[Canal Detalhado]={{{DIGITAL_CHANNELS_FILTER}}}>}} [Vl_Mercadoria])" }} }}
+                                    ],
+                                    "qInitialDataFetch": [{{ "qTop": 0, "qLeft": 0, "qHeight": 1000, "qWidth": 3 }}],
+                                    "qSuppressZero": true
+                                }}
+                            }}]);
+                            const l2 = await send("GetLayout", c2.result.qReturn.qHandle, []);
+                            const canais_mes = (l2.result.qLayout.qHyperCube.qDataPages[0]?.qMatrix || []).map(r => [r[0].qText, r[1].qText, r[2].qNum || 0]);
+
+                            // 3. Grupos x Mês 2026
+                            const c3 = await send("CreateSessionObject", docHandle, [{{
+                                "qInfo": {{ "qType": "q_grupos_mes" }},
+                                "qHyperCubeDef": {{
+                                    "qDimensions": [
+                                        {{ "qDef": {{ "qFieldDefs": ["Ano-Mês Venda"] }} }},
+                                        {{ "qDef": {{ "qFieldDefs": ["Desc_Grupo"] }} }}
+                                    ],
+                                    "qMeasures": [
+                                        {{ "qDef": {{ "qDef": "Sum({{1<[Ano-Mês Venda]={{{MONTHS_2026}}}, [Canal Detalhado]={{{DIGITAL_CHANNELS_FILTER}}}>}} [Vl_Mercadoria])" }} }}
+                                    ],
+                                    "qInitialDataFetch": [{{ "qTop": 0, "qLeft": 0, "qHeight": 1000, "qWidth": 3 }}],
+                                    "qSuppressZero": true
+                                }}
+                            }}]);
+                            const l3 = await send("GetLayout", c3.result.qReturn.qHandle, []);
+                            const grupos_mes = (l3.result.qLayout.qHyperCube.qDataPages[0]?.qMatrix || []).map(r => [r[0].qText, r[1].qText, r[2].qNum || 0]);
+
+                            // 4. Linhas x Mês 2026
+                            const c4 = await send("CreateSessionObject", docHandle, [{{
+                                "qInfo": {{ "qType": "q_linhas_mes" }},
+                                "qHyperCubeDef": {{
+                                    "qDimensions": [
+                                        {{ "qDef": {{ "qFieldDefs": ["Ano-Mês Venda"] }} }},
+                                        {{ "qDef": {{ "qFieldDefs": ["Desc_Grupo"] }} }},
+                                        {{ "qDef": {{ "qFieldDefs": ["Desc_Linha"] }} }}
+                                    ],
+                                    "qMeasures": [
+                                        {{ "qDef": {{ "qDef": "Sum({{1<[Ano-Mês Venda]={{{MONTHS_2026}}}, [Canal Detalhado]={{{DIGITAL_CHANNELS_FILTER}}}>}} [Vl_Mercadoria])" }} }}
+                                    ],
+                                    "qInitialDataFetch": [{{ "qTop": 0, "qLeft": 0, "qHeight": 1500, "qWidth": 4 }}],
+                                    "qSuppressZero": true
+                                }}
+                            }}]);
+                            const h4 = c4.result.qReturn.qHandle;
+                            const l4 = await send("GetLayout", h4, []);
+                            const totalRows4 = l4.result.qLayout.qHyperCube.qSize.qcy;
+                            let linhas_mes = [];
+                            let top4 = 0;
+                            while (top4 < totalRows4) {{
+                                const fetchH = Math.min(1500, totalRows4 - top4);
+                                const pData = await send("GetHyperCubeData", h4, ["/qHyperCubeDef", [{{ "qTop": top4, "qLeft": 0, "qHeight": fetchH, "qWidth": 4 }}]]);
+                                const mat = pData.result.qDataPages[0]?.qMatrix || [];
+                                if (mat.length === 0) break;
+                                mat.forEach(r => linhas_mes.push([r[0].qText, r[1].qText, r[2].qText, r[3].qNum || 0]));
+                                top4 += mat.length;
+                            }}
+
                             ws.close();
-                            resolve({{ canais_dia }});
+                            resolve({{ canais_dia, canais_mes, grupos_mes, linhas_mes }});
                         }} catch (e) {{
                             ws.close();
                             reject(e.toString());
@@ -210,11 +299,11 @@ async def fetch_qlik_cloud():
                         if (msg.id && pending[msg.id]) {{
                             const {{ res, rej }} = pending[msg.id];
                             delete pending[msg.id];
-                            if (msg.error) rej(msg.error);
+                            if (msg.error) rej(JSON.stringify(msg.error));
                             else res(msg);
                         }}
                     }};
-                    ws.onerror = (e) => reject("WebSocket error");
+                    ws.onerror = (e) => reject("WebSocket error: " + e);
                     setTimeout(() => reject("Timeout QIX Engine"), 60000);
                 }});
             }}"""
@@ -223,6 +312,10 @@ async def fetch_qlik_cloud():
             await browser.close()
 
             canais_dia = res.get('canais_dia', [])
+            canais_mes = res.get('canais_mes', [])
+            grupos_mes = res.get('grupos_mes', [])
+            linhas_mes = res.get('linhas_mes', [])
+
             detected_days = [int(r[1]) for r in canais_dia if len(r) > 2 and float(r[2] or 0) > 0]
             max_dia = max(detected_days) if detected_days else 17
 
@@ -235,13 +328,16 @@ async def fetch_qlik_cloud():
             payload = {
                 "maxDia": max_dia,
                 "canais_dia": canais_dia,
+                "canais_mes": canais_mes,
+                "grupos_mes": grupos_mes,
+                "linhas_mes": linhas_mes,
                 "atualizacao": time.strftime('%Y-%m-%d %H:%M:%S')
             }
 
             with open(OUTPUT_RAW_JSON, 'w', encoding='utf-8') as f:
                 json.dump(payload, f, ensure_ascii=False, indent=2)
 
-            print(f"✅ Extração do Qlik Cloud concluída em {time.time() - t0:.2f}s! Salvo em: {OUTPUT_RAW_JSON} (D-1: {max_dia})")
+            print(f"✅ Extração do Qlik Cloud concluída em {time.time() - t0:.2f}s! Salvo em: {OUTPUT_RAW_JSON} (D-1: {max_dia}, Meses: {len(canais_mes)}, Grupos: {len(grupos_mes)}, Linhas: {len(linhas_mes)})")
             return payload
 
     except Exception as ex:

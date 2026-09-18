@@ -1011,11 +1011,402 @@
       margin-top: 8px;
     }
 
-    .progress-fill {
-      height: 100%;
+    /* ==========================================================================
+       VISÃO ANUAL 2026 & DIAGNÓSTICO MENSAL DE INVOLUÇÕES (APPLE DESIGN)
+       ========================================================================== */
+    .annual-banner-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-card);
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .annual-banner-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; bottom: 0; width: 5px;
       background: var(--fsj-blue-gradient);
+    }
+
+    .banner-badge {
+      display: inline-flex;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 3px 10px;
       border-radius: var(--radius-pill);
-      transition: width 0.8s ease;
+      background: rgba(0, 119, 255, 0.1);
+      color: var(--fsj-blue-light);
+      margin-bottom: 6px;
+    }
+
+    .annual-banner-content h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .annual-banner-content p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      max-width: 820px;
+      line-height: 1.5;
+    }
+
+    .banner-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--fsj-blue-gradient);
+      color: #ffffff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 86, 179, 0.25);
+      transition: var(--transition);
+    }
+
+    .banner-action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 86, 179, 0.35);
+    }
+
+    /* Pílulas de Seleção de Mês */
+    .month-selector-bar {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-card);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .month-selector-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .month-pills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .month-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .month-pill:hover {
+      border-color: var(--fsj-blue-light);
+      background: var(--bg-card-hover);
+      transform: translateY(-1px);
+    }
+
+    .month-pill.active {
+      background: var(--fsj-blue-gradient);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(0, 119, 255, 0.35);
+    }
+
+    .pill-badge {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 800;
+    }
+
+    .month-pill.active .pill-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    .pill-badge.badge-success { background: var(--badge-green-bg); color: var(--badge-green-text); }
+    .pill-badge.badge-warning { background: #fef3c7; color: #b45309; }
+    .pill-badge.badge-danger { background: var(--badge-red-bg); color: var(--badge-red-text); }
+
+    /* Painel de Diagnóstico Executivo */
+    .diagnostic-panel-container {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .diag-header-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-card);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .diag-title-box h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 6px 0 2px 0;
+    }
+
+    .diag-title-box p {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .diag-kpi-summary {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .diag-kpi-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .diag-kpi-item .lbl {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .diag-kpi-item .val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .btn-jump-diario {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      color: var(--fsj-blue);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-jump-diario:hover {
+      background: var(--fsj-blue);
+      color: #ffffff;
+      border-color: var(--fsj-blue);
+    }
+
+    /* Grid de 3 Colunas de Diagnóstico */
+    .diag-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr 0.95fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 1280px) {
+      .diag-grid { grid-template-columns: 1fr; }
+    }
+
+    .diag-col-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-card);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .diag-col-card.alert-border {
+      border-top: 3.5px solid #ef4444;
+    }
+
+    .diag-col-card.success-border {
+      border-top: 3.5px solid #10b981;
+    }
+
+    .diag-col-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-card);
+    }
+
+    .diag-col-header h4 {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .diag-col-header p {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+    }
+
+    .badge-count {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-card-subtle);
+      color: var(--text-secondary);
+    }
+
+    .badge-count.badge-danger {
+      background: var(--badge-red-bg);
+      color: var(--badge-red-text);
+    }
+
+    .badge-count.badge-success {
+      background: var(--badge-green-bg);
+      color: var(--badge-green-text);
+    }
+
+    /* Tabela de Grupos Diagnóstico */
+    .diag-table-wrapper {
+      overflow-x: auto;
+    }
+
+    .diag-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+
+    .diag-table th {
+      background: var(--bg-card-subtle);
+      padding: 8px 10px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-card);
+      white-space: nowrap;
+    }
+
+    .diag-table td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border-card);
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .diag-table tr:hover td {
+      background: var(--bg-card-subtle);
+    }
+
+    /* Linhas Cards */
+    .diag-lines-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .line-card-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      transition: var(--transition);
+    }
+
+    .line-card-item:hover {
+      transform: translateX(3px);
+      background: var(--bg-card-hover);
+      border-color: var(--fsj-blue-light);
+    }
+
+    .line-info-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .line-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .line-meta {
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .line-grp-tag {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--text-secondary);
+    }
+
+    .line-delta-pill {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1px;
+    }
+
+    .line-delta-pill .val {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .line-delta-pill .pct {
+      font-size: 11px;
+      font-weight: 700;
     }
   </style>
 </head>
@@ -1028,31 +1419,38 @@
       <span>DIGITAL</span>
     </div>
     <div class="nav-items">
-      <!-- Visão 1: Visão Geral -->
-      <button class="nav-btn active" data-view="view-geral" title="Visão Geral & Cards Executivos">
+      <!-- Visão 0: Visão Anual 2026 & Diagnóstico -->
+      <button class="nav-btn active" data-view="view-anual" title="Visão Anual 2026 & Diagnóstico de Involuções">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+      </button>
+
+      <!-- Visão 1: Visão Geral -->
+      <button class="nav-btn" data-view="view-geral" title="Visão Geral & Cards Executivos MTD/Diário">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
         </svg>
       </button>
 
       <!-- Visão 2: Tendências & Desvios Diários -->
       <button class="nav-btn" data-view="view-desvios" title="Tendências & Desvios Diários">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
         </svg>
       </button>
 
       <!-- Visão 3: Tráfego e Conversão -->
       <button class="nav-btn" data-view="view-trafego" title="Tráfego, Conversão e Origens">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
         </svg>
       </button>
 
       <!-- Visão 4: Projeção & Run Rate -->
       <button class="nav-btn" data-view="view-projecoes" title="Projeção de Fechamento & Fechamento Mês">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
         </svg>
       </button>
     </div>
@@ -1068,9 +1466,27 @@
           Dashboard Gerencial — Canais Digitais
           <span class="tag-figital">+ Figital</span>
         </h1>
-        <p>Acompanhamento Oficial de Metas, Venda Efetiva, Tráfego e Rentabilidade | Atualizado: 2026-09-18 09:35:32</p>
+        <p>Acompanhamento Oficial de Metas, Venda Efetiva, Tráfego e Rentabilidade | Atualizado: 2026-09-18 10:00:02</p>
       </div>
       <div class="header-controls">
+        <!-- TOGGLE INTEGRAR FIGITAL (GLOBAL) -->
+        <div class="figital-switch-bar" id="figitalSwitchBar" title="Clique para Alternar: Incorporar Figital aos Totais de Canais Digitais e E-Commerce">
+          <div class="figital-switch-info">
+            <span class="switch-pulse-indicator"></span>
+            <div class="switch-text-group">
+              <span class="switch-title-text">+ Figital</span>
+              <span class="switch-desc-text">Integrar Totais</span>
+            </div>
+          </div>
+          <div class="figital-switch-action">
+            <span class="switch-mode-tag" id="figitalStateBadge">OFF</span>
+            <label class="apple-switch" onclick="event.stopPropagation()">
+              <input type="checkbox" id="toggleFigitalInput" aria-label="Somar Figital aos Totais">
+              <span class="apple-slider"></span>
+            </label>
+          </div>
+        </div>
+
         <!-- CONTROLES DE FILTRO DE DATA & HISTÓRICO -->
         <div class="period-control-group">
           <div class="period-select-box">
@@ -1103,9 +1519,260 @@
     </header>
 
     <!-- ====================================================================
+         VISÃO 0: VISÃO ANUAL 2026 & DIAGNÓSTICO MENSAL DE INVOLUÇÕES
+         ==================================================================== -->
+    <section class="view-panel active" id="view-anual">
+      <!-- Banner Estratégico Superior -->
+      <div class="annual-banner-card">
+        <div class="annual-banner-content">
+          <div class="banner-badge">Visão Executiva YTD 2026</div>
+          <h2>Consolidado Anual 2026 — Canais Digitais & Figital</h2>
+          <p>Evolução acumulada de Janeiro a Setembro, comparativo de metas mês a mês e diagnóstico analítico de involuções por categoria e linha de produto.</p>
+        </div>
+        <div class="annual-banner-actions">
+          <button class="banner-action-btn" id="btnSwitchToGeral" onclick="switchView('view-geral')">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+            Ir para Acompanhamento Diário / MTD
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Hero Cards Anuais (YTD) -->
+      <div class="top-hero-grid">
+        <!-- Card 1: Faturamento Digital YTD -->
+        <div class="hero-card highlight-card" id="cardAnualDigital">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3>Canais Digitais (YTD)</h3>
+                <span class="badge-figital-pill" id="ytdDigFigitalBadge" style="display: none;">+ Figital</span>
+              </div>
+              <span class="hero-subtitle">Acumulado Jan a Set/2026</span>
+            </div>
+            <span class="hero-part-badge" style="background: var(--badge-green-bg); color: var(--badge-green-text);" id="ytdDigAting">
+              100.0% Meta
+            </span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" id="ytdDigReal">R$ 445.687 Mi</span>
+            <span class="hero-meta-mes">Meta YTD: <strong id="ytdDigMeta">R$ 445.465 Mi</strong></span>
+          </div>
+          <div class="hero-meta-pill">
+            <span>Desvio (R$): <strong id="ytdDigDesvioVal" class="val-positive">+222.5 K</strong></span>
+            <span>Desvio (%): <strong id="ytdDigDesvioPct" class="val-positive">+0.05%</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Crescimento YoY: <strong class="val-positive">⇑ +43.8%</strong></span>
+            <span class="indicator-item">Meses Acima da Meta: <strong class="val-positive">5 de 9</strong></span>
+          </div>
+        </div>
+
+        <!-- Card 2: E-Commerce Total YTD -->
+        <div class="hero-card highlight-card" id="cardAnualEcom">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3>E-Commerce Total (YTD)</h3>
+                <span class="badge-figital-pill" id="ytdEcomFigitalBadge" style="display: none;">+ Figital</span>
+              </div>
+              <span class="hero-subtitle">Digitais + Televendas</span>
+            </div>
+            <span class="hero-part-badge" style="background: var(--badge-green-bg); color: var(--badge-green-text);" id="ytdEcomAting">
+              100.2% Meta
+            </span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" id="ytdEcomReal">R$ 454.113 Mi</span>
+            <span class="hero-meta-mes">Meta YTD: <strong id="ytdEcomMeta">R$ 453.407 Mi</strong></span>
+          </div>
+          <div class="hero-meta-pill">
+            <span>Desvio (R$): <strong id="ytdEcomDesvioVal" class="val-positive">+706.4 K</strong></span>
+            <span>Desvio (%): <strong id="ytdEcomDesvioPct" class="val-positive">+0.16%</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Crescimento YoY: <strong class="val-positive">⇑ +42.5%</strong></span>
+            <span class="indicator-item">Pilar Figital (Set): <strong>R$ 2.762 Mi</strong></span>
+          </div>
+        </div>
+
+        <!-- Card 3: Balanço de Desempenho -->
+        <div class="hero-card">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <h3>Balanço de Metas</h3>
+              <span class="hero-subtitle">Consistência Mensal 2026</span>
+            </div>
+            <span class="hero-part-badge" style="background: #e0f2fe; color: #0284c7;">55.6% Sucesso</span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" style="color: var(--badge-green-text);">5 Meses Batidos</span>
+            <span class="hero-meta-mes">4 meses em recuperação (Abr, Mai, Jun, Jul)</span>
+          </div>
+          <div class="hero-meta-pill">
+            <span>Melhor Mês: <strong class="val-positive">Fev/26 (+109.5%)</strong></span>
+            <span>Mês Recorde: <strong style="color: var(--fsj-blue-light);">Ago/26 (R$ 55.9M)</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Média Mensal: <strong>R$ 51.7 Mi/mês</strong></span>
+            <span class="indicator-item">Ritmo Atual (Set): <strong class="val-positive">103.5% da Meta</strong></span>
+          </div>
+        </div>
+
+        <!-- Card 4: Projeção Anual 2026 -->
+        <div class="hero-card">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <h3>Projeção de Ano (FY26)</h3>
+              <span class="hero-subtitle">Projeção Linear 12 Meses</span>
+            </div>
+            <span class="hero-part-badge" style="background: #fef3c7; color: #b45309;">Run-Rate Anual</span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" style="color: var(--fsj-blue);">~R$ 621 Mi</span>
+            <span class="hero-meta-mes">Projeção Digital para Fechamento 2026</span>
+          </div>
+          <div class="hero-meta-pill">
+            <span>Meta Anual Estimada: <strong>R$ 610.0 Mi</strong></span>
+            <span>Previsão Superação: <strong class="val-positive">+R$ 11.0 Mi</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Atingimento Projetado: <strong class="val-positive">101.8%</strong></span>
+            <span class="indicator-item">Black Friday (Nov): <strong style="color: var(--fsj-accent);">Pico Sazonal</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráfico Comparativo Mês a Mês: Meta vs Realizado -->
+      <div class="card-chart-full">
+        <div class="card-chart-header">
+          <div>
+            <h3>Evolução Mensal 2026 — Realizado vs Meta Oficial</h3>
+            <p>Comparativo consolidado de faturamento mês a mês. Clique em qualquer coluna do gráfico ou use as opções abaixo para inspecionar o diagnóstico do mês.</p>
+          </div>
+          <div class="chart-legend-box">
+            <div class="legend-item"><span class="legend-color" style="background: #0077ff;"></span> Realizado Digital</div>
+            <div class="legend-item" id="annualLegendFigital" style="display: none;"><span class="legend-color" style="background: #8b5cf6;"></span> Figital</div>
+            <div class="legend-item"><span class="legend-color" style="background: #94a3b8; border-top: 2px dashed #003875;"></span> Meta Oficial</div>
+          </div>
+        </div>
+        <div style="height: 320px; width: 100%; position: relative;">
+          <canvas id="chartAnualMeses"></canvas>
+        </div>
+      </div>
+
+      <!-- Pílulas de Seleção de Mês para Diagnóstico -->
+      <div class="month-selector-bar">
+        <div class="month-selector-title">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
+          </svg>
+          Selecione o Mês para Diagnóstico de Involuções:
+        </div>
+        <div class="month-pills-list" id="annualMonthPills">
+          <!-- Gerado dinamicamente via JS com status de cor -->
+        </div>
+      </div>
+
+      <!-- PAINEL DE DIAGNÓSTICO DO MÊS SELECIONADO -->
+      <div class="diagnostic-panel-container" id="diagnosticPanel">
+        <!-- Header do Mês Selecionado -->
+        <div class="diag-header-card">
+          <div class="diag-title-box">
+            <span class="diag-badge-pill" id="diagStatusBadge">🟢 Meta Superada</span>
+            <h3 id="diagMonthTitle">Diagnóstico Executivo — Setembro de 2026</h3>
+            <p id="diagSubtitle">Comparativo analítico em relação a Agosto de 2026 e detalhamento de motores de crescimento e perdas.</p>
+          </div>
+          <div class="diag-kpi-summary">
+            <div class="diag-kpi-item">
+              <span class="lbl">Realizado Digitais</span>
+              <span class="val" id="diagRealDigitais">R$ 33.065 Mi</span>
+            </div>
+            <div class="diag-kpi-item">
+              <span class="lbl">Meta Oficial</span>
+              <span class="val" id="diagMetaDigitais">R$ 31.956 Mi</span>
+            </div>
+            <div class="diag-kpi-item">
+              <span class="lbl">Desvio (R$ / %)</span>
+              <span class="val val-positive" id="diagDesvioDigitais">+R$ 1.109 Mi (+3.47%)</span>
+            </div>
+            <div class="diag-kpi-item">
+              <span class="lbl">Variação MoM</span>
+              <span class="val" id="diagMoM">-40.9% (17 dias vs 31 dias)</span>
+            </div>
+            <div class="diag-kpi-item" style="border-left: 1px solid var(--border-card); padding-left: 14px;">
+              <button class="btn-jump-diario" id="btnJumpDiario" title="Abrir Visão Diária detalhada deste mês" onclick="switchView('view-geral')">
+                Ver Acompanhamento Diário ➜
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid com 3 Colunas de Diagnóstico -->
+        <div class="diag-grid">
+          <!-- Coluna 1: Categorias / Grupos (Ranking de Involução / Desempenho) -->
+          <div class="diag-col-card">
+            <div class="diag-col-header">
+              <div>
+                <h4>Categorias & Grupos</h4>
+                <p>Ordenadas pelas maiores involuções (quedas nominais vs mês anterior)</p>
+              </div>
+              <span class="badge-count" id="countGrupos">Grupos</span>
+            </div>
+            <div class="diag-table-wrapper">
+              <table class="diag-table" id="tableGruposDiag">
+                <thead>
+                  <tr>
+                    <th>Categoria</th>
+                    <th style="text-align: right;">Venda Mês</th>
+                    <th style="text-align: right;">Mês Anterior</th>
+                    <th style="text-align: right;">Delta (R$)</th>
+                    <th style="text-align: right;">Var %</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyGruposDiag">
+                  <!-- Inserido dinamicamente via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Coluna 2: Top Linhas em Involução / Queda (Ofensores) -->
+          <div class="diag-col-card alert-border">
+            <div class="diag-col-header">
+              <div>
+                <h4 style="color: #b91c1c;">⚠️ Linhas com Maior Queda (Ofensores)</h4>
+                <p>Produtos/Linhas que mais puxaram o faturamento para baixo no mês</p>
+              </div>
+              <span class="badge-count badge-danger">Top Quedas</span>
+            </div>
+            <div class="diag-lines-list" id="listLinhasInvolucao">
+              <!-- Inserido dinamicamente via JS -->
+            </div>
+          </div>
+
+          <!-- Coluna 3: Top Linhas em Evolução / Crescimento (Alavancas) -->
+          <div class="diag-col-card success-border">
+            <div class="diag-col-header">
+              <div>
+                <h4 style="color: #15803d;">🚀 Linhas com Maior Crescimento (Alavancas)</h4>
+                <p>Produtos/Linhas com maior avanço nominal para compensar</p>
+              </div>
+              <span class="badge-count badge-success">Top Altas</span>
+            </div>
+            <div class="diag-lines-list" id="listLinhasEvolucao">
+              <!-- Inserido dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
          VISÃO 1: VISÃO GERAL & CARDS EXECUTIVOS
          ==================================================================== -->
-    <section class="view-panel active" id="view-geral">
+    <section class="view-panel" id="view-geral">
       <!-- 4 Top Hero Cards -->
       <div class="top-hero-grid">
         <!-- Card 1: E-COMMERCE TOTAL -->
@@ -1208,24 +1875,6 @@
 
         <!-- Card 4: FIGITAL (NOVO PILAR) -->
         <div class="hero-card figital-card" id="cardFigital">
-          <!-- Switch Bar ON / OFF em cima no bloco do Figital -->
-          <div class="figital-switch-bar" id="figitalSwitchBar" title="Clique para Alternar: Incorporar Figital aos Totais de Canais Digitais e E-Commerce">
-            <div class="figital-switch-info">
-              <span class="switch-pulse-indicator"></span>
-              <div class="switch-text-group">
-                <span class="switch-title-text">Somar aos Totais</span>
-                <span class="switch-desc-text">Digitais & E-Commerce</span>
-              </div>
-            </div>
-            <div class="figital-switch-action">
-              <span class="switch-mode-tag" id="figitalStateBadge">OFF</span>
-              <label class="apple-switch" onclick="event.stopPropagation()">
-                <input type="checkbox" id="toggleFigitalInput" aria-label="Somar Figital aos Totais">
-                <span class="apple-slider"></span>
-              </label>
-            </div>
-          </div>
-
           <div class="hero-header">
             <div class="hero-title-group">
               <div style="display: flex; align-items: center; gap: 6px;">
@@ -1897,7 +2546,7 @@
   <!-- JAVASCRIPT LOGIC -->
   <script>
     const dashData = {
-  "atualizacao": "2026-09-18 09:35:32",
+  "atualizacao": "2026-09-18 10:00:02",
   "data_corte": "01 a 17/09/2026",
   "max_dia": 17,
   "kpis": {
@@ -9106,7 +9755,2187 @@
       "receita": 427963.13,
       "share": 0.034
     }
-  ]
+  ],
+  "visao_anual": {
+    "ytd": {
+      "digitais": {
+        "real": 445687422.99,
+        "meta": 445464923.44,
+        "desvio_val": 222499.55,
+        "desvio_pct": 0.05,
+        "atingimento_pct": 100.05,
+        "crescimento_yoy_pct": 43.8
+      },
+      "ecommerce_sem_figital": {
+        "real": 454113422.99,
+        "meta": 453407008.11,
+        "desvio_val": 706414.88,
+        "desvio_pct": 0.16,
+        "atingimento_pct": 100.16,
+        "crescimento_yoy_pct": 42.5
+      },
+      "ecommerce_com_figital": {
+        "real": 456875885.5,
+        "meta": 454845006.91,
+        "desvio_val": 2030878.59,
+        "desvio_pct": 0.45,
+        "atingimento_pct": 100.45,
+        "crescimento_yoy_pct": 45.2
+      }
+    },
+    "meses": [
+      {
+        "key": "2026-01",
+        "label": "Jan/26",
+        "nome_completo": "Janeiro de 2026",
+        "is_current": false,
+        "status": "success",
+        "real_digitais": 45777224.47,
+        "meta_digitais": 43768007.0,
+        "desvio_digitais_val": 2009217.47,
+        "desvio_digitais_pct": 4.59,
+        "atingimento_digitais_pct": 104.59,
+        "real_total_sem_figital": 46407224.47,
+        "meta_total_sem_figital": 44368007.0,
+        "desvio_total_sem_figital_val": 2039217.47,
+        "desvio_total_sem_figital_pct": 4.6,
+        "atingimento_total_sem_figital_pct": 104.6,
+        "real_total_com_figital": 46407224.47,
+        "meta_total_com_figital": 44368007.0,
+        "desvio_total_com_figital_val": 2039217.47,
+        "desvio_total_com_figital_pct": 4.6,
+        "atingimento_total_com_figital_pct": 104.6,
+        "real_figital": 0.0,
+        "real_televendas": 630000.0,
+        "mom_digitais_pct": 0.0,
+        "canais": {
+          "app": 22458315.53,
+          "site": 13557278.66,
+          "marketplace": 9761630.28,
+          "televendas": 630000.0,
+          "figital": 0.0
+        },
+        "diagnostico": {
+          "grupos": [],
+          "top_involucao_linhas": [],
+          "top_evolucao_linhas": []
+        }
+      },
+      {
+        "key": "2026-02",
+        "label": "Fev/26",
+        "nome_completo": "Fevereiro de 2026",
+        "is_current": false,
+        "status": "success",
+        "real_digitais": 46910295.25,
+        "meta_digitais": 42852732.16,
+        "desvio_digitais_val": 4057563.09,
+        "desvio_digitais_pct": 9.47,
+        "atingimento_digitais_pct": 109.47,
+        "real_total_sem_figital": 47645295.25,
+        "meta_total_sem_figital": 43552732.16,
+        "desvio_total_sem_figital_val": 4092563.09,
+        "desvio_total_sem_figital_pct": 9.4,
+        "atingimento_total_sem_figital_pct": 109.4,
+        "real_total_com_figital": 47645295.25,
+        "meta_total_com_figital": 43552732.16,
+        "desvio_total_com_figital_val": 4092563.09,
+        "desvio_total_com_figital_pct": 9.4,
+        "atingimento_total_com_figital_pct": 109.4,
+        "real_figital": 0.0,
+        "real_televendas": 735000.0,
+        "mom_digitais_pct": 2.48,
+        "canais": {
+          "app": 23687975.83,
+          "site": 13951908.89,
+          "marketplace": 9270410.53,
+          "televendas": 735000.0,
+          "figital": 0.0
+        },
+        "diagnostico": {
+          "grupos": [
+            {
+              "grupo": "PERFUMARIA",
+              "venda_mes": 10740850.1,
+              "venda_ant": 11182582.52,
+              "delta_val": -441732.42,
+              "delta_pct": -4.0,
+              "share_pct": 22.9,
+              "status": "queda"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 2507843.57,
+              "venda_ant": 2712008.62,
+              "delta_val": -204165.05,
+              "delta_pct": -7.5,
+              "share_pct": 5.3,
+              "status": "queda"
+            },
+            {
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 617692.33,
+              "venda_ant": 656062.49,
+              "delta_val": -38370.16,
+              "delta_pct": -5.8,
+              "share_pct": 1.3,
+              "status": "queda"
+            },
+            {
+              "grupo": "DIVERSOS",
+              "venda_mes": 279053.78,
+              "venda_ant": 294709.58,
+              "delta_val": -15655.8,
+              "delta_pct": -5.3,
+              "share_pct": 0.6,
+              "status": "queda"
+            },
+            {
+              "grupo": "SERVICOS",
+              "venda_mes": 1638.0,
+              "venda_ant": 1249.1,
+              "delta_val": 388.9,
+              "delta_pct": 31.1,
+              "share_pct": 0.0,
+              "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 1655548.86,
+              "venda_ant": 1631623.34,
+              "delta_val": 23925.52,
+              "delta_pct": 1.5,
+              "share_pct": 3.5,
+              "status": "alta"
+            },
+            {
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 31107668.61,
+              "venda_ant": 29298988.82,
+              "delta_val": 1808679.79,
+              "delta_pct": 6.2,
+              "share_pct": 66.3,
+              "status": "alta"
+            }
+          ],
+          "top_involucao_linhas": [
+            {
+              "linha": "ELETRODOMESTICOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 416836.24,
+              "venda_ant": 728580.82,
+              "delta_val": -311744.58,
+              "delta_pct": -42.8
+            },
+            {
+              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1138474.3,
+              "venda_ant": 1268091.29,
+              "delta_val": -129616.99,
+              "delta_pct": -10.2
+            },
+            {
+              "linha": "FRALDAS INFANTIS ROUPA",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 434857.43,
+              "venda_ant": 558019.22,
+              "delta_val": -123161.79,
+              "delta_pct": -22.1
+            },
+            {
+              "linha": "SOLAR - AERO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 36510.71,
+              "venda_ant": 128175.43,
+              "delta_val": -91664.72,
+              "delta_pct": -71.5
+            },
+            {
+              "linha": "SOLAR - KIT",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 144582.26,
+              "venda_ant": 221360.58,
+              "delta_val": -76778.32,
+              "delta_pct": -34.7
+            },
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 3753595.69,
+              "venda_ant": 3823111.68,
+              "delta_val": -69515.99,
+              "delta_pct": -1.8
+            },
+            {
+              "linha": "CONTRACEPTIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 817717.2,
+              "venda_ant": 864867.57,
+              "delta_val": -47150.37,
+              "delta_pct": -5.5
+            },
+            {
+              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 657116.26,
+              "venda_ant": 703457.58,
+              "delta_val": -46341.32,
+              "delta_pct": -6.6
+            },
+            {
+              "linha": "HORMONIOS DIVERSOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 281272.87,
+              "venda_ant": 325211.96,
+              "delta_val": -43939.09,
+              "delta_pct": -13.5
+            },
+            {
+              "linha": "LIVROS - ADULTO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 12668.6,
+              "venda_ant": 56323.98,
+              "delta_val": -43655.38,
+              "delta_pct": -77.5
+            }
+          ],
+          "top_evolucao_linhas": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 18153591.27,
+              "venda_ant": 15927076.92,
+              "delta_val": 2226514.35,
+              "delta_pct": 14.0
+            },
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 160048.85,
+              "venda_ant": 92901.34,
+              "delta_val": 67147.51,
+              "delta_pct": 72.3
+            },
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 954082.54,
+              "venda_ant": 892468.23,
+              "delta_val": 61614.31,
+              "delta_pct": 6.9
+            },
+            {
+              "linha": "KIT - CAPILAR",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 443890.81,
+              "venda_ant": 385236.35,
+              "delta_val": 58654.46,
+              "delta_pct": 15.2
+            },
+            {
+              "linha": "BAZAR - CALCADOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 62233.1,
+              "venda_ant": 3762.3,
+              "delta_val": 58470.8,
+              "delta_pct": 1554.1
+            },
+            {
+              "linha": "DESODORANTE - AERO MASCULINO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 252288.86,
+              "venda_ant": 203316.1,
+              "delta_val": 48972.76,
+              "delta_pct": 24.1
+            },
+            {
+              "linha": "CHOCOLATES",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 242692.84,
+              "venda_ant": 208035.64,
+              "delta_val": 34657.2,
+              "delta_pct": 16.7
+            },
+            {
+              "linha": "NUTRICOSMETICOS",
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 61919.46,
+              "venda_ant": 30347.65,
+              "delta_val": 31571.81,
+              "delta_pct": 104.0
+            },
+            {
+              "linha": "DESODORANTE - AERO FEMININO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 226167.99,
+              "venda_ant": 198274.79,
+              "delta_val": 27893.2,
+              "delta_pct": 14.1
+            },
+            {
+              "linha": "OTC- ANTIGRIPAIS/ANTITUSSIGENOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 149169.13,
+              "venda_ant": 123999.95,
+              "delta_val": 25169.18,
+              "delta_pct": 20.3
+            }
+          ]
+        }
+      },
+      {
+        "key": "2026-03",
+        "label": "Mar/26",
+        "nome_completo": "Março de 2026",
+        "is_current": false,
+        "status": "success",
+        "real_digitais": 52922684.49,
+        "meta_digitais": 52499998.93,
+        "desvio_digitais_val": 422685.56,
+        "desvio_digitais_pct": 0.81,
+        "atingimento_digitais_pct": 100.81,
+        "real_total_sem_figital": 53762684.49,
+        "meta_total_sem_figital": 53299998.93,
+        "desvio_total_sem_figital_val": 462685.56,
+        "desvio_total_sem_figital_pct": 0.87,
+        "atingimento_total_sem_figital_pct": 100.87,
+        "real_total_com_figital": 53762684.49,
+        "meta_total_com_figital": 53299998.93,
+        "desvio_total_com_figital_val": 462685.56,
+        "desvio_total_com_figital_pct": 0.87,
+        "atingimento_total_com_figital_pct": 100.87,
+        "real_figital": 0.0,
+        "real_televendas": 840000.0,
+        "mom_digitais_pct": 12.82,
+        "canais": {
+          "app": 26652374.02,
+          "site": 12411348.31,
+          "marketplace": 13858962.16,
+          "televendas": 840000.0,
+          "figital": 0.0
+        },
+        "diagnostico": {
+          "grupos": [
+            {
+              "grupo": "SERVICOS",
+              "venda_mes": 3095.33,
+              "venda_ant": 1638.0,
+              "delta_val": 1457.33,
+              "delta_pct": 89.0,
+              "share_pct": 0.0,
+              "status": "alta"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 2514194.17,
+              "venda_ant": 2507843.57,
+              "delta_val": 6350.6,
+              "delta_pct": 0.3,
+              "share_pct": 4.8,
+              "status": "alta"
+            },
+            {
+              "grupo": "DIVERSOS",
+              "venda_mes": 304165.94,
+              "venda_ant": 279053.78,
+              "delta_val": 25112.16,
+              "delta_pct": 9.0,
+              "share_pct": 0.6,
+              "status": "alta"
+            },
+            {
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 707218.72,
+              "venda_ant": 617692.33,
+              "delta_val": 89526.39,
+              "delta_pct": 14.5,
+              "share_pct": 1.3,
+              "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 2222190.39,
+              "venda_ant": 1655548.86,
+              "delta_val": 566641.53,
+              "delta_pct": 34.2,
+              "share_pct": 4.2,
+              "status": "alta"
+            },
+            {
+              "grupo": "PERFUMARIA",
+              "venda_mes": 13306941.9,
+              "venda_ant": 10740850.1,
+              "delta_val": 2566091.8,
+              "delta_pct": 23.9,
+              "share_pct": 25.1,
+              "status": "alta"
+            },
+            {
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 33864878.04,
+              "venda_ant": 31107668.61,
+              "delta_val": 2757209.43,
+              "delta_pct": 8.9,
+              "share_pct": 64.0,
+              "status": "alta"
+            }
+          ],
+          "top_involucao_linhas": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 17172769.6,
+              "venda_ant": 18153591.27,
+              "delta_val": -980821.67,
+              "delta_pct": -5.4
+            },
+            {
+              "linha": "ELETRODOMESTICOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 159374.73,
+              "venda_ant": 416836.24,
+              "delta_val": -257461.51,
+              "delta_pct": -61.8
+            },
+            {
+              "linha": "SOLAR - KIT",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 57137.32,
+              "venda_ant": 144582.26,
+              "delta_val": -87444.94,
+              "delta_pct": -60.5
+            },
+            {
+              "linha": "BAZAR - CALCADOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 18029.96,
+              "venda_ant": 62233.1,
+              "delta_val": -44203.14,
+              "delta_pct": -71.0
+            },
+            {
+              "linha": "BAZAR – PRAIA / PISCINA",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 12424.06,
+              "venda_ant": 54189.28,
+              "delta_val": -41765.22,
+              "delta_pct": -77.1
+            },
+            {
+              "linha": "SOLAR - AERO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 3311.83,
+              "venda_ant": 36510.71,
+              "delta_val": -33198.88,
+              "delta_pct": -90.9
+            },
+            {
+              "linha": "BAZAR – TERMICOS COPOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 30747.22,
+              "venda_ant": 53980.1,
+              "delta_val": -23232.88,
+              "delta_pct": -43.0
+            },
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 137133.99,
+              "venda_ant": 160048.85,
+              "delta_val": -22914.86,
+              "delta_pct": -14.3
+            },
+            {
+              "linha": "REPELENTES",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 47891.37,
+              "venda_ant": 70411.93,
+              "delta_val": -22520.56,
+              "delta_pct": -32.0
+            },
+            {
+              "linha": "SOLAR - PROTECAO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 15899.73,
+              "venda_ant": 36253.17,
+              "delta_val": -20353.44,
+              "delta_pct": -56.1
+            }
+          ],
+          "top_evolucao_linhas": [
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 5207781.95,
+              "venda_ant": 3753595.69,
+              "delta_val": 1454186.26,
+              "delta_pct": 38.7
+            },
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 1428169.8,
+              "venda_ant": 954082.54,
+              "delta_val": 474087.26,
+              "delta_pct": 49.7
+            },
+            {
+              "linha": "CONTRACEPTIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1134837.83,
+              "venda_ant": 817717.2,
+              "delta_val": 317120.63,
+              "delta_pct": 38.8
+            },
+            {
+              "linha": "ANTILIPEMICOS / REDUTORES COLESTEROL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 602681.76,
+              "venda_ant": 394975.75,
+              "delta_val": 207706.01,
+              "delta_pct": 52.6
+            },
+            {
+              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 842778.32,
+              "venda_ant": 657116.26,
+              "delta_val": 185662.06,
+              "delta_pct": 28.3
+            },
+            {
+              "linha": "CHOCOLATES",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 427317.37,
+              "venda_ant": 242692.84,
+              "delta_val": 184624.53,
+              "delta_pct": 76.1
+            },
+            {
+              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 655437.16,
+              "venda_ant": 483905.54,
+              "delta_val": 171531.62,
+              "delta_pct": 35.4
+            },
+            {
+              "linha": "OTC- ANTIGRIPAIS/ANTITUSSIGENOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 316805.83,
+              "venda_ant": 149169.13,
+              "delta_val": 167636.7,
+              "delta_pct": 112.4
+            },
+            {
+              "linha": "OTC- ANALGESICOS/ANTITERMICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 537306.35,
+              "venda_ant": 372158.29,
+              "delta_val": 165148.06,
+              "delta_pct": 44.4
+            },
+            {
+              "linha": "ANTI-HIPERTENSIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 526348.26,
+              "venda_ant": 375420.41,
+              "delta_val": 150927.85,
+              "delta_pct": 40.2
+            }
+          ]
+        }
+      },
+      {
+        "key": "2026-04",
+        "label": "Abr/26",
+        "nome_completo": "Abril de 2026",
+        "is_current": false,
+        "status": "warning",
+        "real_digitais": 48845725.24,
+        "meta_digitais": 50452360.0,
+        "desvio_digitais_val": -1606634.76,
+        "desvio_digitais_pct": -3.18,
+        "atingimento_digitais_pct": 96.82,
+        "real_total_sem_figital": 49843225.24,
+        "meta_total_sem_figital": 51402360.0,
+        "desvio_total_sem_figital_val": -1559134.76,
+        "desvio_total_sem_figital_pct": -3.03,
+        "atingimento_total_sem_figital_pct": 96.97,
+        "real_total_com_figital": 49843225.24,
+        "meta_total_com_figital": 51402360.0,
+        "desvio_total_com_figital_val": -1559134.76,
+        "desvio_total_com_figital_pct": -3.03,
+        "atingimento_total_com_figital_pct": 96.97,
+        "real_figital": 0.0,
+        "real_televendas": 997500.0,
+        "mom_digitais_pct": -7.7,
+        "canais": {
+          "app": 25358046.8,
+          "site": 11224405.65,
+          "marketplace": 12263272.79,
+          "televendas": 997500.0,
+          "figital": 0.0
+        },
+        "diagnostico": {
+          "grupos": [
+            {
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 31554386.58,
+              "venda_ant": 33864878.04,
+              "delta_val": -2310491.46,
+              "delta_pct": -6.8,
+              "share_pct": 64.6,
+              "status": "queda"
+            },
+            {
+              "grupo": "PERFUMARIA",
+              "venda_mes": 11877695.4,
+              "venda_ant": 13306941.9,
+              "delta_val": -1429246.5,
+              "delta_pct": -10.7,
+              "share_pct": 24.3,
+              "status": "queda"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 1916680.99,
+              "venda_ant": 2222190.39,
+              "delta_val": -305509.4,
+              "delta_pct": -13.7,
+              "share_pct": 3.9,
+              "status": "queda"
+            },
+            {
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 683268.99,
+              "venda_ant": 707218.72,
+              "delta_val": -23949.73,
+              "delta_pct": -3.4,
+              "share_pct": 1.4,
+              "status": "queda"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 2495891.41,
+              "venda_ant": 2514194.17,
+              "delta_val": -18302.76,
+              "delta_pct": -0.7,
+              "share_pct": 5.1,
+              "status": "queda"
+            },
+            {
+              "grupo": "SERVICOS",
+              "venda_mes": 4598.63,
+              "venda_ant": 3095.33,
+              "delta_val": 1503.3,
+              "delta_pct": 48.6,
+              "share_pct": 0.0,
+              "status": "alta"
+            },
+            {
+              "grupo": "DIVERSOS",
+              "venda_mes": 313203.24,
+              "venda_ant": 304165.94,
+              "delta_val": 9037.3,
+              "delta_pct": 3.0,
+              "share_pct": 0.6,
+              "status": "alta"
+            }
+          ],
+          "top_involucao_linhas": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 14801575.15,
+              "venda_ant": 17172769.6,
+              "delta_val": -2371194.45,
+              "delta_pct": -13.8
+            },
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 4243072.14,
+              "venda_ant": 5207781.95,
+              "delta_val": -964709.81,
+              "delta_pct": -18.5
+            },
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 1190599.31,
+              "venda_ant": 1428169.8,
+              "delta_val": -237570.49,
+              "delta_pct": -16.6
+            },
+            {
+              "linha": "CONTRACEPTIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 949320.0,
+              "venda_ant": 1134837.83,
+              "delta_val": -185517.83,
+              "delta_pct": -16.3
+            },
+            {
+              "linha": "ANTILIPEMICOS / REDUTORES COLESTEROL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 485009.34,
+              "venda_ant": 602681.76,
+              "delta_val": -117672.42,
+              "delta_pct": -19.5
+            },
+            {
+              "linha": "ANTI-HIPERTENSIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 430386.17,
+              "venda_ant": 526348.26,
+              "delta_val": -95962.09,
+              "delta_pct": -18.2
+            },
+            {
+              "linha": "DESODORANTE - AERO MASCULINO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 262331.36,
+              "venda_ant": 343201.55,
+              "delta_val": -80870.19,
+              "delta_pct": -23.6
+            },
+            {
+              "linha": "SORVETES/PICOLES",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 77908.22,
+              "venda_ant": 152256.91,
+              "delta_val": -74348.69,
+              "delta_pct": -48.8
+            },
+            {
+              "linha": "FORMULAS INFANTIS",
+              "grupo": "NUTRICAO",
+              "venda_mes": 661770.43,
+              "venda_ant": 724732.32,
+              "delta_val": -62961.89,
+              "delta_pct": -8.7
+            },
+            {
+              "linha": "ELETRODOMESTICOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 101118.31,
+              "venda_ant": 159374.73,
+              "delta_val": -58256.42,
+              "delta_pct": -36.6
+            }
+          ],
+          "top_evolucao_linhas": [
+            {
+              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1472731.7,
+              "venda_ant": 1278830.34,
+              "delta_val": 193901.36,
+              "delta_pct": 15.2
+            },
+            {
+              "linha": "FRALDAS INFANTIS ROUPA",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 705822.54,
+              "venda_ant": 555948.47,
+              "delta_val": 149874.07,
+              "delta_pct": 27.0
+            },
+            {
+              "linha": "LIVROS - ALBUM",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 123127.83,
+              "venda_ant": 0.0,
+              "delta_val": 123127.83,
+              "delta_pct": 0.0
+            },
+            {
+              "linha": "OTC- ANTIGRIPAIS/ANTITUSSIGENOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 394863.39,
+              "venda_ant": 316805.83,
+              "delta_val": 78057.56,
+              "delta_pct": 24.6
+            },
+            {
+              "linha": "ANTIBIOTICOS SISTEMICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 216591.88,
+              "venda_ant": 162605.57,
+              "delta_val": 53986.31,
+              "delta_pct": 33.2
+            },
+            {
+              "linha": "ANTIVIRAIS SISTEMICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 162519.24,
+              "venda_ant": 110791.45,
+              "delta_val": 51727.79,
+              "delta_pct": 46.7
+            },
+            {
+              "linha": "ANTIGRIPAIS / ANTITUSSIGENOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 103178.04,
+              "venda_ant": 58183.81,
+              "delta_val": 44994.23,
+              "delta_pct": 77.3
+            },
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 175201.85,
+              "venda_ant": 137133.99,
+              "delta_val": 38067.86,
+              "delta_pct": 27.8
+            },
+            {
+              "linha": "CHOCOLATES - PASCOA",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 70440.22,
+              "venda_ant": 33293.67,
+              "delta_val": 37146.55,
+              "delta_pct": 111.6
+            },
+            {
+              "linha": "ANTIPSICOTICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 235374.49,
+              "venda_ant": 204732.47,
+              "delta_val": 30642.02,
+              "delta_pct": 15.0
+            }
+          ]
+        }
+      },
+      {
+        "key": "2026-05",
+        "label": "Mai/26",
+        "nome_completo": "Maio de 2026",
+        "is_current": false,
+        "status": "warning",
+        "real_digitais": 54222802.74,
+        "meta_digitais": 55000000.0,
+        "desvio_digitais_val": -777197.26,
+        "desvio_digitais_pct": -1.41,
+        "atingimento_digitais_pct": 98.59,
+        "real_total_sem_figital": 55325302.74,
+        "meta_total_sem_figital": 56050000.0,
+        "desvio_total_sem_figital_val": -724697.26,
+        "desvio_total_sem_figital_pct": -1.29,
+        "atingimento_total_sem_figital_pct": 98.71,
+        "real_total_com_figital": 55325302.74,
+        "meta_total_com_figital": 56050000.0,
+        "desvio_total_com_figital_val": -724697.26,
+        "desvio_total_com_figital_pct": -1.29,
+        "atingimento_total_com_figital_pct": 98.71,
+        "real_figital": 0.0,
+        "real_televendas": 1102500.0,
+        "mom_digitais_pct": 11.01,
+        "canais": {
+          "app": 27364006.49,
+          "site": 12475178.8,
+          "marketplace": 14383617.45,
+          "televendas": 1102500.0,
+          "figital": 0.0
+        },
+        "diagnostico": {
+          "grupos": [
+            {
+              "grupo": "SERVICOS",
+              "venda_mes": 4727.51,
+              "venda_ant": 4598.63,
+              "delta_val": 128.88,
+              "delta_pct": 2.8,
+              "share_pct": 0.0,
+              "status": "alta"
+            },
+            {
+              "grupo": "DIVERSOS",
+              "venda_mes": 378231.01,
+              "venda_ant": 313203.24,
+              "delta_val": 65027.77,
+              "delta_pct": 20.8,
+              "share_pct": 0.7,
+              "status": "alta"
+            },
+            {
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 862382.87,
+              "venda_ant": 683268.99,
+              "delta_val": 179113.88,
+              "delta_pct": 26.2,
+              "share_pct": 1.6,
+              "status": "alta"
+            },
+            {
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 31836062.12,
+              "venda_ant": 31554386.58,
+              "delta_val": 281675.54,
+              "delta_pct": 0.9,
+              "share_pct": 58.7,
+              "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 2335406.33,
+              "venda_ant": 1916680.99,
+              "delta_val": 418725.34,
+              "delta_pct": 21.8,
+              "share_pct": 4.3,
+              "status": "alta"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 3975642.97,
+              "venda_ant": 2495891.41,
+              "delta_val": 1479751.56,
+              "delta_pct": 59.3,
+              "share_pct": 7.3,
+              "status": "alta"
+            },
+            {
+              "grupo": "PERFUMARIA",
+              "venda_mes": 14830349.93,
+              "venda_ant": 11877695.4,
+              "delta_val": 2952654.53,
+              "delta_pct": 24.9,
+              "share_pct": 27.4,
+              "status": "alta"
+            }
+          ],
+          "top_involucao_linhas": [
+            {
+              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1216670.27,
+              "venda_ant": 1472731.7,
+              "delta_val": -256061.43,
+              "delta_pct": -17.4
+            },
+            {
+              "linha": "CHOCOLATES",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 288701.89,
+              "venda_ant": 400619.47,
+              "delta_val": -111917.58,
+              "delta_pct": -27.9
+            },
+            {
+              "linha": "BAZAR – TERMICOS HIDRATACAO",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 69217.37,
+              "venda_ant": 175201.85,
+              "delta_val": -105984.48,
+              "delta_pct": -60.5
+            },
+            {
+              "linha": "ANTILIPEMICOS / REDUTORES COLESTEROL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 404684.4,
+              "venda_ant": 485009.34,
+              "delta_val": -80324.94,
+              "delta_pct": -16.6
+            },
+            {
+              "linha": "FRALDAS INFANTIS ROUPA",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 632232.3,
+              "venda_ant": 705822.54,
+              "delta_val": -73590.24,
+              "delta_pct": -10.4
+            },
+            {
+              "linha": "CHOCOLATES - PASCOA",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 1675.37,
+              "venda_ant": 70440.22,
+              "delta_val": -68764.85,
+              "delta_pct": -97.6
+            },
+            {
+              "linha": "KIT - CAPILAR",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 420862.03,
+              "venda_ant": 485320.59,
+              "delta_val": -64458.56,
+              "delta_pct": -13.3
+            },
+            {
+              "linha": "ANTIBIOTICOS SISTEMICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 162873.31,
+              "venda_ant": 216591.88,
+              "delta_val": -53718.57,
+              "delta_pct": -24.8
+            },
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 14751946.33,
+              "venda_ant": 14801575.15,
+              "delta_val": -49628.82,
+              "delta_pct": -0.3
+            },
+            {
+              "linha": "ANTIULCEROSOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 334113.15,
+              "venda_ant": 383708.72,
+              "delta_val": -49595.57,
+              "delta_pct": -12.9
+            }
+          ],
+          "top_evolucao_linhas": [
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 6442946.54,
+              "venda_ant": 4243072.14,
+              "delta_val": 2199874.4,
+              "delta_pct": 51.8
+            },
+            {
+              "linha": "LIVROS - ALBUM",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 1553387.25,
+              "venda_ant": 123127.83,
+              "delta_val": 1430259.42,
+              "delta_pct": 1161.6
+            },
+            {
+              "linha": "ELETRODOMESTICOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 472795.11,
+              "venda_ant": 101118.31,
+              "delta_val": 371676.8,
+              "delta_pct": 367.6
+            },
+            {
+              "linha": "OTC- ANTIGRIPAIS/ANTITUSSIGENOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 694643.39,
+              "venda_ant": 394863.39,
+              "delta_val": 299780.0,
+              "delta_pct": 75.9
+            },
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 1453207.2,
+              "venda_ant": 1190599.31,
+              "delta_val": 262607.89,
+              "delta_pct": 22.1
+            },
+            {
+              "linha": "FORMULAS INFANTIS",
+              "grupo": "NUTRICAO",
+              "venda_mes": 817646.36,
+              "venda_ant": 661770.43,
+              "delta_val": 155875.93,
+              "delta_pct": 23.6
+            },
+            {
+              "linha": "CONTRACEPTIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1089788.61,
+              "venda_ant": 949320.0,
+              "delta_val": 140468.61,
+              "delta_pct": 14.8
+            },
+            {
+              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 733872.81,
+              "venda_ant": 627023.2,
+              "delta_val": 106849.61,
+              "delta_pct": 17.0
+            },
+            {
+              "linha": "OTC- EXPECTORANTES",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 255287.69,
+              "venda_ant": 157365.7,
+              "delta_val": 97921.99,
+              "delta_pct": 62.2
+            },
+            {
+              "linha": "ELETROS DE BELEZA E CUIDADO PESSOAL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 124170.69,
+              "venda_ant": 41839.52,
+              "delta_val": 82331.17,
+              "delta_pct": 196.8
+            }
+          ]
+        }
+      },
+      {
+        "key": "2026-06",
+        "label": "Jun/26",
+        "nome_completo": "Junho de 2026",
+        "is_current": false,
+        "status": "danger",
+        "real_digitais": 54685160.52,
+        "meta_digitais": 58000000.0,
+        "desvio_digitais_val": -3314839.48,
+        "desvio_digitais_pct": -5.72,
+        "atingimento_digitais_pct": 94.28,
+        "real_total_sem_figital": 55787660.52,
+        "meta_total_sem_figital": 59050000.0,
+        "desvio_total_sem_figital_val": -3262339.48,
+        "desvio_total_sem_figital_pct": -5.52,
+        "atingimento_total_sem_figital_pct": 94.48,
+        "real_total_com_figital": 55787660.52,
+        "meta_total_com_figital": 59050000.0,
+        "desvio_total_com_figital_val": -3262339.48,
+        "desvio_total_com_figital_pct": -5.52,
+        "atingimento_total_com_figital_pct": 94.48,
+        "real_figital": 0.0,
+        "real_televendas": 1102500.0,
+        "mom_digitais_pct": 0.85,
+        "canais": {
+          "app": 26200365.33,
+          "site": 11001546.12,
+          "marketplace": 17483249.07,
+          "televendas": 1102500.0,
+          "figital": 0.0
+        },
+        "diagnostico": {
+          "grupos": [
+            {
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 30818928.72,
+              "venda_ant": 31836062.12,
+              "delta_val": -1017133.4,
+              "delta_pct": -3.2,
+              "share_pct": 56.4,
+              "status": "queda"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 2045087.36,
+              "venda_ant": 2335406.33,
+              "delta_val": -290318.97,
+              "delta_pct": -12.4,
+              "share_pct": 3.7,
+              "status": "queda"
+            },
+            {
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 768408.14,
+              "venda_ant": 862382.87,
+              "delta_val": -93974.73,
+              "delta_pct": -10.9,
+              "share_pct": 1.4,
+              "status": "queda"
+            },
+            {
+              "grupo": "DIVERSOS",
+              "venda_mes": 365478.44,
+              "venda_ant": 378231.01,
+              "delta_val": -12752.57,
+              "delta_pct": -3.4,
+              "share_pct": 0.7,
+              "status": "queda"
+            },
+            {
+              "grupo": "SERVICOS",
+              "venda_mes": 3752.29,
+              "venda_ant": 4727.51,
+              "delta_val": -975.22,
+              "delta_pct": -20.6,
+              "share_pct": 0.0,
+              "status": "queda"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 4170807.08,
+              "venda_ant": 3975642.97,
+              "delta_val": 195164.11,
+              "delta_pct": 4.9,
+              "share_pct": 7.6,
+              "status": "alta"
+            },
+            {
+              "grupo": "PERFUMARIA",
+              "venda_mes": 16512698.49,
+              "venda_ant": 14830349.93,
+              "delta_val": 1682348.56,
+              "delta_pct": 11.3,
+              "share_pct": 30.2,
+              "status": "alta"
+            }
+          ],
+          "top_involucao_linhas": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 14338715.97,
+              "venda_ant": 14751946.33,
+              "delta_val": -413230.36,
+              "delta_pct": -2.8
+            },
+            {
+              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 980657.32,
+              "venda_ant": 1216670.27,
+              "delta_val": -236012.95,
+              "delta_pct": -19.4
+            },
+            {
+              "linha": "LIVROS - ALBUM",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 1382488.06,
+              "venda_ant": 1553387.25,
+              "delta_val": -170899.19,
+              "delta_pct": -11.0
+            },
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 1283042.49,
+              "venda_ant": 1453207.2,
+              "delta_val": -170164.71,
+              "delta_pct": -11.7
+            },
+            {
+              "linha": "FORMULAS INFANTIS",
+              "grupo": "NUTRICAO",
+              "venda_mes": 677128.77,
+              "venda_ant": 817646.36,
+              "delta_val": -140517.59,
+              "delta_pct": -17.2
+            },
+            {
+              "linha": "ANTIULCEROSOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 264215.76,
+              "venda_ant": 334113.15,
+              "delta_val": -69897.39,
+              "delta_pct": -20.9
+            },
+            {
+              "linha": "ANTIGRIPAIS / ANTITUSSIGENOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 102191.5,
+              "venda_ant": 150553.4,
+              "delta_val": -48361.9,
+              "delta_pct": -32.1
+            },
+            {
+              "linha": "ANTI-INFLAMATORIO INTESTINAL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 33582.41,
+              "venda_ant": 79895.62,
+              "delta_val": -46313.21,
+              "delta_pct": -58.0
+            },
+            {
+              "linha": "HORMONIOS DIVERSOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 333834.42,
+              "venda_ant": 378446.16,
+              "delta_val": -44611.74,
+              "delta_pct": -11.8
+            },
+            {
+              "linha": "ANTIPSICOTICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 154069.17,
+              "venda_ant": 195767.89,
+              "delta_val": -41698.72,
+              "delta_pct": -21.3
+            }
+          ],
+          "top_evolucao_linhas": [
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 7428481.67,
+              "venda_ant": 6442946.54,
+              "delta_val": 985535.13,
+              "delta_pct": 15.3
+            },
+            {
+              "linha": "ELETRODOMESTICOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 633166.85,
+              "venda_ant": 472795.11,
+              "delta_val": 160371.74,
+              "delta_pct": 33.9
+            },
+            {
+              "linha": "DESODORANTE - AERO MASCULINO PACK",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 158683.71,
+              "venda_ant": 6725.25,
+              "delta_val": 151958.46,
+              "delta_pct": 2259.5
+            },
+            {
+              "linha": "KIT - CAPILAR",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 553853.92,
+              "venda_ant": 420862.03,
+              "delta_val": 132991.89,
+              "delta_pct": 31.6
+            },
+            {
+              "linha": "DESODORANTE - AERO MASCULINO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 411769.48,
+              "venda_ant": 301445.23,
+              "delta_val": 110324.25,
+              "delta_pct": 36.6
+            },
+            {
+              "linha": "CHOCOLATES",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 378389.95,
+              "venda_ant": 288701.89,
+              "delta_val": 89688.06,
+              "delta_pct": 31.1
+            },
+            {
+              "linha": "ELETROS DE BELEZA E CUIDADO PESSOAL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 196496.16,
+              "venda_ant": 124170.69,
+              "delta_val": 72325.47,
+              "delta_pct": 58.2
+            },
+            {
+              "linha": "DESODORANTE - AERO FEMININO PACK",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 55200.57,
+              "venda_ant": 3616.99,
+              "delta_val": 51583.58,
+              "delta_pct": 1426.1
+            },
+            {
+              "linha": "PROMOCIONAL GENERICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 520900.98,
+              "venda_ant": 470677.63,
+              "delta_val": 50223.35,
+              "delta_pct": 10.7
+            },
+            {
+              "linha": "DERMATOLOGICA",
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 195177.54,
+              "venda_ant": 145342.76,
+              "delta_val": 49834.78,
+              "delta_pct": 34.3
+            }
+          ]
+        }
+      },
+      {
+        "key": "2026-07",
+        "label": "Jul/26",
+        "nome_completo": "Julho de 2026",
+        "is_current": false,
+        "status": "danger",
+        "real_digitais": 53327174.34,
+        "meta_digitais": 55582487.95,
+        "desvio_digitais_val": -2255313.61,
+        "desvio_digitais_pct": -4.06,
+        "atingimento_digitais_pct": 95.94,
+        "real_total_sem_figital": 54429674.34,
+        "meta_total_sem_figital": 56632487.95,
+        "desvio_total_sem_figital_val": -2202813.61,
+        "desvio_total_sem_figital_pct": -3.89,
+        "atingimento_total_sem_figital_pct": 96.11,
+        "real_total_com_figital": 54429674.34,
+        "meta_total_com_figital": 56632487.95,
+        "desvio_total_com_figital_val": -2202813.61,
+        "desvio_total_com_figital_pct": -3.89,
+        "atingimento_total_com_figital_pct": 96.11,
+        "real_figital": 0.0,
+        "real_televendas": 1102500.0,
+        "mom_digitais_pct": -2.48,
+        "canais": {
+          "app": 26535725.17,
+          "site": 10374432.12,
+          "marketplace": 16417017.05,
+          "televendas": 1102500.0,
+          "figital": 0.0
+        },
+        "diagnostico": {
+          "grupos": [
+            {
+              "grupo": "PERFUMARIA",
+              "venda_mes": 15525357.11,
+              "venda_ant": 16512698.49,
+              "delta_val": -987341.38,
+              "delta_pct": -6.0,
+              "share_pct": 29.1,
+              "status": "queda"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 3266752.29,
+              "venda_ant": 4170807.08,
+              "delta_val": -904054.79,
+              "delta_pct": -21.7,
+              "share_pct": 6.1,
+              "status": "queda"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 1898330.42,
+              "venda_ant": 2045087.36,
+              "delta_val": -146756.94,
+              "delta_pct": -7.2,
+              "share_pct": 3.6,
+              "status": "queda"
+            },
+            {
+              "grupo": "SERVICOS",
+              "venda_mes": 2983.64,
+              "venda_ant": 3752.29,
+              "delta_val": -768.65,
+              "delta_pct": -20.5,
+              "share_pct": 0.0,
+              "status": "queda"
+            },
+            {
+              "grupo": "DIVERSOS",
+              "venda_mes": 387036.09,
+              "venda_ant": 365478.44,
+              "delta_val": 21557.65,
+              "delta_pct": 5.9,
+              "share_pct": 0.7,
+              "status": "alta"
+            },
+            {
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 1084605.65,
+              "venda_ant": 768408.14,
+              "delta_val": 316197.51,
+              "delta_pct": 41.1,
+              "share_pct": 2.0,
+              "status": "alta"
+            },
+            {
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 31162109.14,
+              "venda_ant": 30818928.72,
+              "delta_val": 343180.42,
+              "delta_pct": 1.1,
+              "share_pct": 58.4,
+              "status": "alta"
+            }
+          ],
+          "top_involucao_linhas": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 13294964.58,
+              "venda_ant": 14338715.97,
+              "delta_val": -1043751.39,
+              "delta_pct": -7.3
+            },
+            {
+              "linha": "LIVROS - ALBUM",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 400116.12,
+              "venda_ant": 1382488.06,
+              "delta_val": -982371.94,
+              "delta_pct": -71.1
+            },
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 6726272.6,
+              "venda_ant": 7428481.67,
+              "delta_val": -702209.07,
+              "delta_pct": -9.5
+            },
+            {
+              "linha": "ELETRODOMESTICOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 441854.51,
+              "venda_ant": 633166.85,
+              "delta_val": -191312.34,
+              "delta_pct": -30.2
+            },
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 1101343.57,
+              "venda_ant": 1283042.49,
+              "delta_val": -181698.92,
+              "delta_pct": -14.2
+            },
+            {
+              "linha": "FRALDAS INFANTIS ROUPA",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 489698.86,
+              "venda_ant": 625027.77,
+              "delta_val": -135328.91,
+              "delta_pct": -21.7
+            },
+            {
+              "linha": "DESODORANTE - AERO MASCULINO PACK",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 30101.93,
+              "venda_ant": 158683.71,
+              "delta_val": -128581.78,
+              "delta_pct": -81.0
+            },
+            {
+              "linha": "ELETROS DE BELEZA E CUIDADO PESSOAL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 72167.8,
+              "venda_ant": 196496.16,
+              "delta_val": -124328.36,
+              "delta_pct": -63.3
+            },
+            {
+              "linha": "OTC- ANTIGRIPAIS/ANTITUSSIGENOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 601613.09,
+              "venda_ant": 689453.44,
+              "delta_val": -87840.35,
+              "delta_pct": -12.7
+            },
+            {
+              "linha": "DESODORANTE - AERO MASCULINO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 326829.68,
+              "venda_ant": 411769.48,
+              "delta_val": -84939.8,
+              "delta_pct": -20.6
+            }
+          ],
+          "top_evolucao_linhas": [
+            {
+              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1226789.4,
+              "venda_ant": 980657.32,
+              "delta_val": 246132.08,
+              "delta_pct": 25.1
+            },
+            {
+              "linha": "DERMO - HIDRATANTE FACIAL",
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 338806.52,
+              "venda_ant": 188804.47,
+              "delta_val": 150002.05,
+              "delta_pct": 79.4
+            },
+            {
+              "linha": "LANCAMENTOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 348116.78,
+              "venda_ant": 237649.8,
+              "delta_val": 110466.98,
+              "delta_pct": 46.5
+            },
+            {
+              "linha": "ANTIBIOTICOS SISTEMICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 258368.87,
+              "venda_ant": 165391.42,
+              "delta_val": 92977.45,
+              "delta_pct": 56.2
+            },
+            {
+              "linha": "HOME CARE - LIMPEZA ROUPAS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 262986.06,
+              "venda_ant": 175349.68,
+              "delta_val": 87636.38,
+              "delta_pct": 50.0
+            },
+            {
+              "linha": "REPOSITOR FLORA INTESTINAL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 95720.01,
+              "venda_ant": 24497.11,
+              "delta_val": 71222.9,
+              "delta_pct": 290.7
+            },
+            {
+              "linha": "HORMONIOS DIVERSOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 401505.25,
+              "venda_ant": 333834.42,
+              "delta_val": 67670.83,
+              "delta_pct": 20.3
+            },
+            {
+              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 861589.29,
+              "venda_ant": 796900.36,
+              "delta_val": 64688.93,
+              "delta_pct": 8.1
+            },
+            {
+              "linha": "PROMOCIONAL GENERICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 583527.02,
+              "venda_ant": 520900.98,
+              "delta_val": 62626.04,
+              "delta_pct": 12.0
+            },
+            {
+              "linha": "DERMO - DESODORANTES",
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 69169.21,
+              "venda_ant": 8618.06,
+              "delta_val": 60551.15,
+              "delta_pct": 702.6
+            }
+          ]
+        }
+      },
+      {
+        "key": "2026-08",
+        "label": "Ago/26",
+        "nome_completo": "Agosto de 2026",
+        "is_current": false,
+        "status": "success",
+        "real_digitais": 55930881.85,
+        "meta_digitais": 55353808.55,
+        "desvio_digitais_val": 577073.3,
+        "desvio_digitais_pct": 1.04,
+        "atingimento_digitais_pct": 101.04,
+        "real_total_sem_figital": 57085881.85,
+        "meta_total_sem_figital": 56453808.55,
+        "desvio_total_sem_figital_val": 632073.3,
+        "desvio_total_sem_figital_pct": 1.12,
+        "atingimento_total_sem_figital_pct": 101.12,
+        "real_total_com_figital": 57085881.85,
+        "meta_total_com_figital": 56453808.55,
+        "desvio_total_com_figital_val": 632073.3,
+        "desvio_total_com_figital_pct": 1.12,
+        "atingimento_total_com_figital_pct": 101.12,
+        "real_figital": 0.0,
+        "real_televendas": 1155000.0,
+        "mom_digitais_pct": 4.88,
+        "canais": {
+          "app": 28547435.76,
+          "site": 10097752.93,
+          "marketplace": 17285693.16,
+          "televendas": 1155000.0,
+          "figital": 0.0
+        },
+        "diagnostico": {
+          "grupos": [
+            {
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 30834371.73,
+              "venda_ant": 31162109.14,
+              "delta_val": -327737.41,
+              "delta_pct": -1.1,
+              "share_pct": 55.1,
+              "status": "queda"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 3020247.82,
+              "venda_ant": 3266752.29,
+              "delta_val": -246504.47,
+              "delta_pct": -7.5,
+              "share_pct": 5.4,
+              "status": "queda"
+            },
+            {
+              "grupo": "DIVERSOS",
+              "venda_mes": 371547.82,
+              "venda_ant": 387036.09,
+              "delta_val": -15488.27,
+              "delta_pct": -4.0,
+              "share_pct": 0.7,
+              "status": "queda"
+            },
+            {
+              "grupo": "SERVICOS",
+              "venda_mes": 2130.02,
+              "venda_ant": 2983.64,
+              "delta_val": -853.62,
+              "delta_pct": -28.6,
+              "share_pct": 0.0,
+              "status": "queda"
+            },
+            {
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 1201704.24,
+              "venda_ant": 1084605.65,
+              "delta_val": 117098.59,
+              "delta_pct": 10.8,
+              "share_pct": 2.1,
+              "status": "alta"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 2264356.25,
+              "venda_ant": 1898330.42,
+              "delta_val": 366025.83,
+              "delta_pct": 19.3,
+              "share_pct": 4.0,
+              "status": "alta"
+            },
+            {
+              "grupo": "PERFUMARIA",
+              "venda_mes": 18236523.97,
+              "venda_ant": 15525357.11,
+              "delta_val": 2711166.86,
+              "delta_pct": 17.5,
+              "share_pct": 32.6,
+              "status": "alta"
+            }
+          ],
+          "top_involucao_linhas": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 11820805.53,
+              "venda_ant": 13294964.58,
+              "delta_val": -1474159.05,
+              "delta_pct": -11.1
+            },
+            {
+              "linha": "LIVROS - ALBUM",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 74106.48,
+              "venda_ant": 400116.12,
+              "delta_val": -326009.64,
+              "delta_pct": -81.5
+            },
+            {
+              "linha": "ELETRODOMESTICOS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 208952.8,
+              "venda_ant": 441854.51,
+              "delta_val": -232901.71,
+              "delta_pct": -52.7
+            },
+            {
+              "linha": "OTC- ANTIGRIPAIS/ANTITUSSIGENOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 445028.14,
+              "venda_ant": 601613.09,
+              "delta_val": -156584.95,
+              "delta_pct": -26.0
+            },
+            {
+              "linha": "OTC- EXPECTORANTES",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 179718.49,
+              "venda_ant": 280288.41,
+              "delta_val": -100569.92,
+              "delta_pct": -35.9
+            },
+            {
+              "linha": "REPOSITOR FLORA INTESTINAL",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 32092.42,
+              "venda_ant": 95720.01,
+              "delta_val": -63627.59,
+              "delta_pct": -66.5
+            },
+            {
+              "linha": "DERMO - DESODORANTES",
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 11724.98,
+              "venda_ant": 69169.21,
+              "delta_val": -57444.23,
+              "delta_pct": -83.0
+            },
+            {
+              "linha": "FRALDAS GERIATRICAS - INCONTINENCIA",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 132232.16,
+              "venda_ant": 168808.48,
+              "delta_val": -36576.32,
+              "delta_pct": -21.7
+            },
+            {
+              "linha": "NUTRICOSMETICOS",
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 46879.3,
+              "venda_ant": 82892.59,
+              "delta_val": -36013.29,
+              "delta_pct": -43.4
+            },
+            {
+              "linha": "VACINAS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 7690.54,
+              "venda_ant": 41401.24,
+              "delta_val": -33710.7,
+              "delta_pct": -81.4
+            }
+          ],
+          "top_evolucao_linhas": [
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 8122876.21,
+              "venda_ant": 6726272.6,
+              "delta_val": 1396603.61,
+              "delta_pct": 20.8
+            },
+            {
+              "linha": "CONTRACEPTIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1514489.13,
+              "venda_ant": 1166150.47,
+              "delta_val": 348338.66,
+              "delta_pct": 29.9
+            },
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 1437639.07,
+              "venda_ant": 1101343.57,
+              "delta_val": 336295.5,
+              "delta_pct": 30.5
+            },
+            {
+              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 1433218.38,
+              "venda_ant": 1226789.4,
+              "delta_val": 206428.98,
+              "delta_pct": 16.8
+            },
+            {
+              "linha": "CUIDADO - CORPO LOCAO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 310831.62,
+              "venda_ant": 138541.21,
+              "delta_val": 172290.41,
+              "delta_pct": 124.4
+            },
+            {
+              "linha": "CUIDADO - CORPO OLEO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 227026.79,
+              "venda_ant": 68637.86,
+              "delta_val": 158388.93,
+              "delta_pct": 230.8
+            },
+            {
+              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 967917.23,
+              "venda_ant": 861589.29,
+              "delta_val": 106327.94,
+              "delta_pct": 12.3
+            },
+            {
+              "linha": "PROMOCIONAL GENERICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 665935.59,
+              "venda_ant": 583527.02,
+              "delta_val": 82408.57,
+              "delta_pct": 14.1
+            },
+            {
+              "linha": "FRALDAS INFANTIS ROUPA",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 562651.05,
+              "venda_ant": 489698.86,
+              "delta_val": 72952.19,
+              "delta_pct": 14.9
+            },
+            {
+              "linha": "HOME CARE - LIMPEZA ROUPAS",
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 334138.85,
+              "venda_ant": 262986.06,
+              "delta_val": 71152.79,
+              "delta_pct": 27.1
+            }
+          ]
+        }
+      },
+      {
+        "key": "2026-09",
+        "label": "Set/26 (D-1 17)",
+        "nome_completo": "Setembro de 2026 (MTD 01 a 17/09)",
+        "is_current": true,
+        "status": "success",
+        "real_digitais": 33065474.09,
+        "meta_digitais": 31955528.86,
+        "desvio_digitais_val": 1109945.23,
+        "desvio_digitais_pct": 3.47,
+        "atingimento_digitais_pct": 103.47,
+        "real_total_sem_figital": 33826474.09,
+        "meta_total_sem_figital": 32597613.53,
+        "desvio_total_sem_figital_val": 1228860.56,
+        "desvio_total_sem_figital_pct": 3.77,
+        "atingimento_total_sem_figital_pct": 103.77,
+        "real_total_com_figital": 36588936.6,
+        "meta_total_com_figital": 34035612.33,
+        "desvio_total_com_figital_val": 2553324.27,
+        "desvio_total_com_figital_pct": 7.5,
+        "atingimento_total_com_figital_pct": 107.5,
+        "real_figital": 2762462.51,
+        "real_televendas": 761000.0,
+        "mom_digitais_pct": -40.88,
+        "canais": {
+          "app": 17918992.55,
+          "site": 5408477.03,
+          "marketplace": 9738004.51,
+          "televendas": 761000.0,
+          "figital": 2762462.51
+        },
+        "diagnostico": {
+          "grupos": [
+            {
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 20232130.47,
+              "venda_ant": 30834371.73,
+              "delta_val": -10602241.26,
+              "delta_pct": -34.4,
+              "share_pct": 61.2,
+              "status": "queda"
+            },
+            {
+              "grupo": "PERFUMARIA",
+              "venda_mes": 11766522.11,
+              "venda_ant": 18236523.97,
+              "delta_val": -6470001.86,
+              "delta_pct": -35.5,
+              "share_pct": 35.6,
+              "status": "queda"
+            },
+            {
+              "grupo": "CONVENIENCIA",
+              "venda_mes": 1394926.91,
+              "venda_ant": 3020247.82,
+              "delta_val": -1625320.91,
+              "delta_pct": -53.8,
+              "share_pct": 4.2,
+              "status": "queda"
+            },
+            {
+              "grupo": "NUTRICAO",
+              "venda_mes": 1497376.73,
+              "venda_ant": 2264356.25,
+              "delta_val": -766979.52,
+              "delta_pct": -33.9,
+              "share_pct": 4.5,
+              "status": "queda"
+            },
+            {
+              "grupo": "DERMO-COSMETICOS",
+              "venda_mes": 697252.96,
+              "venda_ant": 1201704.24,
+              "delta_val": -504451.28,
+              "delta_pct": -42.0,
+              "share_pct": 2.1,
+              "status": "queda"
+            },
+            {
+              "grupo": "DIVERSOS",
+              "venda_mes": 238898.43,
+              "venda_ant": 371547.82,
+              "delta_val": -132649.39,
+              "delta_pct": -35.7,
+              "share_pct": 0.7,
+              "status": "queda"
+            },
+            {
+              "grupo": "SERVICOS",
+              "venda_mes": 786.09,
+              "venda_ant": 2130.02,
+              "delta_val": -1343.93,
+              "delta_pct": -63.1,
+              "share_pct": 0.0,
+              "status": "queda"
+            },
+            {
+              "grupo": "MANIPULADOS",
+              "venda_mes": 42.9,
+              "venda_ant": 0.0,
+              "delta_val": 42.9,
+              "delta_pct": 100.0,
+              "share_pct": 0.0,
+              "status": "alta"
+            }
+          ],
+          "top_involucao_linhas": [
+            {
+              "linha": "ANTIDIABETICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 8669694.4,
+              "venda_ant": 11820805.53,
+              "delta_val": -3151111.13,
+              "delta_pct": -26.7
+            },
+            {
+              "linha": "FRALDAS INFANTIS",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 5046474.48,
+              "venda_ant": 8122876.21,
+              "delta_val": -3076401.73,
+              "delta_pct": -37.9
+            },
+            {
+              "linha": "CONTRACEPTIVOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 891413.59,
+              "venda_ant": 1514489.13,
+              "delta_val": -623075.54,
+              "delta_pct": -41.1
+            },
+            {
+              "linha": "ANTIDEPRESSIVOS / ESTABIL HUMOR",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 910510.74,
+              "venda_ant": 1433218.38,
+              "delta_val": -522707.64,
+              "delta_pct": -36.5
+            },
+            {
+              "linha": "NUTRICAO INFANTIL",
+              "grupo": "NUTRICAO",
+              "venda_mes": 1044385.8,
+              "venda_ant": 1437639.07,
+              "delta_val": -393253.27,
+              "delta_pct": -27.4
+            },
+            {
+              "linha": "FORMULAS INFANTIS",
+              "grupo": "NUTRICAO",
+              "venda_mes": 393539.73,
+              "venda_ant": 719400.94,
+              "delta_val": -325861.21,
+              "delta_pct": -45.3
+            },
+            {
+              "linha": "VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "NUTRICAO",
+              "venda_mes": 655375.69,
+              "venda_ant": 967917.23,
+              "delta_val": -312541.54,
+              "delta_pct": -32.3
+            },
+            {
+              "linha": "TOALHAS UMEDECIDAS - INFANTIL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 512966.25,
+              "venda_ant": 803325.8,
+              "delta_val": -290359.55,
+              "delta_pct": -36.1
+            },
+            {
+              "linha": "OTC- VITAMINAS E SUPLEMENTOS MINERAIS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 312961.01,
+              "venda_ant": 574965.89,
+              "delta_val": -262004.88,
+              "delta_pct": -45.6
+            },
+            {
+              "linha": "PROMOCIONAL GENERICOS",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 406679.66,
+              "venda_ant": 665935.59,
+              "delta_val": -259255.93,
+              "delta_pct": -38.9
+            }
+          ],
+          "top_evolucao_linhas": [
+            {
+              "linha": "CAPILAR - MASCARA",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 206385.33,
+              "venda_ant": 117071.57,
+              "delta_val": 89313.76,
+              "delta_pct": 76.3
+            },
+            {
+              "linha": "CAPILAR - OLEO",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 111801.76,
+              "venda_ant": 85228.31,
+              "delta_val": 26573.45,
+              "delta_pct": 31.2
+            },
+            {
+              "linha": "CAPILAR - CONDICIONADOR",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 248942.69,
+              "venda_ant": 233181.95,
+              "delta_val": 15760.74,
+              "delta_pct": 6.8
+            },
+            {
+              "linha": "SOLAR - KIT",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 20418.83,
+              "venda_ant": 12058.35,
+              "delta_val": 8360.48,
+              "delta_pct": 69.3
+            },
+            {
+              "linha": "CAPILAR - CREME",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 65325.59,
+              "venda_ant": 57866.3,
+              "delta_val": 7459.29,
+              "delta_pct": 12.9
+            },
+            {
+              "linha": "SOLAR - FACIAL",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 37674.53,
+              "venda_ant": 31997.59,
+              "delta_val": 5676.94,
+              "delta_pct": 17.7
+            },
+            {
+              "linha": "CAPILAR - LEAVE IN",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 19992.43,
+              "venda_ant": 15247.01,
+              "delta_val": 4745.42,
+              "delta_pct": 31.1
+            },
+            {
+              "linha": "HORMONAS DO CRESCIMENTO",
+              "grupo": "MEDICAMENTOS",
+              "venda_mes": 5109.3,
+              "venda_ant": 1167.2,
+              "delta_val": 3942.1,
+              "delta_pct": 337.7
+            },
+            {
+              "linha": "REPELENTES INFANTIS ICARIDINA",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 7140.06,
+              "venda_ant": 3441.86,
+              "delta_val": 3698.2,
+              "delta_pct": 107.4
+            },
+            {
+              "linha": "REPELENTES ICARIDINA",
+              "grupo": "PERFUMARIA",
+              "venda_mes": 6808.34,
+              "venda_ant": 3177.18,
+              "delta_val": 3631.16,
+              "delta_pct": 114.3
+            }
+          ]
+        }
+      }
+    ]
+  }
 };
     console.log("Dados consolidados carregados:", dashData);
 
@@ -9114,25 +11943,36 @@
     const navBtns = document.querySelectorAll('.nav-btn');
     const viewPanels = document.querySelectorAll('.view-panel');
 
+    function switchView(targetViewId) {
+      navBtns.forEach(b => {
+        if (b.getAttribute('data-view') === targetViewId) {
+          b.classList.add('active');
+        } else {
+          b.classList.remove('active');
+        }
+      });
+
+      viewPanels.forEach(p => {
+        if (p.id === targetViewId) {
+          p.classList.add('active');
+        } else {
+          p.classList.remove('active');
+        }
+      });
+
+      if (targetViewId === 'view-anual') {
+        renderAnnualChart();
+      } else if (targetViewId === 'view-desvios') {
+        renderDesviosCharts(currentChannelV2);
+      } else if (targetViewId === 'view-trafego') {
+        renderTrafficCharts(currentTrafficCh);
+      }
+    }
+
     navBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        navBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
         const targetViewId = btn.getAttribute('data-view');
-        viewPanels.forEach(p => {
-          if (p.id === targetViewId) {
-            p.classList.add('active');
-          } else {
-            p.classList.remove('active');
-          }
-        });
-
-        if (targetViewId === 'view-desvios') {
-          renderDesviosCharts(currentChannelV2);
-        } else if (targetViewId === 'view-trafego') {
-          renderTrafficCharts(currentTrafficCh);
-        }
+        switchView(targetViewId);
       });
     });
 
@@ -9145,6 +11985,7 @@
       currentTheme = currentTheme === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', currentTheme);
       localStorage.setItem('fsj_theme', currentTheme);
+      if (chartAnualInstance) renderAnnualChart();
       if (chartTkmInstance) renderDesviosCharts(currentChannelV2);
       if (chartConvInstance) renderTrafficCharts(currentTrafficCh);
     });
@@ -9473,6 +12314,9 @@
 
       localStorage.setItem('fsj_figital_included', included ? 'true' : 'false');
       updateDashboardState();
+      if (typeof updateAnnualViewFigital === 'function') {
+        updateAnnualViewFigital(included);
+      }
     }
 
     if (figitalSwitchBar && toggleFigitalInput) {
@@ -9535,6 +12379,426 @@
 
     function getTextColor() {
       return currentTheme === 'dark' ? '#94a3b8' : '#64748b';
+    }
+
+    // =========================================================================
+    // VISÃO 0: VISÃO ANUAL 2026 & DIAGNÓSTICO DE INVOLUÇÕES
+    // =========================================================================
+    let selectedAnnualMonthKey = '2026-09';
+    let chartAnualInstance = null;
+
+    function initAnnualView() {
+      const vAnual = dashData.visao_anual;
+      if (!vAnual || !vAnual.meses || vAnual.meses.length === 0) return;
+      
+      selectedAnnualMonthKey = vAnual.meses[vAnual.meses.length - 1].key;
+      renderAnnualMonthPills();
+      renderAnnualChart();
+      selectAnnualMonth(selectedAnnualMonthKey);
+    }
+
+    function renderAnnualMonthPills() {
+      const container = document.getElementById('annualMonthPills');
+      if (!container || !dashData.visao_anual || !dashData.visao_anual.meses) return;
+      const meses = dashData.visao_anual.meses;
+
+      container.innerHTML = meses.map(m => {
+        const isActive = m.key === selectedAnnualMonthKey;
+        const ating = isFigitalOn ? m.atingimento_total_com_figital_pct : m.atingimento_digitais_pct;
+        const isSuccess = ating >= 100;
+        const badgeClass = isSuccess ? 'badge-success' : 'badge-danger';
+        return `<button class="month-pill ${isActive ? 'active' : ''}" data-month="${m.key}" onclick="selectAnnualMonth('${m.key}')">
+          <span>${m.label}</span>
+          <span class="pill-badge ${badgeClass}">${ating.toFixed(1)}%</span>
+        </button>`;
+      }).join('');
+    }
+
+    function renderAnnualChart() {
+      const ctx = document.getElementById('chartAnualMeses');
+      if (!ctx || !dashData.visao_anual || !dashData.visao_anual.meses) return;
+      const meses = dashData.visao_anual.meses;
+      const labels = meses.map(m => m.label);
+
+      if (chartAnualInstance) {
+        chartAnualInstance.destroy();
+      }
+
+      let datasets = [];
+
+      if (isFigitalOn) {
+        datasets = [
+          {
+            type: 'bar',
+            label: 'Canais Digitais (Site+App+MKP)',
+            data: meses.map(m => Number((m.real_digitais / 1e6).toFixed(3))),
+            backgroundColor: currentTheme === 'dark' ? '#38bdf8' : '#0077ff',
+            borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 6, bottomRight: 6 },
+            stack: 'vendas',
+            order: 2,
+            datalabels: { display: false }
+          },
+          {
+            type: 'bar',
+            label: 'Figital',
+            data: meses.map(m => Number(((m.real_figital || 0) / 1e6).toFixed(3))),
+            backgroundColor: currentTheme === 'dark' ? '#c084fc' : '#8b5cf6',
+            borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
+            stack: 'vendas',
+            order: 2,
+            datalabels: {
+              display: true,
+              anchor: 'end',
+              align: 'top',
+              offset: 4,
+              font: { size: 10, weight: '700' },
+              color: () => currentTheme === 'dark' ? '#f8fafc' : '#1e293b',
+              formatter: (val, ctx) => {
+                const total = (meses[ctx.dataIndex].real_digitais + (meses[ctx.dataIndex].real_figital || 0)) / 1e6;
+                return 'R$ ' + total.toFixed(1).replace('.', ',') + 'M';
+              }
+            }
+          },
+          {
+            type: 'line',
+            label: 'Meta Oficial (+ Figital)',
+            data: meses.map(m => Number(((m.meta_total_com_figital || m.meta_digitais) / 1e6).toFixed(3))),
+            borderColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
+            backgroundColor: 'transparent',
+            borderWidth: 2.8,
+            borderDash: [6, 4],
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
+            tension: 0.15,
+            order: 1,
+            datalabels: { display: false }
+          }
+        ];
+      } else {
+        datasets = [
+          {
+            type: 'bar',
+            label: 'Realizado Canais Digitais',
+            data: meses.map(m => Number((m.real_digitais / 1e6).toFixed(3))),
+            backgroundColor: meses.map(m => m.atingimento_digitais_pct >= 100 
+              ? (currentTheme === 'dark' ? '#38bdf8' : '#0077ff') 
+              : (currentTheme === 'dark' ? '#f87171' : '#ef4444')),
+            borderRadius: 6,
+            order: 2,
+            datalabels: {
+              display: true,
+              anchor: 'end',
+              align: 'top',
+              offset: 4,
+              font: { size: 10, weight: '700' },
+              color: () => currentTheme === 'dark' ? '#f8fafc' : '#1e293b',
+              formatter: val => 'R$ ' + val.toFixed(1).replace('.', ',') + 'M'
+            }
+          },
+          {
+            type: 'line',
+            label: 'Meta Oficial Digitais',
+            data: meses.map(m => Number((m.meta_digitais / 1e6).toFixed(3))),
+            borderColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
+            backgroundColor: 'transparent',
+            borderWidth: 2.8,
+            borderDash: [6, 4],
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
+            tension: 0.15,
+            order: 1,
+            datalabels: { display: false }
+          }
+        ];
+      }
+
+      chartAnualInstance = new Chart(ctx.getContext('2d'), {
+        data: {
+          labels: labels,
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: { padding: { top: 30, bottom: 12, left: 16, right: 16 } },
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          onClick: (event, elements) => {
+            if (elements && elements.length > 0) {
+              const idx = elements[0].index;
+              const m = meses[idx];
+              if (m) {
+                selectAnnualMonth(m.key);
+                const diagEl = document.getElementById('diagnosticPanel');
+                if (diagEl) diagEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.dataset.label}: R$ ${ctx.raw.toFixed(2).replace('.', ',')} Mi`,
+                afterBody: (tooltipItems) => {
+                  if (tooltipItems.length === 0) return '';
+                  const idx = tooltipItems[0].dataIndex;
+                  const m = meses[idx];
+                  const ating = isFigitalOn ? m.atingimento_total_com_figital_pct : m.atingimento_digitais_pct;
+                  const gap = isFigitalOn ? m.desvio_total_com_figital_val : m.desvio_digitais_val;
+                  const gapStr = (gap >= 0 ? '+R$ ' : '-R$ ') + (Math.abs(gap)/1e6).toFixed(2).replace('.', ',') + ' Mi';
+                  return [
+                    '--------------------------',
+                    `Atingimento: ${ating.toFixed(1).replace('.', ',')}%`,
+                    `Desvio: ${gapStr}`,
+                    '👉 Clique para abrir diagnóstico'
+                  ];
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              grid: { color: getGridColor() },
+              ticks: {
+                color: getTextColor(),
+                callback: val => 'R$ ' + val + 'M'
+              }
+            },
+            x: {
+              offset: true,
+              grid: { display: false },
+              ticks: { color: getTextColor(), font: { weight: '700' } }
+            }
+          }
+        }
+      });
+    }
+
+    function selectAnnualMonth(monthKey) {
+      if (!dashData.visao_anual || !dashData.visao_anual.meses) return;
+      selectedAnnualMonthKey = monthKey;
+      const meses = dashData.visao_anual.meses;
+      const m = meses.find(item => item.key === monthKey) || meses[meses.length - 1];
+
+      // Atualiza pílulas
+      document.querySelectorAll('#annualMonthPills .month-pill').forEach(btn => {
+        if (btn.getAttribute('data-month') === monthKey) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Dados de faturamento
+      const real = isFigitalOn ? (m.real_digitais + (m.real_figital || 0)) : m.real_digitais;
+      const meta = isFigitalOn ? (m.meta_total_com_figital || m.meta_digitais) : m.meta_digitais;
+      const desvioVal = real - meta;
+      const desvioPct = meta > 0 ? ((real / meta) - 1) * 100 : 0;
+      const atingPct = meta > 0 ? (real / meta) * 100 : 100;
+      const isSuccess = atingPct >= 100;
+
+      // Status Badge
+      const statusBadge = document.getElementById('diagStatusBadge');
+      if (statusBadge) {
+        if (isSuccess) {
+          statusBadge.className = 'diag-badge-pill';
+          statusBadge.style.background = 'var(--badge-green-bg)';
+          statusBadge.style.color = 'var(--badge-green-text)';
+          statusBadge.textContent = '🟢 Meta Superada (' + atingPct.toFixed(1).replace('.', ',') + '%)';
+        } else {
+          statusBadge.className = 'diag-badge-pill';
+          statusBadge.style.background = 'var(--badge-red-bg)';
+          statusBadge.style.color = 'var(--badge-red-text)';
+          statusBadge.textContent = '🔴 Abaixo da Meta (' + atingPct.toFixed(1).replace('.', ',') + '%)';
+        }
+      }
+
+      // Título e Subtítulo
+      const monthTitle = document.getElementById('diagMonthTitle');
+      if (monthTitle) monthTitle.textContent = 'Diagnóstico Executivo — ' + m.nome_completo;
+
+      const subTitle = document.getElementById('diagSubtitle');
+      if (subTitle) {
+        if (m.key === '2026-09') {
+          subTitle.textContent = 'Setembro em andamento (' + (dashData.max_dia || 17) + ' dias apurados). Comparativo com meta pró-rata MTD e principais ofensores.';
+        } else {
+          subTitle.textContent = 'Comparativo de desempenho vs mês anterior e detalhamento das categorias e linhas em evolução e involução.';
+        }
+      }
+
+      // Valores Resumo
+      const setEl = (id, val, cls) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.textContent = val;
+          if (cls !== undefined) {
+            el.className = 'val ' + cls;
+          }
+        }
+      };
+
+      setEl('diagRealDigitais', fmtCurrency(real));
+      setEl('diagMetaDigitais', fmtCurrency(meta));
+      const gapSign = desvioVal >= 0 ? '+' : '';
+      const gapCls = desvioVal >= 0 ? 'val-positive' : 'val-negative';
+      setEl('diagDesvioDigitais', gapSign + fmtCurrency(desvioVal) + ' (' + fmtPctStr(desvioPct) + ')', gapCls);
+
+      // MoM
+      if (m.key === '2026-01') {
+        setEl('diagMoM', 'Mês Base 2026', '');
+      } else {
+        const momSign = m.mom_digitais_pct >= 0 ? '⇑ +' : '⇓ ';
+        const momExtra = m.key === '2026-09' ? ' (17d parciais)' : '';
+        const momCls = m.mom_digitais_pct >= 0 ? 'val-positive' : 'val-negative';
+        setEl('diagMoM', momSign + Math.abs(m.mom_digitais_pct).toFixed(1).replace('.', ',') + '%' + momExtra, momCls);
+      }
+
+      // 1. Tabela de Grupos / Categorias
+      const tbodyGrupos = document.getElementById('tbodyGruposDiag');
+      const countGrupos = document.getElementById('countGrupos');
+      const grupos = (m.diagnostico && m.diagnostico.grupos) ? m.diagnostico.grupos : [];
+
+      if (!grupos || grupos.length === 0) {
+        if (tbodyGrupos) {
+          tbodyGrupos.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 28px;">
+            Janeiro é o mês inicial de referência (sem histórico anterior para cálculo de variação).
+          </td></tr>`;
+        }
+        if (countGrupos) countGrupos.textContent = 'Mês Inicial';
+      } else {
+        if (countGrupos) countGrupos.textContent = grupos.length + ' Categorias';
+        if (tbodyGrupos) {
+          tbodyGrupos.innerHTML = grupos.map(g => {
+            const isDrop = g.delta_val < 0;
+            const cls = isDrop ? 'val-negative' : 'val-positive';
+            const arrow = isDrop ? '⇓' : '⇑';
+            return `<tr>
+              <td style="font-weight: 700;">${g.grupo}</td>
+              <td style="text-align: right; font-weight: 700;">${fmtCurrency(g.venda_mes)}</td>
+              <td style="text-align: right; color: var(--text-secondary);">${fmtCurrency(g.venda_ant)}</td>
+              <td style="text-align: right;" class="${cls}"><strong>${fmtGapVal(g.delta_val)}</strong></td>
+              <td style="text-align: right;" class="${cls}"><strong>${arrow} ${Math.abs(g.delta_pct).toFixed(1).replace('.', ',')}%</strong></td>
+            </tr>`;
+          }).join('');
+        }
+      }
+
+      // 2. Coluna Top Linhas em Involução
+      const listInv = document.getElementById('listLinhasInvolucao');
+      const linhasInv = (m.diagnostico && m.diagnostico.top_involucao_linhas) ? m.diagnostico.top_involucao_linhas : [];
+      if (listInv) {
+        if (!linhasInv || linhasInv.length === 0) {
+          listInv.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 24px;">
+            Nenhuma involução de linha registrada neste mês.
+          </div>`;
+        } else {
+          listInv.innerHTML = linhasInv.map(l => {
+            return `<div class="line-card-item">
+              <div class="line-info-left">
+                <span class="line-name">${l.linha}</span>
+                <div class="line-meta">
+                  <span class="line-grp-tag">${l.grupo}</span>
+                  <span>Mês: <strong>${fmtCurrency(l.venda_mes)}</strong></span>
+                  <span>(Ant: ${fmtCurrency(l.venda_ant)})</span>
+                </div>
+              </div>
+              <div class="line-delta-pill">
+                <span class="val val-negative">${fmtGapVal(l.delta_val)}</span>
+                <span class="pct val-negative">⇓ ${Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}%</span>
+              </div>
+            </div>`;
+          }).join('');
+        }
+      }
+
+      // 3. Coluna Top Linhas em Evolução
+      const listEvo = document.getElementById('listLinhasEvolucao');
+      const linhasEvo = (m.diagnostico && m.diagnostico.top_evolucao_linhas) ? m.diagnostico.top_evolucao_linhas : [];
+      if (listEvo) {
+        if (!linhasEvo || linhasEvo.length === 0) {
+          listEvo.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 24px;">
+            Nenhum crescimento expressivo de linhas registrado neste mês.
+          </div>`;
+        } else {
+          listEvo.innerHTML = linhasEvo.map(l => {
+            return `<div class="line-card-item">
+              <div class="line-info-left">
+                <span class="line-name">${l.linha}</span>
+                <div class="line-meta">
+                  <span class="line-grp-tag">${l.grupo}</span>
+                  <span>Mês: <strong>${fmtCurrency(l.venda_mes)}</strong></span>
+                  <span>(Ant: ${fmtCurrency(l.venda_ant)})</span>
+                </div>
+              </div>
+              <div class="line-delta-pill">
+                <span class="val val-positive">${fmtGapVal(l.delta_val)}</span>
+                <span class="pct val-positive">⇑ +${Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}%</span>
+              </div>
+            </div>`;
+          }).join('');
+        }
+      }
+    }
+
+    function updateAnnualViewFigital(included) {
+      if (!dashData.visao_anual || !dashData.visao_anual.ytd) return;
+      const ytd = dashData.visao_anual.ytd;
+
+      // Badges
+      const digFig = document.getElementById('ytdDigFigitalBadge');
+      const ecomFig = document.getElementById('ytdEcomFigitalBadge');
+      const legendFig = document.getElementById('annualLegendFigital');
+      if (digFig) digFig.style.display = included ? 'inline-flex' : 'none';
+      if (ecomFig) ecomFig.style.display = included ? 'inline-flex' : 'none';
+      if (legendFig) legendFig.style.display = included ? 'inline-flex' : 'none';
+
+      // YTD Card E-Commerce
+      const ecomData = included ? ytd.ecommerce_com_figital : ytd.ecommerce_sem_figital;
+      if (ecomData) {
+        const setT = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        setT('ytdEcomReal', fmtCurrency(ecomData.real));
+        setT('ytdEcomMeta', fmtCurrency(ecomData.meta));
+        setT('ytdEcomDesvioVal', fmtGapVal(ecomData.desvio_val));
+        setT('ytdEcomDesvioPct', fmtPctStr(ecomData.desvio_pct));
+        setT('ytdEcomAting', ecomData.atingimento_pct.toFixed(1).replace('.', ',') + '% Meta');
+
+        const desvValEl = document.getElementById('ytdEcomDesvioVal');
+        const desvPctEl = document.getElementById('ytdEcomDesvioPct');
+        const cls = ecomData.desvio_val >= 0 ? 'val-positive' : 'val-negative';
+        if (desvValEl) desvValEl.className = 'val ' + cls;
+        if (desvPctEl) desvPctEl.className = 'val ' + cls;
+      }
+
+      // YTD Card Digitais
+      if (ytd.digitais) {
+        const digReal = included ? (ytd.digitais.real + (ytd.ecommerce_com_figital.real - ytd.ecommerce_sem_figital.real)) : ytd.digitais.real;
+        const digMeta = included ? (ytd.digitais.meta + (ytd.ecommerce_com_figital.meta - ytd.ecommerce_sem_figital.meta)) : ytd.digitais.meta;
+        const digDesvVal = digReal - digMeta;
+        const digDesvPct = digMeta > 0 ? ((digReal / digMeta) - 1) * 100 : 0;
+        const digAting = digMeta > 0 ? (digReal / digMeta) * 100 : 100;
+
+        const setT = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        setT('ytdDigReal', fmtCurrency(digReal));
+        setT('ytdDigMeta', fmtCurrency(digMeta));
+        setT('ytdDigDesvioVal', fmtGapVal(digDesvVal));
+        setT('ytdDigDesvioPct', fmtPctStr(digDesvPct));
+        setT('ytdDigAting', digAting.toFixed(1).replace('.', ',') + '% Meta');
+
+        const desvValEl = document.getElementById('ytdDigDesvioVal');
+        const desvPctEl = document.getElementById('ytdDigDesvioPct');
+        const cls = digDesvVal >= 0 ? 'val-positive' : 'val-negative';
+        if (desvValEl) desvValEl.className = 'val ' + cls;
+        if (desvPctEl) desvPctEl.className = 'val ' + cls;
+      }
+
+      // Atualiza pílulas e re-renderiza gráfico e diagnóstico
+      renderAnnualMonthPills();
+      renderAnnualChart();
+      selectAnnualMonth(selectedAnnualMonthKey);
     }
 
     function renderDesviosCharts(channelKey) {
@@ -9987,6 +13251,7 @@
 
     // Inicialização da UI com preferências salvas
     applyFigitalToggle(isFigitalOn);
+    initAnnualView();
   </script>
 </body>
 </html>
