@@ -1,5 +1,5 @@
 {
-  "atualizacao": "2026-09-18 11:34:19",
+  "atualizacao": "2026-09-18 11:47:38",
   "data_corte": "01 a 17/09/2026",
   "max_dia": 17,
   "kpis": {
@@ -4629,7 +4629,7 @@
         "evo_yoy": 0.0,
         "share_empresa": 0.02,
         "cupons": 22,
-        "tkm": 149.56,
+        "tkm": 149.57,
         "rent_op": 23.09,
         "rent_dre": 28.12,
         "sessoes": 0,
@@ -4643,7 +4643,7 @@
         "cupons_gap_val": -453,
         "tkm_meta": 165.3,
         "tkm_desvio_pct": -9.52,
-        "tkm_gap_val": -15.74,
+        "tkm_gap_val": -15.73,
         "rent_op_meta": 22.4,
         "rent_op_desvio": 0.69,
         "sessoes_meta_mtd": 0,
@@ -6965,7 +6965,7 @@
           142.3,
           142.3,
           149.63,
-          149.56,
+          149.57,
           150.58,
           118.69,
           118.45,

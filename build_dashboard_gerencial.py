@@ -1462,6 +1462,66 @@ def build():
       box-shadow: 0 6px 16px rgba(0, 86, 179, 0.35);
     }}
 
+    /* Card do Gráfico Anual Completo */
+    .card-chart-full {{
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-card);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }}
+
+    .card-chart-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+    }}
+
+    .card-chart-header h3 {{
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }}
+
+    .card-chart-header p {{
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      max-width: 780px;
+    }}
+
+    .chart-legend-box {{
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }}
+
+    .legend-item {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }}
+
+    .legend-color {{
+      display: inline-block;
+      width: 14px;
+      height: 10px;
+      border-radius: 3px;
+    }}
+
     /* Pílulas de Seleção de Mês */
     .month-selector-bar {{
       background: var(--bg-card);
@@ -2075,9 +2135,8 @@ def build():
             <p>Comparativo consolidado de faturamento mês a mês. Clique em qualquer coluna do gráfico ou use as opções abaixo para inspecionar o diagnóstico do mês.</p>
           </div>
           <div class="chart-legend-box">
-            <div class="legend-item"><span class="legend-color" style="background: #0077ff;"></span> Realizado Digital</div>
-            <div class="legend-item" id="annualLegendFigital" style="display: none;"><span class="legend-color" style="background: #8b5cf6;"></span> Figital</div>
-            <div class="legend-item"><span class="legend-color" style="background: #94a3b8; border-top: 2px dashed #003875;"></span> Meta Oficial</div>
+            <div class="legend-item"><span class="legend-color" id="legendColorReal" style="background: #0077ff;"></span> <span id="legendTextReal">Realizado Digital</span></div>
+            <div class="legend-item"><span class="legend-color" id="legendColorMeta" style="background: #003875; border-top: 2px dashed #003875;"></span> <span id="legendTextMeta">Meta Oficial</span></div>
           </div>
         </div>
         <div style="height: 320px; width: 100%; position: relative;">
@@ -3300,95 +3359,63 @@ def build():
         chartAnualInstance.destroy();
       }}
 
-      let datasets = [];
+      // Determina atingimento e cores das barras (Vermelho = Abaixo da Meta, Azul = Meta Superada)
+      const atingimentos = meses.map(m => isFigitalOn ? m.atingimento_total_com_figital_pct : m.atingimento_digitais_pct);
+      const bgColors = atingimentos.map(ating => ating >= 100 
+        ? (currentTheme === 'dark' ? '#38bdf8' : '#0077ff') 
+        : (currentTheme === 'dark' ? '#f87171' : '#ef4444')
+      );
 
-      if (isFigitalOn) {{
-        datasets = [
-          {{
-            type: 'bar',
-            label: 'Canais Digitais (Site+App+MKP)',
-            data: meses.map(m => Number((m.real_digitais / 1e6).toFixed(3))),
-            backgroundColor: currentTheme === 'dark' ? '#38bdf8' : '#0077ff',
-            borderRadius: {{ topLeft: 0, topRight: 0, bottomLeft: 6, bottomRight: 6 }},
-            stack: 'vendas',
-            order: 2,
-            datalabels: {{ display: false }}
-          }},
-          {{
-            type: 'bar',
-            label: 'Figital',
-            data: meses.map(m => Number(((m.real_figital || 0) / 1e6).toFixed(3))),
-            backgroundColor: currentTheme === 'dark' ? '#c084fc' : '#8b5cf6',
-            borderRadius: {{ topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 }},
-            stack: 'vendas',
-            order: 2,
-            datalabels: {{
-              display: true,
-              anchor: 'end',
-              align: 'top',
-              offset: 4,
-              font: {{ size: 10, weight: '700' }},
-              color: () => currentTheme === 'dark' ? '#f8fafc' : '#1e293b',
-              formatter: (val, ctx) => {{
-                const total = (meses[ctx.dataIndex].real_digitais + (meses[ctx.dataIndex].real_figital || 0)) / 1e6;
-                return 'R$ ' + total.toFixed(1).replace('.', ',') + 'M';
-              }}
-            }}
-          }},
-          {{
-            type: 'line',
-            label: 'Meta Oficial (+ Figital)',
-            data: meses.map(m => Number(((m.meta_total_com_figital || m.meta_digitais) / 1e6).toFixed(3))),
-            borderColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
-            backgroundColor: 'transparent',
-            borderWidth: 2.8,
-            borderDash: [6, 4],
-            pointRadius: 5,
-            pointHoverRadius: 7,
-            pointBackgroundColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
-            tension: 0.15,
-            order: 1,
-            datalabels: {{ display: false }}
+      const realData = meses.map(m => isFigitalOn 
+        ? Number(((m.real_digitais + (m.real_figital || 0)) / 1e6).toFixed(3))
+        : Number((m.real_digitais / 1e6).toFixed(3))
+      );
+
+      const metaData = meses.map(m => isFigitalOn 
+        ? Number(((m.meta_total_com_figital || m.meta_digitais) / 1e6).toFixed(3))
+        : Number((m.meta_digitais / 1e6).toFixed(3))
+      );
+
+      // Atualiza textos da legenda no topo do card
+      const legendTextReal = document.getElementById('legendTextReal');
+      const legendTextMeta = document.getElementById('legendTextMeta');
+      if (legendTextReal) legendTextReal.textContent = isFigitalOn ? 'Realizado (+ Figital)' : 'Realizado Canais Digitais';
+      if (legendTextMeta) legendTextMeta.textContent = isFigitalOn ? 'Meta Oficial (+ Figital)' : 'Meta Oficial Digitais';
+
+      const datasets = [
+        {{
+          type: 'bar',
+          label: isFigitalOn ? 'Realizado (+ Figital)' : 'Realizado Canais Digitais',
+          data: realData,
+          backgroundColor: bgColors,
+          borderRadius: 6,
+          order: 2,
+          datalabels: {{
+            display: true,
+            anchor: 'end',
+            align: 'bottom',
+            offset: 8,
+            font: {{ size: 10.5, weight: '800' }},
+            color: '#ffffff',
+            formatter: val => 'R$ ' + val.toFixed(1).replace('.', ',') + 'M'
           }}
-        ];
-      }} else {{
-        datasets = [
-          {{
-            type: 'bar',
-            label: 'Realizado Canais Digitais',
-            data: meses.map(m => Number((m.real_digitais / 1e6).toFixed(3))),
-            backgroundColor: meses.map(m => m.atingimento_digitais_pct >= 100 
-              ? (currentTheme === 'dark' ? '#38bdf8' : '#0077ff') 
-              : (currentTheme === 'dark' ? '#f87171' : '#ef4444')),
-            borderRadius: 6,
-            order: 2,
-            datalabels: {{
-              display: true,
-              anchor: 'end',
-              align: 'top',
-              offset: 4,
-              font: {{ size: 10, weight: '700' }},
-              color: () => currentTheme === 'dark' ? '#f8fafc' : '#1e293b',
-              formatter: val => 'R$ ' + val.toFixed(1).replace('.', ',') + 'M'
-            }}
-          }},
-          {{
-            type: 'line',
-            label: 'Meta Oficial Digitais',
-            data: meses.map(m => Number((m.meta_digitais / 1e6).toFixed(3))),
-            borderColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
-            backgroundColor: 'transparent',
-            borderWidth: 2.8,
-            borderDash: [6, 4],
-            pointRadius: 5,
-            pointHoverRadius: 7,
-            pointBackgroundColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
-            tension: 0.15,
-            order: 1,
-            datalabels: {{ display: false }}
-          }}
-        ];
-      }}
+        }},
+        {{
+          type: 'line',
+          label: isFigitalOn ? 'Meta Oficial (+ Figital)' : 'Meta Oficial Digitais',
+          data: metaData,
+          borderColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
+          backgroundColor: 'transparent',
+          borderWidth: 2.2,
+          borderDash: [6, 4],
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          pointBackgroundColor: currentTheme === 'dark' ? '#fbbf24' : '#003875',
+          tension: 0.15,
+          order: 1,
+          datalabels: {{ display: false }}
+        }}
+      ];
 
       chartAnualInstance = new Chart(ctx.getContext('2d'), {{
         data: {{
@@ -3398,7 +3425,7 @@ def build():
         options: {{
           responsive: true,
           maintainAspectRatio: false,
-          layout: {{ padding: {{ top: 30, bottom: 12, left: 16, right: 16 }} }},
+          layout: {{ padding: {{ top: 20, bottom: 8, left: 16, right: 16 }} }},
           interaction: {{
             mode: 'index',
             intersect: false
@@ -3426,12 +3453,17 @@ def build():
                   const ating = isFigitalOn ? m.atingimento_total_com_figital_pct : m.atingimento_digitais_pct;
                   const gap = isFigitalOn ? m.desvio_total_com_figital_val : m.desvio_digitais_val;
                   const gapStr = (gap >= 0 ? '+R$ ' : '-R$ ') + (Math.abs(gap)/1e6).toFixed(2).replace('.', ',') + ' Mi';
-                  return [
-                    '--------------------------',
-                    `Atingimento: ${{ating.toFixed(1).replace('.', ',')}}%`,
-                    `Desvio: ${{gapStr}}`,
-                    '👉 Clique para abrir diagnóstico'
-                  ];
+                  const lines = ['--------------------------'];
+                  if (isFigitalOn && m.real_figital) {{
+                    lines.push(`Digital Puro: R$ ${{(m.real_digitais/1e6).toFixed(2).replace('.', ',')}} Mi`);
+                    lines.push(`Figital Lojas: R$ ${{(m.real_figital/1e6).toFixed(2).replace('.', ',')}} Mi`);
+                    lines.push('--------------------------');
+                  }}
+                  lines.push(`Atingimento: ${{ating.toFixed(1).replace('.', ',')}}%`);
+                  lines.push(`Desvio: ${{gapStr}}`);
+                  lines.push(ating >= 100 ? '🟢 Meta Superada' : '🔴 Abaixo da Meta');
+                  lines.push('👉 Clique para abrir diagnóstico');
+                  return lines;
                 }}
               }}
             }}
@@ -3439,6 +3471,7 @@ def build():
           scales: {{
             y: {{
               grid: {{ color: getGridColor() }},
+              suggestedMax: 66,
               ticks: {{
                 color: getTextColor(),
                 callback: val => 'R$ ' + val + 'M'
