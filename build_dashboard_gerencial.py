@@ -2882,7 +2882,7 @@ def build():
         const cupons_desvio_pct = cupons_meta_mtd > 0 ? Number((((cupons / cupons_meta_mtd) - 1) * 100).toFixed(2)) : 0;
         const tkm_gap_val = Number((tkm - tkm_meta).toFixed(2));
         const tkm_desvio_pct = tkm_meta > 0 ? Number((((tkm / tkm_meta) - 1) * 100).toFixed(2)) : 0;
-        const rent_op_desvio = Number((rent_op - rent_op_meta).toFixed(2));
+        const rent_op_desvio = rent_op_meta > 0 ? Number((((rent_op / rent_op_meta) - 1) * 100).toFixed(2)) : 0;
         const cresc_mom = venda_ant > 0 ? Number((((venda / venda_ant) - 1) * 100).toFixed(2)) : 0;
         const evo_yoy = venda_yoy > 0 ? Number((((venda / venda_yoy) - 1) * 100).toFixed(2)) : 0;
         const tx_conv = sessoes > 0 ? Number(((cupons / sessoes) * 100).toFixed(2)) : 0;
@@ -3465,8 +3465,10 @@ def build():
                     lines.push(`Figital Lojas: R$ ${{(m.real_figital/1e6).toFixed(2).replace('.', ',')}} Mi`);
                     lines.push('--------------------------');
                   }}
+                  const desvPct = ating - 100;
+                  const desvPctStr = (desvPct >= 0 ? '+' : '') + desvPct.toFixed(1).replace('.', ',') + '%';
+                  lines.push(`Desvio vs Meta: ${{desvPctStr}} (${{gapStr}})`);
                   lines.push(`Atingimento: ${{ating.toFixed(1).replace('.', ',')}}%`);
-                  lines.push(`Desvio: ${{gapStr}}`);
                   lines.push(ating >= 100 ? '🟢 Meta Superada' : '🔴 Abaixo da Meta');
                   lines.push('👉 Clique para abrir diagnóstico');
                   return lines;
@@ -4016,8 +4018,8 @@ def build():
             y1: {{
               position: 'right',
               grid: {{ display: false }},
-              suggestedMin: -4,
-              suggestedMax: 4,
+              suggestedMin: -25,
+              suggestedMax: 25,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return (val > 0 ? '+' : '') + val + '%'; }}

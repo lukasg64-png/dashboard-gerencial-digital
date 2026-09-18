@@ -323,7 +323,7 @@ def main():
                 'ecossistema_total': 22.4
             }
             rent_op_meta = target_margin_pct_map.get(ch, 21.5)
-            desvio_rent_op = round(rent_op_real - rent_op_meta, 2)
+            desvio_rent_op = pct_diff(rent_op_real, rent_op_meta)
 
             desvio_sess_pct = pct_diff(s_real, s_meta)
             gap_sess_val = s_real - s_meta
