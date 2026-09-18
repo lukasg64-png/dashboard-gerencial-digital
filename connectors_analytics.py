@@ -29,6 +29,22 @@ def generate_traffic_data():
     print("  CARREGANDO DADOS DE TRÁFEGO E CONVERSÃO (GA4 / Supermetrics)")
     print("=" * 70)
 
+    # 1. Tenta extrair diretamente da API oficial do Google Analytics 4
+    js_script = os.path.join(BASE_DIR, 'extract_ga4_real.js')
+    if os.path.exists(js_script):
+        try:
+            import subprocess
+            print("Conectando à API oficial do GA4 (Propriedade 340874176)...", flush=True)
+            res = subprocess.run(['node', js_script], capture_output=True, text=True, encoding='utf-8', errors='replace', cwd=BASE_DIR, timeout=35)
+            if res.returncode == 0 and os.path.exists(OUTPUT_JSON):
+                print(res.stdout)
+                print("✅ Tráfego 100% REAL extraído com sucesso da API oficial do GA4!")
+                return
+            else:
+                print(f"[AVISO] Tentativa da API GA4 retornou erro:\n{res.stderr}\nUsando snapshot resiliente.")
+        except Exception as e:
+            print(f"[AVISO] Falha ao invocar extrator GA4: {e}. Usando snapshot.")
+
     # Detecta max_dia a partir do Qlik Raw se existir
     max_dia = 17
     if os.path.exists(QLIK_RAW_JSON):
