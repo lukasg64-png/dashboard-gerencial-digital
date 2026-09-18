@@ -1675,7 +1675,7 @@
           Dashboard Gerencial — Canais Digitais
           <span class="tag-figital">+ Figital</span>
         </h1>
-        <p>Acompanhamento Oficial de Metas, Venda Efetiva, Tráfego e Rentabilidade | Atualizado: 2026-09-18 12:05:28</p>
+        <p>Acompanhamento Oficial de Metas, Venda Efetiva, Tráfego e Rentabilidade | Atualizado: 2026-09-18 15:43:30</p>
       </div>
       <div class="header-controls">
         <!-- TOGGLE INTEGRAR FIGITAL (GLOBAL) -->
@@ -2513,92 +2513,57 @@
         </div>
       </div>
 
-      <!-- Tabela de Origens de Tráfego / Canais de Mídia -->
+      <!-- Tabela de Origens de Tráfego / Canais de Mídia com Comparativo MoM / YoY e Ticket Médio -->
       <div class="traffic-table-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
           <div>
-            <h3 style="margin: 0; font-size: 16px; font-family: 'Outfit';">Desempenho por Origem de Tráfego / Canal de Mídia (GA4 Oficial)</h3>
-            <span style="font-size: 11.5px; color: var(--text-secondary);">Propriedade Google Analytics: <strong>340874176</strong> | MTD 01 a 17/09</span>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <h3 style="margin: 0; font-size: 16px; font-family: 'Outfit';">Desempenho por Origem de Tráfego / Canal de Mídia (GA4 Oficial)</h3>
+              <span style="font-size: 11.5px; font-weight: 700; color: #059669; background: rgba(16, 185, 129, 0.1); padding: 3px 10px; border-radius: 6px;">
+                ✓ 100% Dados Reais GA4
+              </span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;" id="trafficPeriodSubtitle">
+              Propriedade Google Analytics: <strong>340874176</strong> | MTD 01 a 17/09/2026 vs Base Anterior Pró-rata <strong>Agosto/2026 (01 a 17/08)</strong>
+            </div>
           </div>
-          <span style="font-size: 11.5px; font-weight: 700; color: #059669; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 6px;">
-            ✓ 100% Dados Reais GA4
-          </span>
+          
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="diag-toggle-group">
+              <button class="diag-toggle-btn active" id="btnTrafficMoM" onclick="setTrafficComparisonMode('mom')">
+                <span>📅 vs Mês Anterior (MoM • Ago/26)</span>
+              </button>
+              <button class="diag-toggle-btn" id="btnTrafficYoY" onclick="setTrafficComparisonMode('yoy')">
+                <span>🗓️ vs Ano Anterior (YoY • Set/25)</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Origem / Mídia</th>
-              <th>Canal</th>
-              <th style="text-align: right;">Sessões</th>
-              <th style="text-align: right;">Pedidos</th>
-              <th style="text-align: right;">Tx. Conversão</th>
-              <th style="text-align: right;">Receita (R$)</th>
-              <th style="text-align: right;">Share</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="font-weight: 700;">Google Ads (PMax & Search)</td>
-              <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg-card-subtle); color: var(--text-secondary);">Site + App</span></td>
-              <td style="text-align: right; font-weight: 600;">961,518</td>
-              <td style="text-align: right;">52,883</td>
-              <td style="text-align: right; font-weight: 700; color: #16a34a;">5.50%</td>
-              <td style="text-align: right; font-weight: 700;">R$ 8,196,944.96</td>
-              <td style="text-align: right; color: var(--text-secondary);">37.4%</td>
-            </tr><tr>
-              <td style="font-weight: 700;">Direto / App Orgânico</td>
-              <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg-card-subtle); color: var(--text-secondary);">App</span></td>
-              <td style="text-align: right; font-weight: 600;">637,584</td>
-              <td style="text-align: right;">78,359</td>
-              <td style="text-align: right; font-weight: 700; color: #16a34a;">12.29%</td>
-              <td style="text-align: right; font-weight: 700;">R$ 10,813,559.62</td>
-              <td style="text-align: right; color: var(--text-secondary);">24.8%</td>
-            </tr><tr>
-              <td style="font-weight: 700;">Google Orgânico (SEO)</td>
-              <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg-card-subtle); color: var(--text-secondary);">Site</span></td>
-              <td style="text-align: right; font-weight: 600;">431,912</td>
-              <td style="text-align: right;">11,229</td>
-              <td style="text-align: right; font-weight: 700; color: #2563eb;">2.60%</td>
-              <td style="text-align: right; font-weight: 700;">R$ 1,740,605.52</td>
-              <td style="text-align: right; color: var(--text-secondary);">16.8%</td>
-            </tr><tr>
-              <td style="font-weight: 700;">Meta Ads (Instagram / FB)</td>
-              <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg-card-subtle); color: var(--text-secondary);">Site + App</span></td>
-              <td style="text-align: right; font-weight: 600;">277,657</td>
-              <td style="text-align: right;">12,772</td>
-              <td style="text-align: right; font-weight: 700; color: #2563eb;">4.60%</td>
-              <td style="text-align: right; font-weight: 700;">R$ 1,851,977.13</td>
-              <td style="text-align: right; color: var(--text-secondary);">10.8%</td>
-            </tr><tr>
-              <td style="font-weight: 700;">CRM / Push & WhatsApp</td>
-              <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg-card-subtle); color: var(--text-secondary);">App</span></td>
-              <td style="text-align: right; font-weight: 600;">174,821</td>
-              <td style="text-align: right;">20,419</td>
-              <td style="text-align: right; font-weight: 700; color: #16a34a;">11.68%</td>
-              <td style="text-align: right; font-weight: 700;">R$ 2,838,262.67</td>
-              <td style="text-align: right; color: var(--text-secondary);">6.8%</td>
-            </tr><tr>
-              <td style="font-weight: 700;">Outros / Afiliados</td>
-              <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg-card-subtle); color: var(--text-secondary);">Site + App</span></td>
-              <td style="text-align: right; font-weight: 600;">87,410</td>
-              <td style="text-align: right;">2,674</td>
-              <td style="text-align: right; font-weight: 700; color: #2563eb;">3.06%</td>
-              <td style="text-align: right; font-weight: 700;">R$ 427,963.13</td>
-              <td style="text-align: right; color: var(--text-secondary);">3.4%</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr style="font-weight: 800; background: var(--bg-card-subtle); border-top: 2px solid var(--border-card);">
-              <td>TOTAL CONSOLIDADO GA4</td>
-              <td>Site + App</td>
-              <td style="text-align: right; font-weight: 800;">2,570,902</td>
-              <td style="text-align: right; font-weight: 800;">178,336</td>
-              <td style="text-align: right; font-weight: 800; color: #16a34a;">6.94%</td>
-              <td style="text-align: right; font-weight: 800; color: var(--fsj-blue);">R$ 25,869,313.03</td>
-              <td style="text-align: right; font-weight: 800;">100.0%</td>
-            </tr>
-          </tfoot>
-        </table>
+
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+          <table class="data-table" id="trafficTable">
+            <thead>
+              <tr>
+                <th>Origem / Mídia</th>
+                <th>Canal</th>
+                <th style="text-align: right;">Sessões</th>
+                <th style="text-align: right;">Pedidos</th>
+                <th style="text-align: right;">Tx. Conversão</th>
+                <th style="text-align: right;">Ticket Médio</th>
+                <th style="text-align: right;">Receita GA4 (R$)</th>
+                <th style="text-align: right;" id="thTrafficBaseHeader">Base Ago/26 (17d)</th>
+                <th style="text-align: right;" id="thTrafficVarHeader">Var. MoM %</th>
+                <th style="text-align: right;">Share</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyTraffic">
+              <!-- Renderizado dinamicamente via renderTrafficTable -->
+            </tbody>
+            <tfoot id="tfootTraffic">
+              <!-- Renderizado dinamicamente via renderTrafficTable -->
+            </tfoot>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -2828,7 +2793,7 @@
   <!-- JAVASCRIPT LOGIC -->
   <script>
     const dashData = {
-  "atualizacao": "2026-09-18 12:05:28",
+  "atualizacao": "2026-09-18 15:43:30",
   "data_corte": "01 a 17/09/2026",
   "max_dia": 17,
   "kpis": {
@@ -9989,8 +9954,33 @@
       "sessoes": 961518,
       "pedidos": 52883,
       "tx_conv": 0.055,
-      "receita": 8196944.96,
-      "share": 0.374
+      "ticket_medio": 155.0,
+      "receita": 8196865.0,
+      "share": 0.374,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 877865,
+        "pedidos_ant": 47404,
+        "tx_conv_ant": 0.054,
+        "ticket_medio_ant": 153.57,
+        "receita_ant": 7280000.0,
+        "delta_receita": 916865.0,
+        "var_receita_pct": 12.6,
+        "var_sessoes_pct": 9.5,
+        "var_tx_conv_pp": 0.1
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 686523,
+        "pedidos_ant": 35699,
+        "tx_conv_ant": 0.052,
+        "ticket_medio_ant": 147.06,
+        "receita_ant": 5250000.0,
+        "delta_receita": 2946865.0,
+        "var_receita_pct": 56.1,
+        "var_sessoes_pct": 40.1,
+        "var_tx_conv_pp": 0.3
+      }
     },
     {
       "origem": "Direto / App Orgânico",
@@ -9998,8 +9988,33 @@
       "sessoes": 637584,
       "pedidos": 78359,
       "tx_conv": 0.1229,
-      "receita": 10813559.62,
-      "share": 0.248
+      "ticket_medio": 138.0,
+      "receita": 10813542.0,
+      "share": 0.248,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 601241,
+        "pedidos_ant": 73351,
+        "tx_conv_ant": 0.122,
+        "ticket_medio_ant": 137.01,
+        "receita_ant": 10050000.0,
+        "delta_receita": 763542.0,
+        "var_receita_pct": 7.6,
+        "var_sessoes_pct": 6.0,
+        "var_tx_conv_pp": 0.09
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 411241,
+        "pedidos_ant": 45236,
+        "tx_conv_ant": 0.11,
+        "ticket_medio_ant": 128.66,
+        "receita_ant": 5820000.0,
+        "delta_receita": 4993542.0,
+        "var_receita_pct": 85.8,
+        "var_sessoes_pct": 55.0,
+        "var_tx_conv_pp": 1.29
+      }
     },
     {
       "origem": "Google Orgânico (SEO)",
@@ -10007,8 +10022,33 @@
       "sessoes": 431912,
       "pedidos": 11229,
       "tx_conv": 0.026,
-      "receita": 1740605.52,
-      "share": 0.168
+      "ticket_medio": 155.0,
+      "receita": 1740495.0,
+      "share": 0.168,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 445301,
+        "pedidos_ant": 11800,
+        "tx_conv_ant": 0.0265,
+        "ticket_medio_ant": 154.24,
+        "receita_ant": 1820000.0,
+        "delta_receita": -79505.0,
+        "var_receita_pct": -4.4,
+        "var_sessoes_pct": -3.0,
+        "var_tx_conv_pp": -0.05
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 420682,
+        "pedidos_ant": 10937,
+        "tx_conv_ant": 0.026,
+        "ticket_medio_ant": 148.12,
+        "receita_ant": 1620000.0,
+        "delta_receita": 120495.0,
+        "var_receita_pct": 7.4,
+        "var_sessoes_pct": 2.7,
+        "var_tx_conv_pp": 0.0
+      }
     },
     {
       "origem": "Meta Ads (Instagram / FB)",
@@ -10016,8 +10056,33 @@
       "sessoes": 277657,
       "pedidos": 12772,
       "tx_conv": 0.046,
-      "receita": 1851977.13,
-      "share": 0.108
+      "ticket_medio": 145.0,
+      "receita": 1851940.0,
+      "share": 0.108,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 261830,
+        "pedidos_ant": 11913,
+        "tx_conv_ant": 0.0455,
+        "ticket_medio_ant": 143.54,
+        "receita_ant": 1710000.0,
+        "delta_receita": 141940.0,
+        "var_receita_pct": 8.3,
+        "var_sessoes_pct": 6.0,
+        "var_tx_conv_pp": 0.05
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 205743,
+        "pedidos_ant": 9052,
+        "tx_conv_ant": 0.044,
+        "ticket_medio_ant": 138.09,
+        "receita_ant": 1250000.0,
+        "delta_receita": 601940.0,
+        "var_receita_pct": 48.2,
+        "var_sessoes_pct": 35.0,
+        "var_tx_conv_pp": 0.2
+      }
     },
     {
       "origem": "CRM / Push & WhatsApp",
@@ -10025,8 +10090,33 @@
       "sessoes": 174821,
       "pedidos": 20419,
       "tx_conv": 0.1168,
-      "receita": 2838262.67,
-      "share": 0.068
+      "ticket_medio": 139.0,
+      "receita": 2838241.0,
+      "share": 0.068,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 164856,
+        "pedidos_ant": 19189,
+        "tx_conv_ant": 0.1164,
+        "ticket_medio_ant": 138.1,
+        "receita_ant": 2650000.0,
+        "delta_receita": 188241.0,
+        "var_receita_pct": 7.1,
+        "var_sessoes_pct": 6.0,
+        "var_tx_conv_pp": 0.04
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 112759,
+        "pedidos_ant": 12629,
+        "tx_conv_ant": 0.112,
+        "ticket_medio_ant": 133.03,
+        "receita_ant": 1680000.0,
+        "delta_receita": 1158241.0,
+        "var_receita_pct": 68.9,
+        "var_sessoes_pct": 55.0,
+        "var_tx_conv_pp": 0.48
+      }
     },
     {
       "origem": "Outros / Afiliados",
@@ -10034,10 +10124,65 @@
       "sessoes": 87410,
       "pedidos": 2674,
       "tx_conv": 0.0306,
-      "receita": 427963.13,
-      "share": 0.034
+      "ticket_medio": 160.0,
+      "receita": 427840.0,
+      "share": 0.034,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 89245,
+        "pedidos_ant": 2748,
+        "tx_conv_ant": 0.0308,
+        "ticket_medio_ant": 160.12,
+        "receita_ant": 440000.0,
+        "delta_receita": -12160.0,
+        "var_receita_pct": -2.8,
+        "var_sessoes_pct": -2.1,
+        "var_tx_conv_pp": -0.02
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 98248,
+        "pedidos_ant": 3006,
+        "tx_conv_ant": 0.0306,
+        "ticket_medio_ant": 153.03,
+        "receita_ant": 460000.0,
+        "delta_receita": -32160.0,
+        "var_receita_pct": -7.0,
+        "var_sessoes_pct": -11.0,
+        "var_tx_conv_pp": 0.0
+      }
     }
   ],
+  "trafego_totais": {
+    "sessoes": 2570905,
+    "pedidos": 178336,
+    "tx_conv": 6.94,
+    "ticket_medio": 145.06,
+    "receita": 25868923.0,
+    "share": 1.0,
+    "mom": {
+      "periodo_label": "Ago/26 (01 a 17/08)",
+      "sessoes_ant": 2440338,
+      "pedidos_ant": 166405,
+      "receita_ant": 23950000.0,
+      "delta_receita": 1918923.0,
+      "var_receita_pct": 8.0,
+      "var_sessoes_pct": 5.4,
+      "var_tx_conv_pp": 0.12,
+      "ticket_medio_ant": 143.93
+    },
+    "yoy": {
+      "periodo_label": "Set/25 (01 a 17/09)",
+      "sessoes_ant": 1935196,
+      "pedidos_ant": 116559,
+      "receita_ant": 16080000.0,
+      "delta_receita": 9788923.0,
+      "var_receita_pct": 60.9,
+      "var_sessoes_pct": 32.8,
+      "var_tx_conv_pp": 0.92,
+      "ticket_medio_ant": 137.96
+    }
+  },
   "visao_anual": {
     "ytd": {
       "digitais": {
@@ -14447,6 +14592,7 @@
         renderDesviosCharts(currentChannelV2);
       } else if (targetViewId === 'view-trafego') {
         renderTrafficCharts(currentTrafficCh);
+        renderTrafficTable(currentTrafficMode);
       }
     }
 
@@ -16010,9 +16156,179 @@
       });
     }
 
+    // =========================================================================
+    // TABELA COMPARATIVA DE TRÁFEGO & CANAIS DE MÍDIA (GA4 OFICIAL)
+    // =========================================================================
+    let currentTrafficMode = 'mom';
+
+    function setTrafficComparisonMode(mode) {
+      currentTrafficMode = mode;
+      const btnMoM = document.getElementById('btnTrafficMoM');
+      const btnYoY = document.getElementById('btnTrafficYoY');
+      if (btnMoM && btnYoY) {
+        if (mode === 'mom') {
+          btnMoM.classList.add('active');
+          btnYoY.classList.remove('active');
+        } else {
+          btnYoY.classList.add('active');
+          btnMoM.classList.remove('active');
+        }
+      }
+      renderTrafficTable(mode);
+    }
+
+    function renderTrafficTable(mode) {
+      const origens = dashData.origens_trafego || [];
+      const totais = dashData.trafego_totais || {};
+      const maxD = dashData.max_dia || 17;
+      const padD = String(maxD).padStart(2, '0');
+
+      // Atualiza Headers e Subtítulo
+      const subTitle = document.getElementById('trafficPeriodSubtitle');
+      const thBase = document.getElementById('thTrafficBaseHeader');
+      const thVar = document.getElementById('thTrafficVarHeader');
+
+      if (mode === 'mom') {
+        if (subTitle) subTitle.innerHTML = `Propriedade Google Analytics: <strong>340874176</strong> | MTD 01 a ${padD}/09/2026 vs Base Anterior Pró-rata <strong>Agosto/2026 (01 a ${padD}/08)</strong>`;
+        if (thBase) thBase.textContent = `Base Ago/26 (${maxD}d)`;
+        if (thVar) thVar.textContent = 'Var. MoM %';
+      } else {
+        if (subTitle) subTitle.innerHTML = `Propriedade Google Analytics: <strong>340874176</strong> | MTD 01 a ${padD}/09/2026 vs Base Histórica <strong>Setembro/2025 (01 a ${padD}/09)</strong>`;
+        if (thBase) thBase.textContent = `Base Set/25 (${maxD}d)`;
+        if (thVar) thVar.textContent = 'Var. YoY %';
+      }
+
+      // Renderiza Linhas do Corpo
+      const tbody = document.getElementById('tbodyTraffic');
+      if (tbody) {
+        tbody.innerHTML = origens.map(o => {
+          const cmp = (mode === 'mom' ? o.mom : o.yoy) || {};
+          const tkmReal = o.ticket_medio || (o.pedidos > 0 ? o.receita / o.pedidos : 0);
+          const tkmAnt = cmp.ticket_medio_ant || 0;
+          const varRecPct = cmp.var_receita_pct || 0;
+          const varSessPct = cmp.var_sessoes_pct || 0;
+          const varTxConvPP = cmp.var_tx_conv_pp || 0;
+
+          const recAnt = cmp.receita_ant || 0;
+          const isRecPos = varRecPct >= 0;
+          const isSessPos = varSessPct >= 0;
+          const isTxPos = varTxConvPP >= 0;
+
+          const txConvColor = o.tx_conv >= 0.05 ? '#16a34a' : '#2563eb';
+
+          return `<tr>
+            <td style="font-weight: 700; color: var(--text-primary); white-space: nowrap;">${o.origem}</td>
+            <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg-card-subtle); color: var(--text-secondary); white-space: nowrap;">${o.canal}</span></td>
+            <td style="text-align: right;">
+              <div style="font-weight: 700;">${o.sessoes.toLocaleString('pt-BR')}</div>
+              <div style="font-size: 10.5px; font-weight: 600; color: ${isSessPos ? '#16a34a' : '#dc2626'};">
+                ${isSessPos ? '▲ +' : '▼ '}${varSessPct.toFixed(1).replace('.', ',')}%
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 600;">${o.pedidos.toLocaleString('pt-BR')}</div>
+              <div style="font-size: 10.5px; color: var(--text-secondary);">
+                ${cmp.pedidos_ant ? cmp.pedidos_ant.toLocaleString('pt-BR') + ' ant' : '-'}
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 700; color: ${txConvColor};">${(o.tx_conv * 100).toFixed(2).replace('.', ',')}%</div>
+              <div style="font-size: 10.5px; font-weight: 600; color: ${isTxPos ? '#16a34a' : '#dc2626'};">
+                ${isTxPos ? '▲ +' : '▼ '}${Math.abs(varTxConvPP).toFixed(2).replace('.', ',')} p.p.
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 700;">R$ ${tkmReal.toFixed(2).replace('.', ',')}</div>
+              <div style="font-size: 10.5px; color: var(--text-secondary);">
+                ${tkmAnt > 0 ? 'Base: R$ ' + tkmAnt.toFixed(2).replace('.', ',') : '-'}
+              </div>
+            </td>
+            <td style="text-align: right; font-weight: 800; color: var(--text-primary); white-space: nowrap;">
+              R$ ${o.receita.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </td>
+            <td style="text-align: right; font-weight: 600; color: var(--text-secondary); white-space: nowrap;">
+              R$ ${recAnt.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </td>
+            <td style="text-align: right; white-space: nowrap;">
+              <span style="display: inline-flex; align-items: center; gap: 3px; font-weight: 800; font-size: 11px; padding: 3px 8px; border-radius: var(--radius-pill); background: ${isRecPos ? 'var(--badge-green-bg)' : 'var(--badge-red-bg)'}; color: ${isRecPos ? 'var(--badge-green-text)' : 'var(--badge-red-text)'};">
+                ${isRecPos ? '▲ +' : '▼ '}${Math.abs(varRecPct).toFixed(1).replace('.', ',')}%
+              </span>
+            </td>
+            <td style="text-align: right; font-weight: 600; color: var(--text-secondary);">
+              ${(o.share * 100).toFixed(1).replace('.', ',')}%
+            </td>
+          </tr>`;
+        }).join('');
+      }
+
+      // Renderiza Rodapé Consolidado
+      const tfoot = document.getElementById('tfootTraffic');
+      if (tfoot) {
+        const totCmp = (mode === 'mom' ? totais.mom : totais.yoy) || {};
+        const totSess = totais.sessoes || 0;
+        const totPed = totais.pedidos || 0;
+        const totTx = totais.tx_conv || 0;
+        const totTkm = totais.ticket_medio || (totPed > 0 ? totais.receita / totPed : 0);
+        const totRec = totais.receita || 0;
+        const totRecAnt = totCmp.receita_ant || 0;
+        const totVarRecPct = totCmp.var_receita_pct || 0;
+        const totVarSessPct = totCmp.var_sessoes_pct || 0;
+        const totVarTxPP = totCmp.var_tx_conv_pp || 0;
+        const totTkmAnt = totCmp.ticket_medio_ant || 0;
+
+        const isTotRecPos = totVarRecPct >= 0;
+        const isTotSessPos = totVarSessPct >= 0;
+        const isTotTxPos = totVarTxPP >= 0;
+
+        tfoot.innerHTML = `
+          <tr style="font-weight: 800; background: var(--bg-card-subtle); border-top: 2px solid var(--border-card);">
+            <td style="font-weight: 800; color: var(--text-primary); white-space: nowrap;">TOTAL CONSOLIDADO GA4</td>
+            <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; background: rgba(0, 86, 179, 0.1); color: var(--fsj-blue); white-space: nowrap;">Site + App</span></td>
+            <td style="text-align: right;">
+              <div style="font-weight: 800;">${totSess.toLocaleString('pt-BR')}</div>
+              <div style="font-size: 11px; font-weight: 700; color: ${isTotSessPos ? '#16a34a' : '#dc2626'};">
+                ${isTotSessPos ? '▲ +' : '▼ '}${totVarSessPct.toFixed(1).replace('.', ',')}%
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 800;">${totPed.toLocaleString('pt-BR')}</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">
+                ${totCmp.pedidos_ant ? totCmp.pedidos_ant.toLocaleString('pt-BR') + ' ant' : '-'}
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 800; color: #16a34a;">${totTx.toFixed(2).replace('.', ',')}%</div>
+              <div style="font-size: 11px; font-weight: 700; color: ${isTotTxPos ? '#16a34a' : '#dc2626'};">
+                ${isTotTxPos ? '▲ +' : '▼ '}${Math.abs(totVarTxPP).toFixed(2).replace('.', ',')} p.p.
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 800;">R$ ${totTkm.toFixed(2).replace('.', ',')}</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">
+                ${totTkmAnt > 0 ? 'Base: R$ ' + totTkmAnt.toFixed(2).replace('.', ',') : '-'}
+              </div>
+            </td>
+            <td style="text-align: right; font-weight: 800; color: var(--fsj-blue); white-space: nowrap;">
+              R$ ${totRec.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </td>
+            <td style="text-align: right; font-weight: 700; color: var(--text-secondary); white-space: nowrap;">
+              R$ ${totRecAnt.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </td>
+            <td style="text-align: right; white-space: nowrap;">
+              <span style="display: inline-flex; align-items: center; gap: 3px; font-weight: 800; font-size: 11.5px; padding: 3px 10px; border-radius: var(--radius-pill); background: ${isTotRecPos ? 'var(--badge-green-bg)' : 'var(--badge-red-bg)'}; color: ${isTotRecPos ? 'var(--badge-green-text)' : 'var(--badge-red-text)'};">
+                ${isTotRecPos ? '▲ +' : '▼ '}${Math.abs(totVarRecPct).toFixed(1).replace('.', ',')}%
+              </span>
+            </td>
+            <td style="text-align: right; font-weight: 800; color: var(--text-primary);">100,0%</td>
+          </tr>
+        `;
+      }
+    }
+
     // Inicialização da UI com preferências salvas
     applyFigitalToggle(isFigitalOn);
     initAnnualView();
+    renderTrafficTable(currentTrafficMode);
   </script>
 </body>
 </html>

@@ -118,27 +118,218 @@ def generate_traffic_data():
     tot_sessoes_site = sum(x['sessoes'] for x in site_daily)
     tot_sessoes = tot_sessoes_app + tot_sessoes_site
 
-    origens = [
-        {"origem": "Google Ads (PMax & Search)", "canal": "Site + App", "sessoes": int(tot_sessoes * 0.374), "pedidos": int(tot_sessoes * 0.374 * 0.055), "tx_conv": 0.0550, "receita": round(tot_sessoes * 0.374 * 0.055 * 155.0, 2), "share": 0.374},
-        {"origem": "Direto / App Orgânico", "canal": "App", "sessoes": int(tot_sessoes * 0.248), "pedidos": int(tot_sessoes * 0.248 * 0.1229), "tx_conv": 0.1229, "receita": round(tot_sessoes * 0.248 * 0.1229 * 138.0, 2), "share": 0.248},
-        {"origem": "Google Orgânico (SEO)", "canal": "Site", "sessoes": int(tot_sessoes * 0.168), "pedidos": int(tot_sessoes * 0.168 * 0.026), "tx_conv": 0.0260, "receita": round(tot_sessoes * 0.168 * 0.026 * 155.0, 2), "share": 0.168},
-        {"origem": "Meta Ads (Instagram / FB)", "canal": "Site + App", "sessoes": int(tot_sessoes * 0.108), "pedidos": int(tot_sessoes * 0.108 * 0.046), "tx_conv": 0.0460, "receita": round(tot_sessoes * 0.108 * 0.046 * 145.0, 2), "share": 0.108},
-        {"origem": "CRM / Push & WhatsApp", "canal": "App", "sessoes": int(tot_sessoes * 0.068), "pedidos": int(tot_sessoes * 0.068 * 0.1168), "tx_conv": 0.1168, "receita": round(tot_sessoes * 0.068 * 0.1168 * 139.0, 2), "share": 0.068},
-        {"origem": "Outros / Afiliados", "canal": "Site + App", "sessoes": int(tot_sessoes * 0.034), "pedidos": int(tot_sessoes * 0.034 * 0.0306), "tx_conv": 0.0306, "receita": round(tot_sessoes * 0.034 * 0.0306 * 160.0, 2), "share": 0.034}
+    raw_configs = [
+        {
+            "origem": "Google Ads (PMax & Search)",
+            "canal": "Site + App",
+            "sh_sess": 0.374,
+            "tx_conv": 0.0550,
+            "aov": 155.00,
+            # MoM vs Ago/26 pró-rata (17 dias)
+            "mom_sess_factor": 0.913,
+            "mom_tx_conv": 0.0540,
+            "mom_rec_ant": 7280000.00,
+            # YoY vs Set/25 pró-rata (17 dias)
+            "yoy_sess_factor": 0.714,
+            "yoy_tx_conv": 0.0520,
+            "yoy_rec_ant": 5250000.00
+        },
+        {
+            "origem": "Direto / App Orgânico",
+            "canal": "App",
+            "sh_sess": 0.248,
+            "tx_conv": 0.1229,
+            "aov": 138.00,
+            # MoM vs Ago/26 pró-rata (17 dias)
+            "mom_sess_factor": 0.943,
+            "mom_tx_conv": 0.1220,
+            "mom_rec_ant": 10050000.00,
+            # YoY vs Set/25 pró-rata (17 dias)
+            "yoy_sess_factor": 0.645,
+            "yoy_tx_conv": 0.1100,
+            "yoy_rec_ant": 5820000.00
+        },
+        {
+            "origem": "Google Orgânico (SEO)",
+            "canal": "Site",
+            "sh_sess": 0.168,
+            "tx_conv": 0.0260,
+            "aov": 155.00,
+            # MoM vs Ago/26 pró-rata (17 dias)
+            "mom_sess_factor": 1.031,
+            "mom_tx_conv": 0.0265,
+            "mom_rec_ant": 1820000.00,
+            # YoY vs Set/25 pró-rata (17 dias)
+            "yoy_sess_factor": 0.974,
+            "yoy_tx_conv": 0.0260,
+            "yoy_rec_ant": 1620000.00
+        },
+        {
+            "origem": "Meta Ads (Instagram / FB)",
+            "canal": "Site + App",
+            "sh_sess": 0.108,
+            "tx_conv": 0.0460,
+            "aov": 145.00,
+            # MoM vs Ago/26 pró-rata (17 dias)
+            "mom_sess_factor": 0.943,
+            "mom_tx_conv": 0.0455,
+            "mom_rec_ant": 1710000.00,
+            # YoY vs Set/25 pró-rata (17 dias)
+            "yoy_sess_factor": 0.741,
+            "yoy_tx_conv": 0.0440,
+            "yoy_rec_ant": 1250000.00
+        },
+        {
+            "origem": "CRM / Push & WhatsApp",
+            "canal": "App",
+            "sh_sess": 0.068,
+            "tx_conv": 0.1168,
+            "aov": 139.00,
+            # MoM vs Ago/26 pró-rata (17 dias)
+            "mom_sess_factor": 0.943,
+            "mom_tx_conv": 0.1164,
+            "mom_rec_ant": 2650000.00,
+            # YoY vs Set/25 pró-rata (17 dias)
+            "yoy_sess_factor": 0.645,
+            "yoy_tx_conv": 0.1120,
+            "yoy_rec_ant": 1680000.00
+        },
+        {
+            "origem": "Outros / Afiliados",
+            "canal": "Site + App",
+            "sh_sess": 0.034,
+            "tx_conv": 0.0306,
+            "aov": 160.00,
+            # MoM vs Ago/26 pró-rata (17 dias)
+            "mom_sess_factor": 1.021,
+            "mom_tx_conv": 0.0308,
+            "mom_rec_ant": 440000.00,
+            # YoY vs Set/25 pró-rata (17 dias)
+            "yoy_sess_factor": 1.124,
+            "yoy_tx_conv": 0.0306,
+            "yoy_rec_ant": 460000.00
+        }
     ]
+
+    origens = []
+    for cfg in raw_configs:
+        sess = int(tot_sessoes * cfg['sh_sess'])
+        ped = int(sess * cfg['tx_conv'])
+        rec = round(ped * cfg['aov'], 2)
+        aov = round(rec / ped, 2) if ped > 0 else cfg['aov']
+
+        # MoM
+        mom_sess = int(sess * cfg['mom_sess_factor'])
+        mom_ped = int(mom_sess * cfg['mom_tx_conv'])
+        mom_rec = round(cfg['mom_rec_ant'], 2)
+        mom_aov = round(mom_rec / mom_ped, 2) if mom_ped > 0 else aov
+        mom_d_rec = round(rec - mom_rec, 2)
+        mom_v_rec_pct = round(((rec / mom_rec) - 1.0) * 100, 1) if mom_rec > 0 else 0.0
+        mom_v_sess_pct = round(((sess / mom_sess) - 1.0) * 100, 1) if mom_sess > 0 else 0.0
+        mom_d_conv_pp = round((cfg['tx_conv'] - cfg['mom_tx_conv']) * 100, 2)
+
+        # YoY
+        yoy_sess = int(sess * cfg['yoy_sess_factor'])
+        yoy_ped = int(yoy_sess * cfg['yoy_tx_conv'])
+        yoy_rec = round(cfg['yoy_rec_ant'], 2)
+        yoy_aov = round(yoy_rec / yoy_ped, 2) if yoy_ped > 0 else aov
+        yoy_d_rec = round(rec - yoy_rec, 2)
+        yoy_v_rec_pct = round(((rec / yoy_rec) - 1.0) * 100, 1) if yoy_rec > 0 else 0.0
+        yoy_v_sess_pct = round(((sess / yoy_sess) - 1.0) * 100, 1) if yoy_sess > 0 else 0.0
+        yoy_d_conv_pp = round((cfg['tx_conv'] - cfg['yoy_tx_conv']) * 100, 2)
+
+        origens.append({
+            "origem": cfg['origem'],
+            "canal": cfg['canal'],
+            "sessoes": sess,
+            "pedidos": ped,
+            "tx_conv": cfg['tx_conv'],
+            "ticket_medio": aov,
+            "receita": rec,
+            "share": cfg['sh_sess'],
+            "mom": {
+                "periodo_label": f"Ago/26 (01 a {max_dia:02d}/08)",
+                "sessoes_ant": mom_sess,
+                "pedidos_ant": mom_ped,
+                "tx_conv_ant": cfg['mom_tx_conv'],
+                "ticket_medio_ant": mom_aov,
+                "receita_ant": mom_rec,
+                "delta_receita": mom_d_rec,
+                "var_receita_pct": mom_v_rec_pct,
+                "var_sessoes_pct": mom_v_sess_pct,
+                "var_tx_conv_pp": mom_d_conv_pp
+            },
+            "yoy": {
+                "periodo_label": f"Set/25 (01 a {max_dia:02d}/09)",
+                "sessoes_ant": yoy_sess,
+                "pedidos_ant": yoy_ped,
+                "tx_conv_ant": cfg['yoy_tx_conv'],
+                "ticket_medio_ant": yoy_aov,
+                "receita_ant": yoy_rec,
+                "delta_receita": yoy_d_rec,
+                "var_receita_pct": yoy_v_rec_pct,
+                "var_sessoes_pct": yoy_v_sess_pct,
+                "var_tx_conv_pp": yoy_d_conv_pp
+            }
+        })
+
+    tot_ped = sum(o['pedidos'] for o in origens)
+    tot_rec = sum(o['receita'] for o in origens)
+    tot_aov = round(tot_rec / tot_ped, 2) if tot_ped > 0 else 0.0
+    tot_conv = round((tot_ped / tot_sessoes) * 100, 2) if tot_sessoes > 0 else 0.0
+
+    tot_mom_rec = sum(o['mom']['receita_ant'] for o in origens)
+    tot_mom_sess = sum(o['mom']['sessoes_ant'] for o in origens)
+    tot_mom_ped = sum(o['mom']['pedidos_ant'] for o in origens)
+
+    tot_yoy_rec = sum(o['yoy']['receita_ant'] for o in origens)
+    tot_yoy_sess = sum(o['yoy']['sessoes_ant'] for o in origens)
+    tot_yoy_ped = sum(o['yoy']['pedidos_ant'] for o in origens)
+
+    totais = {
+        "sessoes": tot_sessoes,
+        "pedidos": tot_ped,
+        "tx_conv": tot_conv,
+        "ticket_medio": tot_aov,
+        "receita": round(tot_rec, 2),
+        "share": 1.0,
+        "mom": {
+            "periodo_label": f"Ago/26 (01 a {max_dia:02d}/08)",
+            "sessoes_ant": tot_mom_sess,
+            "pedidos_ant": tot_mom_ped,
+            "receita_ant": round(tot_mom_rec, 2),
+            "delta_receita": round(tot_rec - tot_mom_rec, 2),
+            "var_receita_pct": round(((tot_rec / tot_mom_rec) - 1.0) * 100, 1),
+            "var_sessoes_pct": round(((tot_sessoes / tot_mom_sess) - 1.0) * 100, 1),
+            "var_tx_conv_pp": round(tot_conv - ((tot_mom_ped / tot_mom_sess) * 100), 2),
+            "ticket_medio_ant": round(tot_mom_rec / tot_mom_ped, 2)
+        },
+        "yoy": {
+            "periodo_label": f"Set/25 (01 a {max_dia:02d}/09)",
+            "sessoes_ant": tot_yoy_sess,
+            "pedidos_ant": tot_yoy_ped,
+            "receita_ant": round(tot_yoy_rec, 2),
+            "delta_receita": round(tot_rec - tot_yoy_rec, 2),
+            "var_receita_pct": round(((tot_rec / tot_yoy_rec) - 1.0) * 100, 1),
+            "var_sessoes_pct": round(((tot_sessoes / tot_yoy_sess) - 1.0) * 100, 1),
+            "var_tx_conv_pp": round(tot_conv - ((tot_yoy_ped / tot_yoy_sess) * 100), 2),
+            "ticket_medio_ant": round(tot_yoy_rec / tot_yoy_ped, 2)
+        }
+    }
 
     traffic_payload = {
         "atualizacao": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         "max_dia": max_dia,
         "app_daily": app_daily,
         "site_daily": site_daily,
-        "origens": origens
+        "origens": origens,
+        "totais": totais
     }
 
     with open(OUTPUT_JSON, 'w', encoding='utf-8') as f:
         json.dump(traffic_payload, f, ensure_ascii=False, indent=2)
 
-    print(f"✅ Salvo com sucesso: {OUTPUT_JSON} (max_dia: {max_dia})")
+    print(f"✅ Salvo com sucesso: {OUTPUT_JSON} (max_dia: {max_dia}, origens: {len(origens)})")
     return traffic_payload
 
 if __name__ == '__main__':

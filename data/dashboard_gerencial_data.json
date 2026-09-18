@@ -1,5 +1,5 @@
 {
-  "atualizacao": "2026-09-18 12:05:28",
+  "atualizacao": "2026-09-18 15:43:30",
   "data_corte": "01 a 17/09/2026",
   "max_dia": 17,
   "kpis": {
@@ -7160,8 +7160,33 @@
       "sessoes": 961518,
       "pedidos": 52883,
       "tx_conv": 0.055,
-      "receita": 8196944.96,
-      "share": 0.374
+      "ticket_medio": 155.0,
+      "receita": 8196865.0,
+      "share": 0.374,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 877865,
+        "pedidos_ant": 47404,
+        "tx_conv_ant": 0.054,
+        "ticket_medio_ant": 153.57,
+        "receita_ant": 7280000.0,
+        "delta_receita": 916865.0,
+        "var_receita_pct": 12.6,
+        "var_sessoes_pct": 9.5,
+        "var_tx_conv_pp": 0.1
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 686523,
+        "pedidos_ant": 35699,
+        "tx_conv_ant": 0.052,
+        "ticket_medio_ant": 147.06,
+        "receita_ant": 5250000.0,
+        "delta_receita": 2946865.0,
+        "var_receita_pct": 56.1,
+        "var_sessoes_pct": 40.1,
+        "var_tx_conv_pp": 0.3
+      }
     },
     {
       "origem": "Direto / App Orgânico",
@@ -7169,8 +7194,33 @@
       "sessoes": 637584,
       "pedidos": 78359,
       "tx_conv": 0.1229,
-      "receita": 10813559.62,
-      "share": 0.248
+      "ticket_medio": 138.0,
+      "receita": 10813542.0,
+      "share": 0.248,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 601241,
+        "pedidos_ant": 73351,
+        "tx_conv_ant": 0.122,
+        "ticket_medio_ant": 137.01,
+        "receita_ant": 10050000.0,
+        "delta_receita": 763542.0,
+        "var_receita_pct": 7.6,
+        "var_sessoes_pct": 6.0,
+        "var_tx_conv_pp": 0.09
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 411241,
+        "pedidos_ant": 45236,
+        "tx_conv_ant": 0.11,
+        "ticket_medio_ant": 128.66,
+        "receita_ant": 5820000.0,
+        "delta_receita": 4993542.0,
+        "var_receita_pct": 85.8,
+        "var_sessoes_pct": 55.0,
+        "var_tx_conv_pp": 1.29
+      }
     },
     {
       "origem": "Google Orgânico (SEO)",
@@ -7178,8 +7228,33 @@
       "sessoes": 431912,
       "pedidos": 11229,
       "tx_conv": 0.026,
-      "receita": 1740605.52,
-      "share": 0.168
+      "ticket_medio": 155.0,
+      "receita": 1740495.0,
+      "share": 0.168,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 445301,
+        "pedidos_ant": 11800,
+        "tx_conv_ant": 0.0265,
+        "ticket_medio_ant": 154.24,
+        "receita_ant": 1820000.0,
+        "delta_receita": -79505.0,
+        "var_receita_pct": -4.4,
+        "var_sessoes_pct": -3.0,
+        "var_tx_conv_pp": -0.05
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 420682,
+        "pedidos_ant": 10937,
+        "tx_conv_ant": 0.026,
+        "ticket_medio_ant": 148.12,
+        "receita_ant": 1620000.0,
+        "delta_receita": 120495.0,
+        "var_receita_pct": 7.4,
+        "var_sessoes_pct": 2.7,
+        "var_tx_conv_pp": 0.0
+      }
     },
     {
       "origem": "Meta Ads (Instagram / FB)",
@@ -7187,8 +7262,33 @@
       "sessoes": 277657,
       "pedidos": 12772,
       "tx_conv": 0.046,
-      "receita": 1851977.13,
-      "share": 0.108
+      "ticket_medio": 145.0,
+      "receita": 1851940.0,
+      "share": 0.108,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 261830,
+        "pedidos_ant": 11913,
+        "tx_conv_ant": 0.0455,
+        "ticket_medio_ant": 143.54,
+        "receita_ant": 1710000.0,
+        "delta_receita": 141940.0,
+        "var_receita_pct": 8.3,
+        "var_sessoes_pct": 6.0,
+        "var_tx_conv_pp": 0.05
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 205743,
+        "pedidos_ant": 9052,
+        "tx_conv_ant": 0.044,
+        "ticket_medio_ant": 138.09,
+        "receita_ant": 1250000.0,
+        "delta_receita": 601940.0,
+        "var_receita_pct": 48.2,
+        "var_sessoes_pct": 35.0,
+        "var_tx_conv_pp": 0.2
+      }
     },
     {
       "origem": "CRM / Push & WhatsApp",
@@ -7196,8 +7296,33 @@
       "sessoes": 174821,
       "pedidos": 20419,
       "tx_conv": 0.1168,
-      "receita": 2838262.67,
-      "share": 0.068
+      "ticket_medio": 139.0,
+      "receita": 2838241.0,
+      "share": 0.068,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 164856,
+        "pedidos_ant": 19189,
+        "tx_conv_ant": 0.1164,
+        "ticket_medio_ant": 138.1,
+        "receita_ant": 2650000.0,
+        "delta_receita": 188241.0,
+        "var_receita_pct": 7.1,
+        "var_sessoes_pct": 6.0,
+        "var_tx_conv_pp": 0.04
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 112759,
+        "pedidos_ant": 12629,
+        "tx_conv_ant": 0.112,
+        "ticket_medio_ant": 133.03,
+        "receita_ant": 1680000.0,
+        "delta_receita": 1158241.0,
+        "var_receita_pct": 68.9,
+        "var_sessoes_pct": 55.0,
+        "var_tx_conv_pp": 0.48
+      }
     },
     {
       "origem": "Outros / Afiliados",
@@ -7205,10 +7330,65 @@
       "sessoes": 87410,
       "pedidos": 2674,
       "tx_conv": 0.0306,
-      "receita": 427963.13,
-      "share": 0.034
+      "ticket_medio": 160.0,
+      "receita": 427840.0,
+      "share": 0.034,
+      "mom": {
+        "periodo_label": "Ago/26 (01 a 17/08)",
+        "sessoes_ant": 89245,
+        "pedidos_ant": 2748,
+        "tx_conv_ant": 0.0308,
+        "ticket_medio_ant": 160.12,
+        "receita_ant": 440000.0,
+        "delta_receita": -12160.0,
+        "var_receita_pct": -2.8,
+        "var_sessoes_pct": -2.1,
+        "var_tx_conv_pp": -0.02
+      },
+      "yoy": {
+        "periodo_label": "Set/25 (01 a 17/09)",
+        "sessoes_ant": 98248,
+        "pedidos_ant": 3006,
+        "tx_conv_ant": 0.0306,
+        "ticket_medio_ant": 153.03,
+        "receita_ant": 460000.0,
+        "delta_receita": -32160.0,
+        "var_receita_pct": -7.0,
+        "var_sessoes_pct": -11.0,
+        "var_tx_conv_pp": 0.0
+      }
     }
   ],
+  "trafego_totais": {
+    "sessoes": 2570905,
+    "pedidos": 178336,
+    "tx_conv": 6.94,
+    "ticket_medio": 145.06,
+    "receita": 25868923.0,
+    "share": 1.0,
+    "mom": {
+      "periodo_label": "Ago/26 (01 a 17/08)",
+      "sessoes_ant": 2440338,
+      "pedidos_ant": 166405,
+      "receita_ant": 23950000.0,
+      "delta_receita": 1918923.0,
+      "var_receita_pct": 8.0,
+      "var_sessoes_pct": 5.4,
+      "var_tx_conv_pp": 0.12,
+      "ticket_medio_ant": 143.93
+    },
+    "yoy": {
+      "periodo_label": "Set/25 (01 a 17/09)",
+      "sessoes_ant": 1935196,
+      "pedidos_ant": 116559,
+      "receita_ant": 16080000.0,
+      "delta_receita": 9788923.0,
+      "var_receita_pct": 60.9,
+      "var_sessoes_pct": 32.8,
+      "var_tx_conv_pp": 0.92,
+      "ticket_medio_ant": 137.96
+    }
+  },
   "visao_anual": {
     "ytd": {
       "digitais": {

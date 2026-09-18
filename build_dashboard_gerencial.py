@@ -2630,52 +2630,57 @@ def build():
         </div>
       </div>
 
-      <!-- Tabela de Origens de Tráfego / Canais de Mídia -->
+      <!-- Tabela de Origens de Tráfego / Canais de Mídia com Comparativo MoM / YoY e Ticket Médio -->
       <div class="traffic-table-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
           <div>
-            <h3 style="margin: 0; font-size: 16px; font-family: 'Outfit';">Desempenho por Origem de Tráfego / Canal de Mídia (GA4 Oficial)</h3>
-            <span style="font-size: 11.5px; color: var(--text-secondary);">Propriedade Google Analytics: <strong>340874176</strong> | MTD 01 a {max_dia:02d}/09</span>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <h3 style="margin: 0; font-size: 16px; font-family: 'Outfit';">Desempenho por Origem de Tráfego / Canal de Mídia (GA4 Oficial)</h3>
+              <span style="font-size: 11.5px; font-weight: 700; color: #059669; background: rgba(16, 185, 129, 0.1); padding: 3px 10px; border-radius: 6px;">
+                ✓ 100% Dados Reais GA4
+              </span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;" id="trafficPeriodSubtitle">
+              Propriedade Google Analytics: <strong>340874176</strong> | MTD 01 a {max_dia:02d}/09/2026 vs Base Anterior Pró-rata <strong>Agosto/2026 (01 a {max_dia:02d}/08)</strong>
+            </div>
           </div>
-          <span style="font-size: 11.5px; font-weight: 700; color: #059669; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 6px;">
-            ✓ 100% Dados Reais GA4
-          </span>
+          
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="diag-toggle-group">
+              <button class="diag-toggle-btn active" id="btnTrafficMoM" onclick="setTrafficComparisonMode('mom')">
+                <span>📅 vs Mês Anterior (MoM • Ago/26)</span>
+              </button>
+              <button class="diag-toggle-btn" id="btnTrafficYoY" onclick="setTrafficComparisonMode('yoy')">
+                <span>🗓️ vs Ano Anterior (YoY • Set/25)</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Origem / Mídia</th>
-              <th>Canal</th>
-              <th style="text-align: right;">Sessões</th>
-              <th style="text-align: right;">Pedidos</th>
-              <th style="text-align: right;">Tx. Conversão</th>
-              <th style="text-align: right;">Receita (R$)</th>
-              <th style="text-align: right;">Share</th>
-            </tr>
-          </thead>
-          <tbody>
-            {"".join([f'''<tr>
-              <td style="font-weight: 700;">{o['origem']}</td>
-              <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg-card-subtle); color: var(--text-secondary);">{o['canal']}</span></td>
-              <td style="text-align: right; font-weight: 600;">{o['sessoes']:,}</td>
-              <td style="text-align: right;">{o['pedidos']:,}</td>
-              <td style="text-align: right; font-weight: 700; color: {'#16a34a' if o['tx_conv']>=0.05 else '#2563eb'};">{o['tx_conv']*100:.2f}%</td>
-              <td style="text-align: right; font-weight: 700;">R$ {o['receita']:,.2f}</td>
-              <td style="text-align: right; color: var(--text-secondary);">{o['share']*100:.1f}%</td>
-            </tr>''' for o in origens])}
-          </tbody>
-          <tfoot>
-            <tr style="font-weight: 800; background: var(--bg-card-subtle); border-top: 2px solid var(--border-card);">
-              <td>TOTAL CONSOLIDADO GA4</td>
-              <td>Site + App</td>
-              <td style="text-align: right; font-weight: 800;">{tot_sessoes_ga:,}</td>
-              <td style="text-align: right; font-weight: 800;">{tot_pedidos_ga:,}</td>
-              <td style="text-align: right; font-weight: 800; color: #16a34a;">{tot_tx_conv_ga:.2f}%</td>
-              <td style="text-align: right; font-weight: 800; color: var(--fsj-blue);">R$ {tot_receita_ga:,.2f}</td>
-              <td style="text-align: right; font-weight: 800;">100.0%</td>
-            </tr>
-          </tfoot>
-        </table>
+
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+          <table class="data-table" id="trafficTable">
+            <thead>
+              <tr>
+                <th>Origem / Mídia</th>
+                <th>Canal</th>
+                <th style="text-align: right;">Sessões</th>
+                <th style="text-align: right;">Pedidos</th>
+                <th style="text-align: right;">Tx. Conversão</th>
+                <th style="text-align: right;">Ticket Médio</th>
+                <th style="text-align: right;">Receita GA4 (R$)</th>
+                <th style="text-align: right;" id="thTrafficBaseHeader">Base Ago/26 ({max_dia}d)</th>
+                <th style="text-align: right;" id="thTrafficVarHeader">Var. MoM %</th>
+                <th style="text-align: right;">Share</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyTraffic">
+              <!-- Renderizado dinamicamente via renderTrafficTable -->
+            </tbody>
+            <tfoot id="tfootTraffic">
+              <!-- Renderizado dinamicamente via renderTrafficTable -->
+            </tfoot>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -2730,6 +2735,7 @@ def build():
         renderDesviosCharts(currentChannelV2);
       }} else if (targetViewId === 'view-trafego') {{
         renderTrafficCharts(currentTrafficCh);
+        renderTrafficTable(currentTrafficMode);
       }}
     }}
 
@@ -4293,9 +4299,179 @@ def build():
       }});
     }}
 
+    // =========================================================================
+    // TABELA COMPARATIVA DE TRÁFEGO & CANAIS DE MÍDIA (GA4 OFICIAL)
+    // =========================================================================
+    let currentTrafficMode = 'mom';
+
+    function setTrafficComparisonMode(mode) {{
+      currentTrafficMode = mode;
+      const btnMoM = document.getElementById('btnTrafficMoM');
+      const btnYoY = document.getElementById('btnTrafficYoY');
+      if (btnMoM && btnYoY) {{
+        if (mode === 'mom') {{
+          btnMoM.classList.add('active');
+          btnYoY.classList.remove('active');
+        }} else {{
+          btnYoY.classList.add('active');
+          btnMoM.classList.remove('active');
+        }}
+      }}
+      renderTrafficTable(mode);
+    }}
+
+    function renderTrafficTable(mode) {{
+      const origens = dashData.origens_trafego || [];
+      const totais = dashData.trafego_totais || {{}};
+      const maxD = dashData.max_dia || 17;
+      const padD = String(maxD).padStart(2, '0');
+
+      // Atualiza Headers e Subtítulo
+      const subTitle = document.getElementById('trafficPeriodSubtitle');
+      const thBase = document.getElementById('thTrafficBaseHeader');
+      const thVar = document.getElementById('thTrafficVarHeader');
+
+      if (mode === 'mom') {{
+        if (subTitle) subTitle.innerHTML = `Propriedade Google Analytics: <strong>340874176</strong> | MTD 01 a ${{padD}}/09/2026 vs Base Anterior Pró-rata <strong>Agosto/2026 (01 a ${{padD}}/08)</strong>`;
+        if (thBase) thBase.textContent = `Base Ago/26 (${{maxD}}d)`;
+        if (thVar) thVar.textContent = 'Var. MoM %';
+      }} else {{
+        if (subTitle) subTitle.innerHTML = `Propriedade Google Analytics: <strong>340874176</strong> | MTD 01 a ${{padD}}/09/2026 vs Base Histórica <strong>Setembro/2025 (01 a ${{padD}}/09)</strong>`;
+        if (thBase) thBase.textContent = `Base Set/25 (${{maxD}}d)`;
+        if (thVar) thVar.textContent = 'Var. YoY %';
+      }}
+
+      // Renderiza Linhas do Corpo
+      const tbody = document.getElementById('tbodyTraffic');
+      if (tbody) {{
+        tbody.innerHTML = origens.map(o => {{
+          const cmp = (mode === 'mom' ? o.mom : o.yoy) || {{}};
+          const tkmReal = o.ticket_medio || (o.pedidos > 0 ? o.receita / o.pedidos : 0);
+          const tkmAnt = cmp.ticket_medio_ant || 0;
+          const varRecPct = cmp.var_receita_pct || 0;
+          const varSessPct = cmp.var_sessoes_pct || 0;
+          const varTxConvPP = cmp.var_tx_conv_pp || 0;
+
+          const recAnt = cmp.receita_ant || 0;
+          const isRecPos = varRecPct >= 0;
+          const isSessPos = varSessPct >= 0;
+          const isTxPos = varTxConvPP >= 0;
+
+          const txConvColor = o.tx_conv >= 0.05 ? '#16a34a' : '#2563eb';
+
+          return `<tr>
+            <td style="font-weight: 700; color: var(--text-primary); white-space: nowrap;">${{o.origem}}</td>
+            <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg-card-subtle); color: var(--text-secondary); white-space: nowrap;">${{o.canal}}</span></td>
+            <td style="text-align: right;">
+              <div style="font-weight: 700;">${{o.sessoes.toLocaleString('pt-BR')}}</div>
+              <div style="font-size: 10.5px; font-weight: 600; color: ${{isSessPos ? '#16a34a' : '#dc2626'}};">
+                ${{isSessPos ? '▲ +' : '▼ '}}${{varSessPct.toFixed(1).replace('.', ',')}}%
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 600;">${{o.pedidos.toLocaleString('pt-BR')}}</div>
+              <div style="font-size: 10.5px; color: var(--text-secondary);">
+                ${{cmp.pedidos_ant ? cmp.pedidos_ant.toLocaleString('pt-BR') + ' ant' : '-'}}
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 700; color: ${{txConvColor}};">${{(o.tx_conv * 100).toFixed(2).replace('.', ',')}}%</div>
+              <div style="font-size: 10.5px; font-weight: 600; color: ${{isTxPos ? '#16a34a' : '#dc2626'}};">
+                ${{isTxPos ? '▲ +' : '▼ '}}${{Math.abs(varTxConvPP).toFixed(2).replace('.', ',')}} p.p.
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 700;">R$ ${{tkmReal.toFixed(2).replace('.', ',')}}</div>
+              <div style="font-size: 10.5px; color: var(--text-secondary);">
+                ${{tkmAnt > 0 ? 'Base: R$ ' + tkmAnt.toFixed(2).replace('.', ',') : '-'}}
+              </div>
+            </td>
+            <td style="text-align: right; font-weight: 800; color: var(--text-primary); white-space: nowrap;">
+              R$ ${{o.receita.toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }})}}
+            </td>
+            <td style="text-align: right; font-weight: 600; color: var(--text-secondary); white-space: nowrap;">
+              R$ ${{recAnt.toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }})}}
+            </td>
+            <td style="text-align: right; white-space: nowrap;">
+              <span style="display: inline-flex; align-items: center; gap: 3px; font-weight: 800; font-size: 11px; padding: 3px 8px; border-radius: var(--radius-pill); background: ${{isRecPos ? 'var(--badge-green-bg)' : 'var(--badge-red-bg)'}}; color: ${{isRecPos ? 'var(--badge-green-text)' : 'var(--badge-red-text)'}};">
+                ${{isRecPos ? '▲ +' : '▼ '}}${{Math.abs(varRecPct).toFixed(1).replace('.', ',')}}%
+              </span>
+            </td>
+            <td style="text-align: right; font-weight: 600; color: var(--text-secondary);">
+              ${{(o.share * 100).toFixed(1).replace('.', ',')}}%
+            </td>
+          </tr>`;
+        }}).join('');
+      }}
+
+      // Renderiza Rodapé Consolidado
+      const tfoot = document.getElementById('tfootTraffic');
+      if (tfoot) {{
+        const totCmp = (mode === 'mom' ? totais.mom : totais.yoy) || {{}};
+        const totSess = totais.sessoes || 0;
+        const totPed = totais.pedidos || 0;
+        const totTx = totais.tx_conv || 0;
+        const totTkm = totais.ticket_medio || (totPed > 0 ? totais.receita / totPed : 0);
+        const totRec = totais.receita || 0;
+        const totRecAnt = totCmp.receita_ant || 0;
+        const totVarRecPct = totCmp.var_receita_pct || 0;
+        const totVarSessPct = totCmp.var_sessoes_pct || 0;
+        const totVarTxPP = totCmp.var_tx_conv_pp || 0;
+        const totTkmAnt = totCmp.ticket_medio_ant || 0;
+
+        const isTotRecPos = totVarRecPct >= 0;
+        const isTotSessPos = totVarSessPct >= 0;
+        const isTotTxPos = totVarTxPP >= 0;
+
+        tfoot.innerHTML = `
+          <tr style="font-weight: 800; background: var(--bg-card-subtle); border-top: 2px solid var(--border-card);">
+            <td style="font-weight: 800; color: var(--text-primary); white-space: nowrap;">TOTAL CONSOLIDADO GA4</td>
+            <td><span style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; background: rgba(0, 86, 179, 0.1); color: var(--fsj-blue); white-space: nowrap;">Site + App</span></td>
+            <td style="text-align: right;">
+              <div style="font-weight: 800;">${{totSess.toLocaleString('pt-BR')}}</div>
+              <div style="font-size: 11px; font-weight: 700; color: ${{isTotSessPos ? '#16a34a' : '#dc2626'}};">
+                ${{isTotSessPos ? '▲ +' : '▼ '}}${{totVarSessPct.toFixed(1).replace('.', ',')}}%
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 800;">${{totPed.toLocaleString('pt-BR')}}</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">
+                ${{totCmp.pedidos_ant ? totCmp.pedidos_ant.toLocaleString('pt-BR') + ' ant' : '-'}}
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 800; color: #16a34a;">${{totTx.toFixed(2).replace('.', ',')}}%</div>
+              <div style="font-size: 11px; font-weight: 700; color: ${{isTotTxPos ? '#16a34a' : '#dc2626'}};">
+                ${{isTotTxPos ? '▲ +' : '▼ '}}${{Math.abs(totVarTxPP).toFixed(2).replace('.', ',')}} p.p.
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div style="font-weight: 800;">R$ ${{totTkm.toFixed(2).replace('.', ',')}}</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">
+                ${{totTkmAnt > 0 ? 'Base: R$ ' + totTkmAnt.toFixed(2).replace('.', ',') : '-'}}
+              </div>
+            </td>
+            <td style="text-align: right; font-weight: 800; color: var(--fsj-blue); white-space: nowrap;">
+              R$ ${{totRec.toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }})}}
+            </td>
+            <td style="text-align: right; font-weight: 700; color: var(--text-secondary); white-space: nowrap;">
+              R$ ${{totRecAnt.toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }})}}
+            </td>
+            <td style="text-align: right; white-space: nowrap;">
+              <span style="display: inline-flex; align-items: center; gap: 3px; font-weight: 800; font-size: 11.5px; padding: 3px 10px; border-radius: var(--radius-pill); background: ${{isTotRecPos ? 'var(--badge-green-bg)' : 'var(--badge-red-bg)'}}; color: ${{isTotRecPos ? 'var(--badge-green-text)' : 'var(--badge-red-text)'}};">
+                ${{isTotRecPos ? '▲ +' : '▼ '}}${{Math.abs(totVarRecPct).toFixed(1).replace('.', ',')}}%
+              </span>
+            </td>
+            <td style="text-align: right; font-weight: 800; color: var(--text-primary);">100,0%</td>
+          </tr>
+        `;
+      }}
+    }}
+
     // Inicialização da UI com preferências salvas
     applyFigitalToggle(isFigitalOn);
     initAnnualView();
+    renderTrafficTable(currentTrafficMode);
   </script>
 </body>
 </html>

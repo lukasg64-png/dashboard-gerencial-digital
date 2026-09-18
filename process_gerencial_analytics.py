@@ -896,6 +896,7 @@ def main():
         "charts": charts_data,
         "projecoes": projecoes,
         "origens_trafego": traffic_data.get('origens', []),
+        "trafego_totais": traffic_data.get('totais', {}),
         "visao_anual": visao_anual
     }
 
