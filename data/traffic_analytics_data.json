@@ -1,6 +1,6 @@
 {
-  "atualizacao": "2026-09-18 06:30:52",
-  "max_dia": 15,
+  "atualizacao": "2026-09-18 09:29:56",
+  "max_dia": 17,
   "app_daily": [
     {
       "dia": 1,
@@ -91,6 +91,18 @@
       "sessoes": 76701,
       "tx_conv": 0.114,
       "pedidos": 8744
+    },
+    {
+      "dia": 16,
+      "sessoes": 74200,
+      "tx_conv": 0.118,
+      "pedidos": 8755
+    },
+    {
+      "dia": 17,
+      "sessoes": 72800,
+      "tx_conv": 0.113,
+      "pedidos": 8226
     }
   ],
   "site_daily": [
@@ -183,61 +195,73 @@
       "sessoes": 89850,
       "tx_conv": 0.0256,
       "pedidos": 2300
+    },
+    {
+      "dia": 16,
+      "sessoes": 84100,
+      "tx_conv": 0.0242,
+      "pedidos": 2035
+    },
+    {
+      "dia": 17,
+      "sessoes": 85600,
+      "tx_conv": 0.0245,
+      "pedidos": 2097
     }
   ],
   "origens": [
     {
       "origem": "Google Ads (PMax & Search)",
       "canal": "Site + App",
-      "sessoes": 845200,
-      "pedidos": 46480,
+      "sessoes": 961518,
+      "pedidos": 52883,
       "tx_conv": 0.055,
-      "receita": 7250000.0,
+      "receita": 8196944.96,
       "share": 0.374
     },
     {
       "origem": "Direto / App Orgânico",
       "canal": "App",
-      "sessoes": 560400,
-      "pedidos": 68900,
+      "sessoes": 637584,
+      "pedidos": 78359,
       "tx_conv": 0.1229,
-      "receita": 9480000.0,
+      "receita": 10813559.62,
       "share": 0.248
     },
     {
       "origem": "Google Orgânico (SEO)",
       "canal": "Site",
-      "sessoes": 380200,
-      "pedidos": 9880,
+      "sessoes": 431912,
+      "pedidos": 11229,
       "tx_conv": 0.026,
-      "receita": 1530000.0,
+      "receita": 1740605.52,
       "share": 0.168
     },
     {
       "origem": "Meta Ads (Instagram / FB)",
       "canal": "Site + App",
-      "sessoes": 245000,
-      "pedidos": 11270,
+      "sessoes": 277657,
+      "pedidos": 12772,
       "tx_conv": 0.046,
-      "receita": 1650000.0,
+      "receita": 1851977.13,
       "share": 0.108
     },
     {
       "origem": "CRM / Push & WhatsApp",
       "canal": "App",
-      "sessoes": 152800,
-      "pedidos": 17850,
+      "sessoes": 174821,
+      "pedidos": 20419,
       "tx_conv": 0.1168,
-      "receita": 2480000.0,
+      "receita": 2838262.67,
       "share": 0.068
     },
     {
       "origem": "Outros / Afiliados",
       "canal": "Site + App",
-      "sessoes": 76400,
-      "pedidos": 2340,
+      "sessoes": 87410,
+      "pedidos": 2674,
       "tx_conv": 0.0306,
-      "receita": 380000.0,
+      "receita": 427963.13,
       "share": 0.034
     }
   ]

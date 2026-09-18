@@ -2,6 +2,11 @@
 build_dashboard_gerencial.py — Compilador do Dashboard Gerencial Digital & Figital.
 Gera a aplicação web executiva completa 'index.html' autônoma, responsiva e ultra-veloz.
 Design System: Apple Human Interface + Identidade Visual Farmácias São João.
+Recursos:
+- Filtro Interativo de Período (MTD, Ontem D-1, Últimos 7 Dias, Histórico Diário com seletor de dia a dia)
+- Toggle de Figital (Somar Figital aos Totais de Canais Digitais e E-Commerce)
+- Gráficos Chart.js 4 interativos com DataLabels
+- Projeção de Fechamento de Mês e Run Rate
 """
 import os
 import sys
@@ -15,6 +20,143 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 DATA_JSON_PATH = os.path.join(DATA_DIR, 'dashboard_gerencial_data.json')
 OUTPUT_HTML = os.path.join(BASE_DIR, 'index.html')
+
+def fmt_curr(val):
+    if abs(val) >= 1e6:
+        return f"R$ {val/1e6:.3f} Mi"
+    elif abs(val) >= 1e3:
+        return f"R$ {val/1e3:,.1f} K"
+    return f"R$ {val:,.2f}"
+
+def fmt_gap(val):
+    sign = "+" if val >= 0 else ""
+    if abs(val) >= 1e6:
+        return f"{sign}{val/1e6:.3f} Mi"
+    elif abs(val) >= 1e3:
+        return f"{sign}{val/1e3:,.1f} K"
+    return f"{sign}{val:,.2f}"
+
+def fmt_pct(val):
+    sign = "+" if val >= 0 else ""
+    return f"{sign}{val:.2f}%"
+
+def fmt_growth(val):
+    if val >= 0:
+        return f"⇑ {val:.1f}%"
+    return f"⇓ {abs(val):.1f}%"
+
+def render_channel_table_rows(ch_key, k):
+    m = k[ch_key]
+    rows = []
+    
+    # 1. Venda
+    v_real_str = f"{m['venda']/1e6:.3f} Mi" if m['venda'] >= 1e6 else f"{m['venda']/1e3:.1f} K"
+    v_meta_str = f"{m['meta_mtd']/1e6:.3f} Mi" if m['meta_mtd'] >= 1e6 else f"{m['meta_mtd']/1e3:.1f} K"
+    v_mes_str = f"{m['meta_mes']/1e6:.3f} Mi" if m['meta_mes'] >= 1e6 else f"{m['meta_mes']/1e3:.1f} K"
+    v_desv_cls = 'val-positive' if m['desvio_venda_pct'] >= 0 else 'val-negative'
+    v_desv_str = fmt_pct(m['desvio_venda_pct'])
+    v_evo_cls = 'val-positive' if m['evo_yoy'] >= 0 else 'val-negative'
+    v_evo_str = fmt_growth(m['evo_yoy'])
+    v_cresc_cls = 'val-positive' if m['cresc_mom'] >= 0 else 'val-negative'
+    v_cresc_str = fmt_growth(m['cresc_mom'])
+
+    rows.append(f'''<tr id="row-{ch_key}-venda">
+      <td>Venda</td>
+      <td id="{ch_key}-venda-real">{v_real_str}</td>
+      <td id="{ch_key}-venda-meta">{v_meta_str}</td>
+      <td id="{ch_key}-venda-mes">{v_mes_str}</td>
+      <td id="{ch_key}-venda-desv" class="{v_desv_cls}">{v_desv_str}</td>
+      <td id="{ch_key}-venda-evo" class="{v_evo_cls}">{v_evo_str}</td>
+      <td id="{ch_key}-venda-cresc" class="{v_cresc_cls}">{v_cresc_str}</td>
+    </tr>''')
+
+    # 2. Qtd NF / Cupons
+    c_real_str = f"{m['cupons']/1e3:,.2f} Mil" if m['cupons'] >= 1e3 else f"{m['cupons']}"
+    c_meta_str = f"{m['cupons_meta_mtd']/1e3:,.2f} Mil" if m['cupons_meta_mtd'] >= 1e3 else f"{m['cupons_meta_mtd']}"
+    c_mes_val = m.get('cupons_meta_mes', m['cupons_meta_mtd'] * 2)
+    c_mes_str = f"{c_mes_val/1e3:,.2f} Mil" if c_mes_val >= 1e3 else f"{c_mes_val}"
+    c_desv_cls = 'val-positive' if m['cupons_desvio_pct'] >= 0 else 'val-negative'
+    c_desv_str = fmt_pct(m['cupons_desvio_pct'])
+    rows.append(f'''<tr id="row-{ch_key}-cupons">
+      <td>Qtd. NF</td>
+      <td id="{ch_key}-cupons-real">{c_real_str}</td>
+      <td id="{ch_key}-cupons-meta">{c_meta_str}</td>
+      <td id="{ch_key}-cupons-mes">{c_mes_str}</td>
+      <td id="{ch_key}-cupons-desv" class="{c_desv_cls}">{c_desv_str}</td>
+      <td id="{ch_key}-cupons-evo" class="{v_evo_cls}">{v_evo_str}</td>
+      <td id="{ch_key}-cupons-cresc" class="{v_cresc_cls}">{v_cresc_str}</td>
+    </tr>''')
+
+    # 3. Ticket Médio
+    t_real_str = f"{m['tkm']:.2f}".replace('.', ',')
+    t_meta_str = f"{m['tkm_meta']:.2f}".replace('.', ',')
+    t_desv_cls = 'val-positive' if m['tkm_desvio_pct'] >= 0 else 'val-negative'
+    t_desv_str = fmt_pct(m['tkm_desvio_pct'])
+    rows.append(f'''<tr id="row-{ch_key}-tkm">
+      <td>Ticket M.</td>
+      <td id="{ch_key}-tkm-real">{t_real_str}</td>
+      <td id="{ch_key}-tkm-meta">{t_meta_str}</td>
+      <td id="{ch_key}-tkm-mes">{t_meta_str}</td>
+      <td id="{ch_key}-tkm-desv" class="{t_desv_cls}">{t_desv_str}</td>
+      <td id="{ch_key}-tkm-evo" class="{t_desv_cls}">{"⇑" if m['tkm_desvio_pct']>=0 else "⇓"} {abs(m['tkm_desvio_pct']):.1f}%</td>
+      <td id="{ch_key}-tkm-cresc" class="{t_desv_cls}">{"⇑" if m['tkm_desvio_pct']>=0 else "⇓"} {abs(m['tkm_desvio_pct']):.1f}%</td>
+    </tr>''')
+
+    # 4. Rentabilidade Operacional
+    r_real_str = f"{m['rent_op']:.2f}%".replace('.', ',')
+    r_meta_str = f"{m['rent_op_meta']:.2f}%".replace('.', ',')
+    r_desv_cls = 'val-positive' if m['rent_op_desvio'] >= 0 else 'val-negative'
+    r_desv_str = fmt_pct(m['rent_op_desvio'])
+    rows.append(f'''<tr id="row-{ch_key}-rent">
+      <td>Rent. Op.</td>
+      <td id="{ch_key}-rent-real">{r_real_str}</td>
+      <td id="{ch_key}-rent-meta">{r_meta_str}</td>
+      <td id="{ch_key}-rent-mes">{r_meta_str}</td>
+      <td id="{ch_key}-rent-desv" class="{r_desv_cls}">{r_desv_str}</td>
+      <td id="{ch_key}-rent-evo" class="{r_desv_cls}">{"⇑" if m['rent_op_desvio']>=0 else "⇓"} {abs(m['rent_op_desvio']):.1f}%</td>
+      <td id="{ch_key}-rent-cresc" class="{r_desv_cls}">{"⇑" if m['rent_op_desvio']>=0 else "⇓"} {abs(m['rent_op_desvio']):.1f}%</td>
+    </tr>''')
+
+    # 5 & 6. Sessões e Taxa Conv (para App e Site)
+    if ch_key in ['app', 'site']:
+        s_real_str = f"{m['sessoes']/1e6:.2f} Mi" if m['sessoes'] >= 1e6 else f"{m['sessoes']/1e3:,.0f} K"
+        s_meta_str = f"{m['sessoes_meta_mtd']/1e6:.2f} Mi" if m['sessoes_meta_mtd'] >= 1e6 else f"{m['sessoes_meta_mtd']/1e3:,.0f} K"
+        s_mes_val = m.get('sessoes_meta_mes', m['sessoes_meta_mtd'] * 2)
+        s_mes_str = f"{s_mes_val/1e6:.2f} Mi" if s_mes_val >= 1e6 else f"{s_mes_val/1e3:,.0f} K"
+        s_desv_cls = 'val-positive' if m['sessoes_desvio_pct'] >= 0 else 'val-negative'
+        s_desv_str = fmt_pct(m['sessoes_desvio_pct'])
+        rows.append(f'''<tr id="row-{ch_key}-sess">
+          <td>Sessões</td>
+          <td id="{ch_key}-sess-real">{s_real_str}</td>
+          <td id="{ch_key}-sess-meta">{s_meta_str}</td>
+          <td id="{ch_key}-sess-mes">{s_mes_str}</td>
+          <td id="{ch_key}-sess-desv" class="{s_desv_cls}">{s_desv_str}</td>
+          <td id="{ch_key}-sess-evo" class="{s_desv_cls}">{"⇑" if m['sessoes_desvio_pct']>=0 else "⇓"} {abs(m['sessoes_desvio_pct']):.1f}%</td>
+          <td id="{ch_key}-sess-cresc" class="{s_desv_cls}">{"⇑" if m['sessoes_desvio_pct']>=0 else "⇓"} {abs(m['sessoes_desvio_pct']):.1f}%</td>
+        </tr>''')
+
+        tx_real_str = f"{m['tx_conv']:.2f}%".replace('.', ',')
+        tx_meta_str = f"{m['tx_conv_meta']:.2f}%".replace('.', ',')
+        tx_desv_cls = 'val-positive' if m['tx_conv_desvio_pct'] >= 0 else 'val-negative'
+        tx_desv_str = fmt_pct(m['tx_conv_desvio_pct'])
+        rows.append(f'''<tr id="row-{ch_key}-tx">
+          <td>Tx. Conv.</td>
+          <td id="{ch_key}-tx-real">{tx_real_str}</td>
+          <td id="{ch_key}-tx-meta">{tx_meta_str}</td>
+          <td id="{ch_key}-tx-mes">{tx_meta_str}</td>
+          <td id="{ch_key}-tx-desv" class="{tx_desv_cls}">{tx_desv_str}</td>
+          <td id="{ch_key}-tx-evo" class="{tx_desv_cls}">{"⇑" if m['tx_conv_desvio_pct']>=0 else "⇓"} {abs(m['tx_conv_desvio_pct']):.1f}%</td>
+          <td id="{ch_key}-tx-cresc" class="{tx_desv_cls}">{"⇑" if m['tx_conv_desvio_pct']>=0 else "⇓"} {abs(m['tx_conv_desvio_pct']):.1f}%</td>
+        </tr>''')
+    else:
+        rows.append(f'''<tr id="row-{ch_key}-sess">
+          <td>Sessões</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+        </tr>''')
+        rows.append(f'''<tr id="row-{ch_key}-tx">
+          <td>Tx. Conv.</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+        </tr>''')
+
+    return "\n".join(rows)
 
 def build():
     t0 = time.time()
@@ -35,10 +177,12 @@ def build():
     charts = dash_data.get('charts', {})
     proj = dash_data.get('projecoes', {})
     origens = dash_data.get('origens_trafego', [])
-    data_corte = dash_data.get('data_corte', '01 a 15/09/2026')
+    max_dia = int(dash_data.get('max_dia', 17))
+    dias_restantes = 30 - max_dia
+    data_corte = dash_data.get('data_corte', f'01 a {max_dia:02d}/09/2026')
     atualizacao = dash_data.get('atualizacao', time.strftime('%Y-%m-%d %H:%M:%S'))
 
-    # Pré-geração dos cards da Visão 4 com IDs para atualização dinâmica do Figital
+    # Pré-geração dos cards da Visão 4 com IDs para atualização dinâmica do Figital e Período
     proj_cards_list = []
     for ch in ['ecommerce_total', 'canais_digitais', 'app', 'site', 'marketplace', 'figital']:
         if ch in proj:
@@ -57,7 +201,7 @@ def build():
           </div>
           <div class="proj-metrics-row">
             <div class="proj-box">
-              <div class="lbl">Realizado (15 Dias)</div>
+              <div class="lbl" id="proj-lbl-real-{ch}">Realizado ({max_dia} Dias)</div>
               <div class="val" id="proj-real-{ch}">R$ {p['venda_realizada']/1e6:.3f} Mi</div>
             </div>
             <div class="proj-box">
@@ -83,6 +227,14 @@ def build():
         </div>'''
             proj_cards_list.append(card_html)
     proj_cards_html = "".join(proj_cards_list)
+
+    # Opções do Seletor de Histórico Diário
+    day_options_html = "".join([f'<option value="{d}">Dia {d:02d}/09</option>' for d in range(max_dia, 0, -1)])
+
+    # Tabelas de canais
+    site_table_rows = render_channel_table_rows('site', kpis)
+    app_table_rows = render_channel_table_rows('app', kpis)
+    mkp_table_rows = render_channel_table_rows('marketplace', kpis)
 
     html_content = f"""<!DOCTYPE html>
 <html lang="pt-BR" data-theme="light">
@@ -249,31 +401,32 @@ def build():
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      position: relative;
       transition: var(--transition);
-    }}
-
-    .nav-btn:hover {{
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.15);
-      transform: scale(1.05);
-    }}
-
-    .nav-btn.active {{
-      color: var(--fsj-blue);
-      background: #ffffff;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-    }}
-
-    [data-theme="dark"] .nav-btn.active {{
-      color: #0b111e;
-      background: #ffffff;
+      position: relative;
     }}
 
     .nav-btn svg {{
       width: 24px;
       height: 24px;
-      stroke-width: 2.2;
+      stroke-width: 2;
+      transition: var(--transition);
+    }}
+
+    .nav-btn:hover {{
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      transform: scale(1.05);
+    }}
+
+    .nav-btn.active {{
+      background: #ffffff;
+      color: var(--fsj-blue);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      transform: scale(1.05);
+    }}
+
+    .nav-btn.active svg {{
+      stroke-width: 2.5;
     }}
 
     .sidebar-spacer {{
@@ -281,63 +434,66 @@ def build():
     }}
 
     /* ==========================================================================
-       MAIN CONTENT CONTAINER
+       LAYOUT PRINCIPAL & CABEÇALHO EXECUTIVO
        ========================================================================== */
     .main-wrapper {{
       flex: 1;
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
-      padding: 24px 32px 48px;
-      gap: 24px;
+      padding: 24px 32px 60px 32px;
+      max-width: 1720px;
+      margin: 0 auto;
+      width: calc(100% - 78px);
     }}
 
-    /* Header Bar */
     .top-header {{
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-      background: var(--bg-card);
-      padding: 18px 24px;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-card);
-      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-card);
     }}
 
     .header-titles h1 {{
-      font-family: 'Outfit', sans-serif;
       font-size: 24px;
-      font-weight: 700;
+      font-weight: 800;
+      color: var(--text-primary);
       letter-spacing: -0.5px;
       display: flex;
       align-items: center;
       gap: 10px;
     }}
 
-    .header-titles h1 .tag-figital {{
-      font-size: 11px;
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
-      padding: 3px 10px;
-      border-radius: var(--radius-pill);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }}
-
     .header-titles p {{
       font-size: 13px;
       color: var(--text-secondary);
-      margin-top: 3px;
+      margin-top: 4px;
+      font-weight: 500;
+    }}
+
+    .tag-figital {{
+      font-size: 11px;
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      color: white;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(139, 92, 246, 0.25);
     }}
 
     .header-controls {{
       display: flex;
       align-items: center;
       gap: 12px;
+    }}
+
+    .period-control-group {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }}
 
     .period-select-box {{
@@ -351,6 +507,7 @@ def build():
       font-size: 13px;
       font-weight: 600;
       color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
     }}
 
     .period-select-box svg {{
@@ -362,7 +519,40 @@ def build():
       background: transparent;
       color: inherit;
       font-size: 13px;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+    }}
+
+    .day-select-box {{
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
       font-weight: 600;
+      color: var(--text-primary);
+      animation: fadeIn 0.25s ease;
+      box-shadow: var(--shadow-sm);
+    }}
+
+    .day-select-label {{
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--fsj-blue-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }}
+
+    .day-select {{
+      border: none;
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 700;
       outline: none;
       cursor: pointer;
     }}
@@ -379,6 +569,7 @@ def build():
       cursor: pointer;
       color: var(--text-primary);
       transition: var(--transition);
+      box-shadow: var(--shadow-sm);
     }}
 
     .theme-toggle-btn:hover, .action-btn:hover {{
@@ -539,52 +730,49 @@ def build():
     .figital-switch-action {{
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }}
 
     .switch-mode-tag {{
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 800;
       letter-spacing: 0.5px;
-      padding: 2px 7px;
-      border-radius: var(--radius-pill);
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
+      padding: 2px 5px;
+      border-radius: var(--radius-sm);
+      background: var(--border-card);
       color: var(--text-secondary);
       transition: var(--transition);
     }}
 
     .figital-switch-bar.active-on .switch-mode-tag {{
-      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-      border-color: transparent;
+      background: #8b5cf6;
       color: #ffffff;
-      box-shadow: 0 2px 6px rgba(139, 92, 246, 0.4);
     }}
 
-    /* Apple Switch Toggle */
+    /* Apple Switch Element */
     .apple-switch {{
       position: relative;
       display: inline-block;
       width: 38px;
       height: 22px;
-      cursor: pointer;
-      margin: 0;
     }}
 
     .apple-switch input {{
       opacity: 0;
       width: 0;
       height: 0;
-      position: absolute;
     }}
 
     .apple-slider {{
       position: absolute;
       cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background-color: #cbd5e1;
+      transition: .3s;
       border-radius: 22px;
-      transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }}
 
     [data-theme="dark"] .apple-slider {{
@@ -594,54 +782,41 @@ def build():
     .apple-slider:before {{
       position: absolute;
       content: "";
-      height: 18px;
-      width: 18px;
-      left: 2px;
-      bottom: 2px;
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
       background-color: white;
+      transition: .3s;
       border-radius: 50%;
       box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-      transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }}
 
-    .apple-switch input:checked + .apple-slider {{
-      background: linear-gradient(135deg, #8b5cf6, #22c55e);
+    input:checked + .apple-slider {{
+      background-color: #8b5cf6;
     }}
 
-    .apple-switch input:checked + .apple-slider:before {{
+    input:checked + .apple-slider:before {{
       transform: translateX(16px);
     }}
 
-    /* Active Figital Badge on Hero Cards 1 and 2 */
+    .hero-card.figital-integrated {{
+      border-color: rgba(139, 92, 246, 0.4);
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.12);
+    }}
+
     .badge-figital-pill {{
       display: inline-flex;
       align-items: center;
       gap: 4px;
       font-size: 10px;
       font-weight: 700;
-      padding: 1px 7px;
-      border-radius: var(--radius-pill);
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.15));
-      border: 1px solid rgba(139, 92, 246, 0.4);
+      background: rgba(139, 92, 246, 0.15);
       color: #8b5cf6;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      animation: fadeInScale 0.3s ease;
-    }}
-
-    [data-theme="dark"] .badge-figital-pill {{
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(59, 130, 246, 0.25));
-      border-color: rgba(139, 92, 246, 0.6);
-      color: #c084fc;
-    }}
-
-    @keyframes fadeInScale {{
-      from {{ opacity: 0; transform: scale(0.9); }}
-      to {{ opacity: 1; transform: scale(1); }}
-    }}
-
-    .hero-card.figital-integrated {{
-      box-shadow: 0 0 0 1.5px rgba(139, 92, 246, 0.35), var(--shadow-sm);
+      padding: 2px 6px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      animation: fadeIn 0.2s ease;
     }}
 
     .hero-header {{
@@ -650,50 +825,40 @@ def build():
       align-items: flex-start;
     }}
 
-    .hero-title-group {{
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }}
-
     .hero-title-group h3 {{
-      font-size: 15px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      font-family: 'Outfit', sans-serif;
     }}
 
     .hero-subtitle {{
       font-size: 12px;
       color: var(--text-secondary);
+      font-weight: 500;
     }}
 
     .hero-part-badge {{
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      color: var(--fsj-blue);
-      background: var(--badge-blue-bg);
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: var(--radius-pill);
-    }}
-
-    [data-theme="dark"] .hero-part-badge {{
-      color: #38bdf8;
+      background: var(--badge-blue-bg);
+      color: var(--badge-blue-text);
     }}
 
     .hero-val-group {{
       display: flex;
-      align-items: baseline;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
+      align-items: baseline;
     }}
 
     .hero-main-val {{
-      font-family: 'Outfit', sans-serif;
-      font-size: 32px;
+      font-size: 26px;
       font-weight: 800;
-      letter-spacing: -1px;
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
     }}
 
     .hero-meta-mes {{
@@ -848,53 +1013,52 @@ def build():
       color: var(--text-secondary);
     }}
 
-    .channel-table tr:last-child td {{
-      border-bottom: none;
-    }}
-
-    /* Bottom Summary Bar (Site & App) */
+    /* Barra Combinada Site e App */
     .combined-bar {{
       grid-column: 1 / -1;
-      background: var(--bg-card-subtle);
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
       border-radius: var(--radius-md);
-      padding: 16px 24px;
+      padding: 16px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-      border: 1px dashed var(--border-card);
+      box-shadow: var(--shadow-sm);
     }}
 
     .combined-title {{
-      font-weight: 800;
-      font-size: 16px;
-      font-family: 'Outfit', sans-serif;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
+      font-size: 14px;
+      font-weight: 700;
     }}
 
     .combined-metrics {{
       display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
+      align-items: center;
+      gap: 20px;
       font-size: 13px;
+      color: var(--text-secondary);
+    }}
+
+    .combined-metrics span strong {{
+      color: var(--text-primary);
+      font-weight: 700;
     }}
 
     /* ==========================================================================
-       VISÃO 2: TENDÊNCIAS & DESVIOS DIÁRIOS (CHARTS)
+       VISÃO 2 & 3: GRÁFICOS & TABELAS
        ========================================================================== */
     .filter-pills-bar {{
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      background: var(--bg-card);
-      padding: 14px 20px;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-card);
-      flex-wrap: wrap;
       gap: 12px;
+      background: var(--bg-card);
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-card);
+      box-shadow: var(--shadow-sm);
     }}
 
     .pill-group {{
@@ -904,38 +1068,39 @@ def build():
     }}
 
     .pill-btn {{
-      padding: 8px 18px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-card);
       background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
       color: var(--text-secondary);
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
       cursor: pointer;
       transition: var(--transition);
     }}
 
     .pill-btn:hover {{
       background: var(--bg-card-hover);
-      color: var(--text-primary);
+      color: var(--fsj-blue);
+      border-color: var(--fsj-blue-light);
     }}
 
     .pill-btn.active {{
-      background: var(--fsj-blue-light);
+      background: var(--fsj-blue);
       color: white;
-      border-color: var(--fsj-blue-light);
-      box-shadow: 0 4px 10px rgba(0, 119, 255, 0.25);
+      border-color: var(--fsj-blue);
+      box-shadow: 0 2px 8px rgba(0, 86, 179, 0.25);
     }}
 
     .chart-card {{
       background: var(--bg-card);
-      border-radius: var(--radius-lg);
       border: 1px solid var(--border-card);
-      padding: 24px;
+      border-radius: var(--radius-lg);
+      padding: 22px;
       box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }}
 
     .chart-header {{
@@ -948,17 +1113,15 @@ def build():
       font-size: 16px;
       font-weight: 800;
       font-family: 'Outfit', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }}
 
     .chart-legend-custom {{
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       font-size: 12px;
-      font-weight: 600;
       color: var(--text-secondary);
+      font-weight: 600;
     }}
 
     .legend-item {{
@@ -974,19 +1137,15 @@ def build():
     }}
 
     .chart-container {{
+      height: 310px;
       position: relative;
-      width: 100%;
-      height: 285px;
     }}
 
-    /* ==========================================================================
-       VISÃO 3: TRÁFEGO, CONVERSÃO E ORIGENS
-       ========================================================================== */
     .traffic-table-card {{
       background: var(--bg-card);
-      border-radius: var(--radius-lg);
       border: 1px solid var(--border-card);
-      padding: 24px;
+      border-radius: var(--radius-lg);
+      padding: 22px;
       box-shadow: var(--shadow-sm);
     }}
 
@@ -995,8 +1154,6 @@ def build():
       font-weight: 800;
       font-family: 'Outfit', sans-serif;
       margin-bottom: 16px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }}
 
     .data-table {{
@@ -1006,46 +1163,34 @@ def build():
     }}
 
     .data-table th {{
-      text-align: right;
-      color: var(--text-muted);
-      font-weight: 600;
-      padding: 10px 12px;
-      border-bottom: 2px solid var(--border-card);
-      background: var(--bg-card-subtle);
-    }}
-
-    .data-table th:first-child {{
       text-align: left;
-      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-    }}
-
-    .data-table th:last-child {{
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 10px 12px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-card);
+      font-weight: 700;
     }}
 
     .data-table td {{
       padding: 12px;
-      text-align: right;
       border-bottom: 1px solid var(--border-card);
       color: var(--text-primary);
-      font-weight: 500;
+      font-weight: 600;
     }}
 
-    .data-table td:first-child {{
-      text-align: left;
-      font-weight: 700;
+    .data-table tr:hover td {{
+      background: var(--bg-card-subtle);
     }}
 
     /* ==========================================================================
-       VISÃO 4: PROJEÇÃO DE FECHAMENTO & SIMULADOR
+       VISÃO 4: PROJEÇÃO DE FECHAMENTO
        ========================================================================== */
     .projection-grid {{
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
     }}
 
-    @media (max-width: 992px) {{
+    @media (max-width: 1200px) {{
       .projection-grid {{
         grid-template-columns: 1fr;
       }}
@@ -1053,13 +1198,13 @@ def build():
 
     .proj-card {{
       background: var(--bg-card);
-      border-radius: var(--radius-lg);
       border: 1px solid var(--border-card);
-      padding: 24px;
+      border-radius: var(--radius-lg);
+      padding: 20px;
       box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }}
 
     .proj-card-header {{
@@ -1067,36 +1212,35 @@ def build():
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border-card);
-      padding-bottom: 12px;
+      padding-bottom: 10px;
     }}
 
     .proj-metrics-row {{
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
       text-align: center;
     }}
 
     .proj-box {{
       background: var(--bg-card-subtle);
+      padding: 10px;
       border-radius: var(--radius-md);
-      padding: 12px 8px;
     }}
 
     .proj-box .lbl {{
       font-size: 11px;
       color: var(--text-secondary);
       font-weight: 600;
+      margin-bottom: 4px;
     }}
 
     .proj-box .val {{
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 800;
-      margin-top: 4px;
-      font-family: 'Outfit', sans-serif;
+      color: var(--text-primary);
     }}
 
-    /* Progress bar */
     .progress-track {{
       background: var(--bg-card-subtle);
       height: 12px;
@@ -1165,16 +1309,29 @@ def build():
         <p>Acompanhamento Oficial de Metas, Venda Efetiva, Tráfego e Rentabilidade | Atualizado: {atualizacao}</p>
       </div>
       <div class="header-controls">
-        <div class="period-select-box">
-          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-          </svg>
-          <select class="period-select" id="periodFilter">
-            <option value="mtd" selected>01/09/2026 a 15/09/2026 (D-1 Oficial)</option>
-            <option value="d1">Ontem: 15/09/2026 (Fechamento)</option>
-            <option value="full">Setembro/2026 (Mês Completo)</option>
-          </select>
+        <!-- CONTROLES DE FILTRO DE DATA & HISTÓRICO -->
+        <div class="period-control-group">
+          <div class="period-select-box">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <select class="period-select" id="periodFilter" title="Filtrar Período de Análise">
+              <option value="mtd" selected>Acumulado MTD (01 a {max_dia:02d}/09)</option>
+              <option value="d1">Ontem / D-1 ({max_dia:02d}/09 - Fechamento)</option>
+              <option value="last7">Últimos 7 Dias ({max(1, max_dia-6):02d} a {max_dia:02d}/09)</option>
+              <option value="day">Histórico Diário (Selecionar Dia)</option>
+            </select>
+          </div>
+
+          <!-- SELETOR DE DIA INDIVIDUAL DO HISTÓRICO -->
+          <div class="day-select-box" id="daySelectBox" style="display: none;">
+            <span class="day-select-label">Dia:</span>
+            <select class="day-select" id="dayHistorySelect" title="Selecione o Dia do Histórico">
+              {day_options_html}
+            </select>
+          </div>
         </div>
+
         <button class="theme-toggle-btn" id="themeBtn" title="Alternar Modo Escuro/Claro">
           <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
@@ -1202,23 +1359,23 @@ def build():
             <span class="hero-part-badge" id="ecomPartBadge">Part: {kpis['ecommerce_total']['share_empresa']:.2f}%</span>
           </div>
           <div class="hero-val-group">
-            <span class="hero-main-val" id="ecomMainVal">R$ 30.436 Mi</span>
-            <span class="hero-meta-mes">Meta Mês: <strong id="ecomMetaMes">55.845 Mi</strong></span>
+            <span class="hero-main-val" id="ecomMainVal">{fmt_curr(kpis['ecommerce_total']['venda'])}</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="ecomMetaMes">{kpis['ecommerce_total']['meta_mes']/1e6:.3f} Mi</strong></span>
           </div>
-          <div class="hero-meta-pill">
-            <span>Meta: <strong id="ecomMetaMTD">R$ 28,6 Mi</strong></span>
-            <span>Desvio (%): <strong class="val-positive" id="ecomDesvioPct">+{kpis['ecommerce_total']['desvio_venda_pct']:.2f}%</strong></span>
-            <span>Desvio (R$): <strong id="ecomDesvioVal">+1,79 Mi</strong></span>
+          <div class="hero-meta-pill" id="ecomMetaPill">
+            <span>Meta: <strong id="ecomMetaMTD">{fmt_curr(kpis['ecommerce_total']['meta_mtd'])}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if kpis['ecommerce_total']['desvio_venda_pct']>=0 else 'val-negative'}" id="ecomDesvioPct">{fmt_pct(kpis['ecommerce_total']['desvio_venda_pct'])}</strong></span>
+            <span>Desvio (R$): <strong id="ecomDesvioVal">{fmt_gap(kpis['ecommerce_total']['gap_venda_val'])}</strong></span>
           </div>
           <div class="hero-sub-indicators">
-            <span class="indicator-item">Evolução: <strong class="val-positive" id="ecomEvol">⇑ 65,1%</strong></span>
-            <span class="indicator-item">Crescimento: <strong class="val-positive" id="ecomCresc">⇑ 4,6%</strong></span>
+            <span class="indicator-item">Evolução: <strong class="{'val-positive' if kpis['ecommerce_total']['evo_yoy']>=0 else 'val-negative'}" id="ecomEvol">{fmt_growth(kpis['ecommerce_total']['evo_yoy'])}</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="{'val-positive' if kpis['ecommerce_total']['cresc_mom']>=0 else 'val-negative'}" id="ecomCresc">{fmt_growth(kpis['ecommerce_total']['cresc_mom'])}</strong></span>
           </div>
-          <div class="hero-tkm-box">
-            <span>Ticket Médio: <strong id="ecomTkm">120,52</strong></span>
-            <span>Meta: <strong id="ecomTkmMeta">131,25</strong></span>
-            <span>Desvio (%): <strong class="val-negative" id="ecomTkmDesvioPct">-8,17%</strong></span>
-            <span>Desvio (R$): <strong id="ecomTkmDesvioVal">-10,73</strong></span>
+          <div class="hero-tkm-box {'positive' if kpis['ecommerce_total']['tkm_desvio_pct']>=0 else ''}" id="ecomTkmBox">
+            <span>Ticket Médio: <strong id="ecomTkm">{kpis['ecommerce_total']['tkm']:.2f}</strong></span>
+            <span>Meta: <strong id="ecomTkmMeta">{kpis['ecommerce_total']['tkm_meta']:.2f}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if kpis['ecommerce_total']['tkm_desvio_pct']>=0 else 'val-negative'}" id="ecomTkmDesvioPct">{fmt_pct(kpis['ecommerce_total']['tkm_desvio_pct'])}</strong></span>
+            <span>Desvio (R$): <strong id="ecomTkmDesvioVal">{fmt_gap(kpis['ecommerce_total']['tkm_gap_val'])}</strong></span>
           </div>
         </div>
 
@@ -1235,55 +1392,55 @@ def build():
             <span class="hero-part-badge" id="digPartBadge">Part: {kpis['canais_digitais']['share_empresa']:.2f}%</span>
           </div>
           <div class="hero-val-group">
-            <span class="hero-main-val" id="digMainVal">R$ 29.766 Mi</span>
-            <span class="hero-meta-mes">Meta Mês: <strong id="digMetaMes">54.745 Mi</strong></span>
+            <span class="hero-main-val" id="digMainVal">{fmt_curr(kpis['canais_digitais']['venda'])}</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="digMetaMes">{kpis['canais_digitais']['meta_mes']/1e6:.3f} Mi</strong></span>
           </div>
-          <div class="hero-meta-pill">
-            <span>Meta: <strong id="digMetaMTD">R$ 28,084 Mi</strong></span>
-            <span>Desvio (%): <strong class="val-positive" id="digDesvioPct">+{kpis['canais_digitais']['desvio_venda_pct']:.2f}%</strong></span>
-            <span>Desvio (R$): <strong id="digDesvioVal">+1,682 Mi</strong></span>
+          <div class="hero-meta-pill" id="digMetaPill">
+            <span>Meta: <strong id="digMetaMTD">{fmt_curr(kpis['canais_digitais']['meta_mtd'])}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if kpis['canais_digitais']['desvio_venda_pct']>=0 else 'val-negative'}" id="digDesvioPct">{fmt_pct(kpis['canais_digitais']['desvio_venda_pct'])}</strong></span>
+            <span>Desvio (R$): <strong id="digDesvioVal">{fmt_gap(kpis['canais_digitais']['gap_venda_val'])}</strong></span>
           </div>
           <div class="hero-sub-indicators">
-            <span class="indicator-item">Evolução: <strong class="val-positive" id="digEvol">⇑ 63,7%</strong></span>
-            <span class="indicator-item">Crescimento: <strong class="val-positive" id="digCresc">⇑ 5,1%</strong></span>
-            <span class="indicator-item">Rent. Op: <strong id="digRentOp">20,47%</strong></span>
-            <span class="indicator-item">Rent. DRE: <strong id="digRentDre">25,50%</strong></span>
+            <span class="indicator-item">Evolução: <strong class="{'val-positive' if kpis['canais_digitais']['evo_yoy']>=0 else 'val-negative'}" id="digEvol">{fmt_growth(kpis['canais_digitais']['evo_yoy'])}</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="{'val-positive' if kpis['canais_digitais']['cresc_mom']>=0 else 'val-negative'}" id="digCresc">{fmt_growth(kpis['canais_digitais']['cresc_mom'])}</strong></span>
+            <span class="indicator-item">Rent. Op: <strong id="digRentOp">{kpis['canais_digitais']['rent_op']:.2f}%</strong></span>
+            <span class="indicator-item">Rent. DRE: <strong id="digRentDre">{kpis['canais_digitais']['rent_dre']:.2f}%</strong></span>
           </div>
-          <div class="hero-tkm-box">
-            <span>Ticket Médio: <strong id="digTkm">118,79</strong></span>
-            <span>Meta: <strong id="digTkmMeta">137,23</strong></span>
-            <span>Desvio (%): <strong class="val-negative" id="digTkmDesvioPct">-13,44%</strong></span>
-            <span>Desvio (R$): <strong id="digTkmDesvioVal">-18,44</strong></span>
+          <div class="hero-tkm-box {'positive' if kpis['canais_digitais']['tkm_desvio_pct']>=0 else ''}" id="digTkmBox">
+            <span>Ticket Médio: <strong id="digTkm">{kpis['canais_digitais']['tkm']:.2f}</strong></span>
+            <span>Meta: <strong id="digTkmMeta">{kpis['canais_digitais']['tkm_meta']:.2f}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if kpis['canais_digitais']['tkm_desvio_pct']>=0 else 'val-negative'}" id="digTkmDesvioPct">{fmt_pct(kpis['canais_digitais']['tkm_desvio_pct'])}</strong></span>
+            <span>Desvio (R$): <strong id="digTkmDesvioVal">{fmt_gap(kpis['canais_digitais']['tkm_gap_val'])}</strong></span>
           </div>
         </div>
 
         <!-- Card 3: TELEVENDAS -->
-        <div class="hero-card">
+        <div class="hero-card" id="cardTelevendas">
           <div class="hero-header">
             <div class="hero-title-group">
               <h3>Televendas</h3>
-              <span class="hero-subtitle">Venda Efetiva</span>
+              <span class="hero-subtitle" id="teleSubtitle">Venda Efetiva</span>
             </div>
-            <span class="hero-part-badge">Part: {kpis['televendas']['share_empresa']:.2f}%</span>
+            <span class="hero-part-badge" id="telePartBadge">Part: {kpis['televendas']['share_empresa']:.2f}%</span>
           </div>
           <div class="hero-val-group">
-            <span class="hero-main-val">R$ 670 K</span>
-            <span class="hero-meta-mes">Meta Mês: <strong>1.100 Mi</strong></span>
+            <span class="hero-main-val" id="teleMainVal">{fmt_curr(kpis['televendas']['venda'])}</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="teleMetaMes">{kpis['televendas']['meta_mes']/1e6:.3f} Mi</strong></span>
           </div>
-          <div class="hero-meta-pill">
-            <span>Meta: <strong>564,30 Mil</strong></span>
-            <span>Desvio (%): <strong class="val-positive">+{kpis['televendas']['desvio_venda_pct']:.2f}%</strong></span>
-            <span>Desvio (R$): <strong>+105,61 Mil</strong></span>
+          <div class="hero-meta-pill" id="teleMetaPill">
+            <span>Meta: <strong id="teleMetaMTD">{fmt_curr(kpis['televendas']['meta_mtd'])}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if kpis['televendas']['desvio_venda_pct']>=0 else 'val-negative'}" id="teleDesvioPct">{fmt_pct(kpis['televendas']['desvio_venda_pct'])}</strong></span>
+            <span>Desvio (R$): <strong id="teleDesvioVal">{fmt_gap(kpis['televendas']['gap_venda_val'])}</strong></span>
           </div>
           <div class="hero-sub-indicators">
-            <span class="indicator-item">Evolução: <strong class="val-positive">⇑ 169,4%</strong></span>
-            <span class="indicator-item">Crescimento: <strong class="val-negative">⇓ -14,9%</strong></span>
+            <span class="indicator-item">Evolução: <strong class="{'val-positive' if kpis['televendas']['evo_yoy']>=0 else 'val-negative'}" id="teleEvol">{fmt_growth(kpis['televendas']['evo_yoy'])}</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="{'val-positive' if kpis['televendas']['cresc_mom']>=0 else 'val-negative'}" id="teleCresc">{fmt_growth(kpis['televendas']['cresc_mom'])}</strong></span>
           </div>
-          <div class="hero-tkm-box positive">
-            <span>Ticket Médio: <strong>339,71</strong></span>
-            <span>Meta: <strong>113,29</strong></span>
-            <span>Desvio (%): <strong class="val-positive">+199,85%</strong></span>
-            <span>Desvio (R$): <strong>+226,42</strong></span>
+          <div class="hero-tkm-box {'positive' if kpis['televendas']['tkm_desvio_pct']>=0 else ''}" id="teleTkmBox">
+            <span>Ticket Médio: <strong id="teleTkm">{kpis['televendas']['tkm']:.2f}</strong></span>
+            <span>Meta: <strong id="teleTkmMeta">{kpis['televendas']['tkm_meta']:.2f}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if kpis['televendas']['tkm_desvio_pct']>=0 else 'val-negative'}" id="teleTkmDesvioPct">{fmt_pct(kpis['televendas']['tkm_desvio_pct'])}</strong></span>
+            <span>Desvio (R$): <strong id="teleTkmDesvioVal">{fmt_gap(kpis['televendas']['tkm_gap_val'])}</strong></span>
           </div>
         </div>
 
@@ -1315,38 +1472,38 @@ def build():
               </div>
               <span class="hero-subtitle">Lojas Integradas & Clique e Retire</span>
             </div>
-            <span class="hero-part-badge" style="background: var(--badge-purple-bg); color: var(--badge-purple-text);">Part: {kpis['figital']['share_empresa']:.2f}%</span>
+            <span class="hero-part-badge" id="figitalPartBadge" style="background: var(--badge-purple-bg); color: var(--badge-purple-text);">Part: {kpis['figital']['share_empresa']:.2f}%</span>
           </div>
           <div class="hero-val-group">
-            <span class="hero-main-val">R$ 1.265 Mi</span>
-            <span class="hero-meta-mes">Meta Mês: <strong>2.463 Mi</strong></span>
+            <span class="hero-main-val" id="figitalMainVal">{fmt_curr(kpis['figital']['venda'])}</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="figitalMetaMes">{kpis['figital']['meta_mes']/1e6:.3f} Mi</strong></span>
           </div>
-          <div class="hero-meta-pill">
-            <span>Meta: <strong>1.263 Mi</strong></span>
-            <span>Desvio (%): <strong class="val-positive">+0,16%</strong></span>
-            <span>Cupons: <strong>8,89 Mil</strong></span>
+          <div class="hero-meta-pill" id="figitalMetaPill">
+            <span>Meta: <strong id="figitalMetaMTD">{fmt_curr(kpis['figital']['meta_mtd'])}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if kpis['figital']['desvio_venda_pct']>=0 else 'val-negative'}" id="figitalDesvioPct">{fmt_pct(kpis['figital']['desvio_venda_pct'])}</strong></span>
+            <span>Cupons: <strong id="figitalCuponsVal">{kpis['figital']['cupons']:,}</strong></span>
           </div>
           <div class="hero-sub-indicators">
-            <span class="indicator-item">Evolução: <strong class="val-positive">⇑ 72,4%</strong></span>
-            <span class="indicator-item">Crescimento: <strong class="val-positive">⇑ 12,3%</strong></span>
-            <span class="indicator-item">Rent. Op: <strong>22,40%</strong></span>
+            <span class="indicator-item">Evolução: <strong class="{'val-positive' if kpis['figital']['evo_yoy']>=0 else 'val-negative'}" id="figitalEvol">{fmt_growth(kpis['figital']['evo_yoy'])}</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="{'val-positive' if kpis['figital']['cresc_mom']>=0 else 'val-negative'}" id="figitalCresc">{fmt_growth(kpis['figital']['cresc_mom'])}</strong></span>
+            <span class="indicator-item">Rent. Op: <strong id="figitalRentOp">{kpis['figital']['rent_op']:.2f}%</strong></span>
           </div>
-          <div class="hero-tkm-box positive">
-            <span>Ticket Médio: <strong>142,30</strong></span>
-            <span>Meta: <strong>140,00</strong></span>
-            <span>Desvio (%): <strong class="val-positive">+1,64%</strong></span>
-            <span>Desvio (R$): <strong>+2,30</strong></span>
+          <div class="hero-tkm-box {'positive' if kpis['figital']['tkm_desvio_pct']>=0 else ''}" id="figitalTkmBox">
+            <span>Ticket Médio: <strong id="figitalTkm">{kpis['figital']['tkm']:.2f}</strong></span>
+            <span>Meta: <strong id="figitalTkmMeta">{kpis['figital']['tkm_meta']:.2f}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if kpis['figital']['tkm_desvio_pct']>=0 else 'val-negative'}" id="figitalTkmDesvioPct">{fmt_pct(kpis['figital']['tkm_desvio_pct'])}</strong></span>
+            <span>Desvio (R$): <strong id="figitalTkmDesvioVal">{fmt_gap(kpis['figital']['tkm_gap_val'])}</strong></span>
           </div>
         </div>
       </div>
 
-      <!-- Detalhamento por Canal (Site, App, Marketplace, Figital, Site+App) -->
+      <!-- Detalhamento por Canal (Site, App, Marketplace) -->
       <div class="channels-grid">
         <!-- SITE -->
         <div class="channel-card">
           <div class="channel-header">
             <h4>SITE</h4>
-            <span class="channel-venda-sub">Venda: <strong>4.804 Mi</strong> (Part: 1,07%)</span>
+            <span class="channel-venda-sub">Venda: <strong id="site-header-venda">{fmt_curr(kpis['site']['venda'])}</strong> (Part: <span id="site-header-share">{kpis['site']['share_empresa']:.2f}%</span>)</span>
           </div>
           <table class="channel-table">
             <thead>
@@ -1360,61 +1517,8 @@ def build():
                 <th>Cresc.</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Venda</td>
-                <td>4.804 Mi</td>
-                <td>7.435 Mi</td>
-                <td>14.494 Mi</td>
-                <td class="val-negative">-35,40%</td>
-                <td class="val-negative">⇓ -11,7%</td>
-                <td class="val-negative">⇓ -6,1%</td>
-              </tr>
-              <tr>
-                <td>Qtd. NF</td>
-                <td>30,949 Mil</td>
-                <td>41,87 Mil</td>
-                <td>81,65 Mil</td>
-                <td class="val-negative">-26,08%</td>
-                <td class="val-negative">⇓ -1,8%</td>
-                <td class="val-negative">⇓ -5,3%</td>
-              </tr>
-              <tr>
-                <td>Ticket M.</td>
-                <td>155,21</td>
-                <td>177,60</td>
-                <td>177,51</td>
-                <td class="val-negative">-12,61%</td>
-                <td class="val-negative">⇓ -10,1%</td>
-                <td class="val-negative">⇓ -0,8%</td>
-              </tr>
-              <tr>
-                <td>Rent. Op.</td>
-                <td>17,21%</td>
-                <td>21,50%</td>
-                <td>21,50%</td>
-                <td class="val-negative">-4,29%</td>
-                <td class="val-positive">⇑ 4,7%</td>
-                <td class="val-positive">⇑ 5,4%</td>
-              </tr>
-              <tr>
-                <td>Sessões</td>
-                <td>1,26 Mi</td>
-                <td>1,57 Mi</td>
-                <td>3,07 Mi</td>
-                <td class="val-negative">-19,80%</td>
-                <td class="val-positive">⇑ 7,8%</td>
-                <td class="val-positive">⇑ 2,7%</td>
-              </tr>
-              <tr>
-                <td>Tx. Conv.</td>
-                <td>2,45%</td>
-                <td>2,66%</td>
-                <td>2,66%</td>
-                <td class="val-negative">-7,82%</td>
-                <td class="val-negative">⇓ -8,9%</td>
-                <td class="val-negative">⇓ -1,2%</td>
-              </tr>
+            <tbody id="siteTableBody">
+              {site_table_rows}
             </tbody>
           </table>
         </div>
@@ -1423,7 +1527,7 @@ def build():
         <div class="channel-card">
           <div class="channel-header">
             <h4>APP</h4>
-            <span class="channel-venda-sub">Venda: <strong>16.226 Mi</strong> (Part: 3,60%)</span>
+            <span class="channel-venda-sub">Venda: <strong id="app-header-venda">{fmt_curr(kpis['app']['venda'])}</strong> (Part: <span id="app-header-share">{kpis['app']['share_empresa']:.2f}%</span>)</span>
           </div>
           <table class="channel-table">
             <thead>
@@ -1437,61 +1541,8 @@ def build():
                 <th>Cresc.</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Venda</td>
-                <td>16.226 Mi</td>
-                <td>13.308 Mi</td>
-                <td>25.942 Mi</td>
-                <td class="val-positive">+21,92%</td>
-                <td class="val-positive">⇑ 88,8%</td>
-                <td class="val-positive">⇑ 15,9%</td>
-              </tr>
-              <tr>
-                <td>Qtd. NF</td>
-                <td>117,975 Mil</td>
-                <td>88,00 Mil</td>
-                <td>171,55 Mil</td>
-                <td class="val-positive">+34,06%</td>
-                <td class="val-positive">⇑ 93,6%</td>
-                <td class="val-positive">⇑ 18,5%</td>
-              </tr>
-              <tr>
-                <td>Ticket M.</td>
-                <td>137,54</td>
-                <td>151,22</td>
-                <td>151,22</td>
-                <td class="val-negative">-9,05%</td>
-                <td class="val-negative">⇓ -2,5%</td>
-                <td class="val-negative">⇓ -2,2%</td>
-              </tr>
-              <tr>
-                <td>Rent. Op.</td>
-                <td>18,15%</td>
-                <td>21,50%</td>
-                <td>21,50%</td>
-                <td class="val-negative">-3,35%</td>
-                <td class="val-negative">⇓ -0,8%</td>
-                <td class="val-positive">⇑ 5,0%</td>
-              </tr>
-              <tr>
-                <td>Sessões</td>
-                <td>1,00 Mi</td>
-                <td>1,06 Mi</td>
-                <td>2,07 Mi</td>
-                <td class="val-negative">-5,14%</td>
-                <td class="val-positive">⇑ 51,6%</td>
-                <td class="val-negative">⇓ -7,7%</td>
-              </tr>
-              <tr>
-                <td>Tx. Conv.</td>
-                <td>11,74%</td>
-                <td>8,31%</td>
-                <td>8,31%</td>
-                <td class="val-positive">+41,32%</td>
-                <td class="val-positive">⇑ 27,7%</td>
-                <td class="val-positive">⇑ 28,5%</td>
-              </tr>
+            <tbody id="appTableBody">
+              {app_table_rows}
             </tbody>
           </table>
         </div>
@@ -1500,7 +1551,7 @@ def build():
         <div class="channel-card">
           <div class="channel-header">
             <h4>MARKETPLACE</h4>
-            <span class="channel-venda-sub">Venda: <strong>8.737 Mi</strong> (Part: 1,94%)</span>
+            <span class="channel-venda-sub">Venda: <strong id="mkp-header-venda">{fmt_curr(kpis['marketplace']['venda'])}</strong> (Part: <span id="mkp-header-share">{kpis['marketplace']['share_empresa']:.2f}%</span>)</span>
           </div>
           <table class="channel-table">
             <thead>
@@ -1514,61 +1565,8 @@ def build():
                 <th>Cresc.</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Venda</td>
-                <td>8.737 Mi</td>
-                <td>7.340 Mi</td>
-                <td>14.309 Mi</td>
-                <td class="val-positive">+19,02%</td>
-                <td class="val-positive">⇑ 110,8%</td>
-                <td class="val-negative">⇓ -5,2%</td>
-              </tr>
-              <tr>
-                <td>Qtd. NF</td>
-                <td>101,64 Mil</td>
-                <td>88,57 Mil</td>
-                <td>172,67 Mil</td>
-                <td class="val-positive">+14,76%</td>
-                <td class="val-positive">⇑ 91,8%</td>
-                <td class="val-negative">⇓ -3,7%</td>
-              </tr>
-              <tr>
-                <td>Ticket M.</td>
-                <td>85,95</td>
-                <td>82,87</td>
-                <td>82,87</td>
-                <td class="val-positive">+3,72%</td>
-                <td class="val-positive">⇑ 9,9%</td>
-                <td class="val-negative">⇓ -1,5%</td>
-              </tr>
-              <tr>
-                <td>Rent. Op.</td>
-                <td>26,78%</td>
-                <td>31,50%</td>
-                <td>31,50%</td>
-                <td class="val-negative">-4,72%</td>
-                <td class="val-negative">⇓ -11,4%</td>
-                <td class="val-positive">⇑ 7,7%</td>
-              </tr>
-              <tr>
-                <td>Sessões</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Tx. Conv.</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
+            <tbody id="mkpTableBody">
+              {mkp_table_rows}
             </tbody>
           </table>
         </div>
@@ -1577,15 +1575,15 @@ def build():
         <div class="combined-bar">
           <div class="combined-title">
             <span>SITE E APP</span>
-            <span>Venda Efetiva: <strong>21.029 Mi</strong></span>
+            <span>Venda Efetiva: <strong id="site_app-venda">{fmt_curr(kpis['site_app']['venda'])}</strong></span>
           </div>
           <div class="combined-metrics">
-            <span>Meta: <strong>20,74 Mi</strong></span>
-            <span>Meta Mês: <strong>40,44 Mi</strong></span>
-            <span>Desvio %: <strong class="val-positive">+1,38%</strong></span>
-            <span>Desvio Nº: <strong>+285,55 Mil</strong></span>
-            <span>Evolução: <strong class="val-positive">⇑ 49,80%</strong></span>
-            <span>Crescimento: <strong class="val-positive">⇑ 10,05%</strong></span>
+            <span>Meta: <strong id="site_app-meta">{fmt_curr(kpis['site_app']['meta_mtd'])}</strong></span>
+            <span>Meta Mês: <strong id="site_app-metames">{kpis['site_app']['meta_mes']/1e6:.2f} Mi</strong></span>
+            <span>Desvio %: <strong class="{'val-positive' if kpis['site_app']['desvio_venda_pct']>=0 else 'val-negative'}" id="site_app-desvio">{fmt_pct(kpis['site_app']['desvio_venda_pct'])}</strong></span>
+            <span>Desvio Nº: <strong id="site_app-gap">{fmt_gap(kpis['site_app']['gap_venda_val'])}</strong></span>
+            <span>Evolução: <strong class="{'val-positive' if kpis['site_app']['evo_yoy']>=0 else 'val-negative'}" id="site_app-evo">{fmt_growth(kpis['site_app']['evo_yoy'])}</strong></span>
+            <span>Crescimento: <strong class="{'val-positive' if kpis['site_app']['cresc_mom']>=0 else 'val-negative'}" id="site_app-cresc">{fmt_growth(kpis['site_app']['cresc_mom'])}</strong></span>
           </div>
         </div>
       </div>
@@ -1732,53 +1730,21 @@ def build():
         <div>
           <h3 style="font-family: 'Outfit'; font-size: 18px;">Simulador de Fechamento & Ritmo Diário Necessário</h3>
           <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
-            Cálculo estatístico do faturamento necessário por dia para alcançar 100% da meta de Setembro/2026 nos 15 dias restantes.
+            Cálculo estatístico do faturamento necessário por dia para alcançar 100% da meta de Setembro/2026 nos {dias_restantes} dias restantes.
           </p>
         </div>
       </div>
 
       <div class="projection-grid">
-        {"".join([f'''
-        <div class="proj-card">
-          <div class="proj-card-header">
-            <h4 style="font-size: 16px; font-weight: 800; font-family: 'Outfit';">{ch.replace('_', ' ').upper()}</h4>
-            <span class="hero-part-badge">Meta Mês: R$ {p['meta_mes']/1e6:.3f} Mi</span>
-          </div>
-          <div class="proj-metrics-row">
-            <div class="proj-box">
-              <div class="lbl">Realizado (15 Dias)</div>
-              <div class="val">R$ {p['venda_realizada']/1e6:.3f} Mi</div>
-            </div>
-            <div class="proj-box">
-              <div class="lbl">Meta Restante</div>
-              <div class="val">R$ {p['meta_restante']/1e6:.3f} Mi</div>
-            </div>
-            <div class="proj-box">
-              <div class="lbl">Meta Diária Necessária</div>
-              <div class="val" style="color: var(--fsj-blue-light);">R$ {p['venda_diaria_necessaria']/1e3:,.0f} K/dia</div>
-            </div>
-          </div>
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 4px;">
-              <span>Fechamento Projetado: <strong>R$ {p['fechamento_projetado']/1e6:.3f} Mi</strong></span>
-              <span class="{'val-positive' if p['atingimento_projetado_pct'] >= 100 else 'val-negative'}">
-                {p['atingimento_projetado_pct']:.1f}% da Meta
-              </span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: {min(100, p['atingimento_projetado_pct'])}%;"></div>
-            </div>
-          </div>
-        </div>
-        ''' for ch, p in proj.items() if ch in ['ecommerce_total', 'canais_digitais', 'app', 'site', 'marketplace', 'figital']])}
+        {proj_cards_html}
       </div>
     </section>
   </main>
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    const dashData = {json.dumps(dash_data)};
-    console.log("Dados carregados:", dashData);
+    const dashData = {data_json_str};
+    console.log("Dados consolidados carregados:", dashData);
 
     // Navegação entre Visões
     const navBtns = document.querySelectorAll('.nav-btn');
@@ -1824,6 +1790,363 @@ def build():
       Chart.register(ChartDataLabels);
     }}
 
+    // Formatação de Valores
+    function fmtCurrency(val) {{
+      if (val === null || val === undefined) return 'R$ 0,00';
+      const absVal = Math.abs(val);
+      if (absVal >= 1e6) return 'R$ ' + (val / 1e6).toFixed(3).replace('.', ',') + ' Mi';
+      if (absVal >= 1e3) return 'R$ ' + (val / 1e3).toFixed(1).replace('.', ',') + ' K';
+      return 'R$ ' + val.toFixed(2).replace('.', ',');
+    }}
+
+    function fmtGapVal(val) {{
+      if (val === null || val === undefined) return '0,00';
+      const sign = val >= 0 ? '+' : '';
+      const absVal = Math.abs(val);
+      if (absVal >= 1e6) return sign + (val / 1e6).toFixed(3).replace('.', ',') + ' Mi';
+      if (absVal >= 1e3) return sign + (val / 1e3).toFixed(1).replace('.', ',') + ' K';
+      return sign + val.toFixed(2).replace('.', ',');
+    }}
+
+    function fmtPctStr(val) {{
+      if (val === null || val === undefined) return '0,00%';
+      const sign = val >= 0 ? '+' : '';
+      return sign + val.toFixed(2).replace('.', ',') + '%';
+    }}
+
+    function fmtGrowthStr(val) {{
+      if (val === null || val === undefined) return '—';
+      if (val >= 0) return '⇑ ' + val.toFixed(1).replace('.', ',') + '%';
+      return '⇓ ' + Math.abs(val).toFixed(1).replace('.', ',') + '%';
+    }}
+
+    // =========================================================================
+    // MOTOR DE ESTADO REATIVO: FILTRO DE DATA & TOGGLE FIGITAL
+    // =========================================================================
+    let currentPeriod = 'mtd';
+    let currentDay = dashData.max_dia || 17;
+    let isFigitalOn = localStorage.getItem('fsj_figital_included') === 'true';
+
+    const periodFilter = document.getElementById('periodFilter');
+    const daySelectBox = document.getElementById('daySelectBox');
+    const dayHistorySelect = document.getElementById('dayHistorySelect');
+
+    const toggleFigitalInput = document.getElementById('toggleFigitalInput');
+    const figitalSwitchBar = document.getElementById('figitalSwitchBar');
+    const figitalStateBadge = document.getElementById('figitalStateBadge');
+    const cardFigital = document.getElementById('cardFigital');
+    const cardEcommerce = document.getElementById('cardEcommerce');
+    const cardDigitais = document.getElementById('cardDigitais');
+    const ecomFigitalBadge = document.getElementById('ecomFigitalBadge');
+    const digFigitalBadge = document.getElementById('digFigitalBadge');
+    const figitalCardStatusBadge = document.getElementById('figitalCardStatusBadge');
+    const projEcomBadge = document.getElementById('proj-ecommerce_total-figital-badge');
+    const projDigBadge = document.getElementById('proj-canais_digitais-figital-badge');
+    const btnPillCanaisDigitais = document.getElementById('btnPillCanaisDigitais');
+
+    function getMetricsForCurrentSelection() {{
+      let baseMetrics;
+      if (currentPeriod === 'mtd') {{
+        baseMetrics = dashData.kpis_mtd || dashData.kpis;
+      }} else if (currentPeriod === 'd1') {{
+        baseMetrics = dashData.kpis_d1;
+      }} else if (currentPeriod === 'last7') {{
+        baseMetrics = dashData.kpis_last7;
+      }} else if (currentPeriod === 'day') {{
+        baseMetrics = dashData.daily_history ? dashData.daily_history[currentDay] : dashData.kpis_d1;
+      }} else {{
+        baseMetrics = dashData.kpis_mtd || dashData.kpis;
+      }}
+
+      // Clone
+      const m = JSON.parse(JSON.stringify(baseMetrics || {{}}));
+
+      // Se Figital estiver ativado, soma ao E-Commerce e aos Canais Digitais
+      if (isFigitalOn && m.figital) {{
+        // Canais Digitais (+ Figital)
+        if (m.canais_digitais) {{
+          m.canais_digitais.venda += m.figital.venda;
+          m.canais_digitais.meta_mtd += m.figital.meta_mtd;
+          m.canais_digitais.meta_mes += m.figital.meta_mes;
+          m.canais_digitais.cupons += m.figital.cupons;
+          m.canais_digitais.gap_venda_val = m.canais_digitais.venda - m.canais_digitais.meta_mtd;
+          m.canais_digitais.desvio_venda_pct = m.canais_digitais.meta_mtd > 0 ? Number((((m.canais_digitais.venda / m.canais_digitais.meta_mtd) - 1) * 100).toFixed(2)) : 0;
+          m.canais_digitais.tkm = m.canais_digitais.cupons > 0 ? Number((m.canais_digitais.venda / m.canais_digitais.cupons).toFixed(2)) : m.canais_digitais.tkm;
+          m.canais_digitais.share_empresa = Number((m.canais_digitais.share_empresa + m.figital.share_empresa).toFixed(2));
+          m.canais_digitais.rent_op = Number((m.canais_digitais.rent_op * 0.95 + m.figital.rent_op * 0.05).toFixed(2));
+          m.canais_digitais.rent_dre = Number((m.canais_digitais.rent_op + 5.03).toFixed(2));
+        }}
+
+        // E-Commerce Total (+ Figital)
+        if (m.ecommerce_total) {{
+          m.ecommerce_total.venda += m.figital.venda;
+          m.ecommerce_total.meta_mtd += m.figital.meta_mtd;
+          m.ecommerce_total.meta_mes += m.figital.meta_mes;
+          m.ecommerce_total.cupons += m.figital.cupons;
+          m.ecommerce_total.gap_venda_val = m.ecommerce_total.venda - m.ecommerce_total.meta_mtd;
+          m.ecommerce_total.desvio_venda_pct = m.ecommerce_total.meta_mtd > 0 ? Number((((m.ecommerce_total.venda / m.ecommerce_total.meta_mtd) - 1) * 100).toFixed(2)) : 0;
+          m.ecommerce_total.tkm = m.ecommerce_total.cupons > 0 ? Number((m.ecommerce_total.venda / m.ecommerce_total.cupons).toFixed(2)) : m.ecommerce_total.tkm;
+          m.ecommerce_total.share_empresa = Number((m.ecommerce_total.share_empresa + m.figital.share_empresa).toFixed(2));
+        }}
+      }}
+
+      return m;
+    }}
+
+    function updateDashboardState() {{
+      const m = getMetricsForCurrentSelection();
+      if (!m || !m.ecommerce_total) return;
+
+      const setTxt = (id, val) => {{
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      }};
+
+      const setClass = (id, cls) => {{
+        const el = document.getElementById(id);
+        if (el) {{
+          el.classList.remove('val-positive', 'val-negative');
+          el.classList.add(cls);
+        }}
+      }};
+
+      // 1. Atualiza Card 1: E-Commerce
+      setTxt('ecomSubtitle', isFigitalOn ? 'Venda Efetiva + Figital' : 'Venda Efetiva');
+      setTxt('ecomPartBadge', 'Part: ' + m.ecommerce_total.share_empresa.toFixed(2) + '%');
+      setTxt('ecomMainVal', fmtCurrency(m.ecommerce_total.venda));
+      setTxt('ecomMetaMes', (m.ecommerce_total.meta_mes / 1e6).toFixed(3) + ' Mi');
+      setTxt('ecomMetaMTD', fmtCurrency(m.ecommerce_total.meta_mtd));
+      setTxt('ecomDesvioPct', fmtPctStr(m.ecommerce_total.desvio_venda_pct));
+      setClass('ecomDesvioPct', m.ecommerce_total.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+      setTxt('ecomDesvioVal', fmtGapVal(m.ecommerce_total.gap_venda_val));
+      setTxt('ecomEvol', fmtGrowthStr(m.ecommerce_total.evo_yoy));
+      setClass('ecomEvol', m.ecommerce_total.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+      setTxt('ecomCresc', fmtGrowthStr(m.ecommerce_total.cresc_mom));
+      setClass('ecomCresc', m.ecommerce_total.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+      setTxt('ecomTkm', m.ecommerce_total.tkm.toFixed(2).replace('.', ','));
+      setTxt('ecomTkmMeta', m.ecommerce_total.tkm_meta.toFixed(2).replace('.', ','));
+      setTxt('ecomTkmDesvioPct', fmtPctStr(m.ecommerce_total.tkm_desvio_pct));
+      setClass('ecomTkmDesvioPct', m.ecommerce_total.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+      setTxt('ecomTkmDesvioVal', fmtGapVal(m.ecommerce_total.tkm_gap_val));
+
+      // 2. Atualiza Card 2: Canais Digitais
+      setTxt('digSubtitle', isFigitalOn ? 'Site + App + MKP + Figital' : 'Site + App + Marketplace');
+      setTxt('digPartBadge', 'Part: ' + m.canais_digitais.share_empresa.toFixed(2) + '%');
+      setTxt('digMainVal', fmtCurrency(m.canais_digitais.venda));
+      setTxt('digMetaMes', (m.canais_digitais.meta_mes / 1e6).toFixed(3) + ' Mi');
+      setTxt('digMetaMTD', fmtCurrency(m.canais_digitais.meta_mtd));
+      setTxt('digDesvioPct', fmtPctStr(m.canais_digitais.desvio_venda_pct));
+      setClass('digDesvioPct', m.canais_digitais.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+      setTxt('digDesvioVal', fmtGapVal(m.canais_digitais.gap_venda_val));
+      setTxt('digEvol', fmtGrowthStr(m.canais_digitais.evo_yoy));
+      setClass('digEvol', m.canais_digitais.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+      setTxt('digCresc', fmtGrowthStr(m.canais_digitais.cresc_mom));
+      setClass('digCresc', m.canais_digitais.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+      setTxt('digRentOp', m.canais_digitais.rent_op.toFixed(2).replace('.', ',') + '%');
+      setTxt('digRentDre', m.canais_digitais.rent_dre.toFixed(2).replace('.', ',') + '%');
+      setTxt('digTkm', m.canais_digitais.tkm.toFixed(2).replace('.', ','));
+      setTxt('digTkmMeta', m.canais_digitais.tkm_meta.toFixed(2).replace('.', ','));
+      setTxt('digTkmDesvioPct', fmtPctStr(m.canais_digitais.tkm_desvio_pct));
+      setClass('digTkmDesvioPct', m.canais_digitais.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+      setTxt('digTkmDesvioVal', fmtGapVal(m.canais_digitais.tkm_gap_val));
+
+      // 3. Atualiza Card 3: Televendas
+      if (m.televendas) {{
+        setTxt('telePartBadge', 'Part: ' + m.televendas.share_empresa.toFixed(2) + '%');
+        setTxt('teleMainVal', fmtCurrency(m.televendas.venda));
+        setTxt('teleMetaMes', (m.televendas.meta_mes / 1e6).toFixed(3) + ' Mi');
+        setTxt('teleMetaMTD', fmtCurrency(m.televendas.meta_mtd));
+        setTxt('teleDesvioPct', fmtPctStr(m.televendas.desvio_venda_pct));
+        setClass('teleDesvioPct', m.televendas.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleDesvioVal', fmtGapVal(m.televendas.gap_venda_val));
+        setTxt('teleEvol', fmtGrowthStr(m.televendas.evo_yoy));
+        setClass('teleEvol', m.televendas.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleCresc', fmtGrowthStr(m.televendas.cresc_mom));
+        setClass('teleCresc', m.televendas.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleTkm', m.televendas.tkm.toFixed(2).replace('.', ','));
+        setTxt('teleTkmMeta', m.televendas.tkm_meta.toFixed(2).replace('.', ','));
+        setTxt('teleTkmDesvioPct', fmtPctStr(m.televendas.tkm_desvio_pct));
+        setClass('teleTkmDesvioPct', m.televendas.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleTkmDesvioVal', fmtGapVal(m.televendas.tkm_gap_val));
+      }}
+
+      // 4. Atualiza Card 4: Figital
+      if (m.figital) {{
+        setTxt('figitalPartBadge', 'Part: ' + m.figital.share_empresa.toFixed(2) + '%');
+        setTxt('figitalMainVal', fmtCurrency(m.figital.venda));
+        setTxt('figitalMetaMes', (m.figital.meta_mes / 1e6).toFixed(3) + ' Mi');
+        setTxt('figitalMetaMTD', fmtCurrency(m.figital.meta_mtd));
+        setTxt('figitalDesvioPct', fmtPctStr(m.figital.desvio_venda_pct));
+        setClass('figitalDesvioPct', m.figital.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('figitalCuponsVal', m.figital.cupons.toLocaleString('pt-BR'));
+        setTxt('figitalEvol', fmtGrowthStr(m.figital.evo_yoy));
+        setClass('figitalEvol', m.figital.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('figitalCresc', fmtGrowthStr(m.figital.cresc_mom));
+        setClass('figitalCresc', m.figital.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('figitalRentOp', m.figital.rent_op.toFixed(2).replace('.', ',') + '%');
+        setTxt('figitalTkm', m.figital.tkm.toFixed(2).replace('.', ','));
+        setTxt('figitalTkmMeta', m.figital.tkm_meta.toFixed(2).replace('.', ','));
+        setTxt('figitalTkmDesvioPct', fmtPctStr(m.figital.tkm_desvio_pct));
+        setClass('figitalTkmDesvioPct', m.figital.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('figitalTkmDesvioVal', fmtGapVal(m.figital.tkm_gap_val));
+      }}
+
+      // 5. Atualiza Tabelas Detalhadas de Canais (Site, App, MKP)
+      ['site', 'app', 'marketplace'].forEach(chKey => {{
+        const item = m[chKey];
+        if (!item) return;
+        setTxt(chKey + '-header-venda', fmtCurrency(item.venda));
+        setTxt(chKey + '-header-share', item.share_empresa.toFixed(2) + '%');
+
+        setTxt(chKey + '-venda-real', fmtCurrency(item.venda));
+        setTxt(chKey + '-venda-meta', fmtCurrency(item.meta_mtd));
+        setTxt(chKey + '-venda-desv', fmtPctStr(item.desvio_venda_pct));
+        setClass(chKey + '-venda-desv', item.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt(chKey + '-venda-evo', fmtGrowthStr(item.evo_yoy));
+        setClass(chKey + '-venda-evo', item.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+        setTxt(chKey + '-venda-cresc', fmtGrowthStr(item.cresc_mom));
+        setClass(chKey + '-venda-cresc', item.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+
+        setTxt(chKey + '-cupons-real', item.cupons >= 1e3 ? (item.cupons / 1e3).toFixed(2).replace('.', ',') + ' Mil' : item.cupons);
+        setTxt(chKey + '-cupons-meta', item.cupons_meta_mtd >= 1e3 ? (item.cupons_meta_mtd / 1e3).toFixed(2).replace('.', ',') + ' Mil' : item.cupons_meta_mtd);
+        setTxt(chKey + '-cupons-desv', fmtPctStr(item.cupons_desvio_pct));
+        setClass(chKey + '-cupons-desv', item.cupons_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+
+        setTxt(chKey + '-tkm-real', item.tkm.toFixed(2).replace('.', ','));
+        setTxt(chKey + '-tkm-meta', item.tkm_meta.toFixed(2).replace('.', ','));
+        setTxt(chKey + '-tkm-desv', fmtPctStr(item.tkm_desvio_pct));
+        setClass(chKey + '-tkm-desv', item.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+
+        setTxt(chKey + '-rent-real', item.rent_op.toFixed(2).replace('.', ',') + '%');
+        setTxt(chKey + '-rent-meta', item.rent_op_meta.toFixed(2).replace('.', ',') + '%');
+        setTxt(chKey + '-rent-desv', fmtPctStr(item.rent_op_desvio));
+        setClass(chKey + '-rent-desv', item.rent_op_desvio >= 0 ? 'val-positive' : 'val-negative');
+
+        if (chKey === 'site' || chKey === 'app') {{
+          setTxt(chKey + '-sess-real', item.sessoes >= 1e6 ? (item.sessoes / 1e6).toFixed(2).replace('.', ',') + ' Mi' : (item.sessoes / 1e3).toFixed(0) + ' K');
+          setTxt(chKey + '-sess-meta', item.sessoes_meta_mtd >= 1e6 ? (item.sessoes_meta_mtd / 1e6).toFixed(2).replace('.', ',') + ' Mi' : (item.sessoes_meta_mtd / 1e3).toFixed(0) + ' K');
+          setTxt(chKey + '-sess-desv', fmtPctStr(item.sessoes_desvio_pct));
+          setClass(chKey + '-sess-desv', item.sessoes_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+
+          setTxt(chKey + '-tx-real', item.tx_conv.toFixed(2).replace('.', ',') + '%');
+          setTxt(chKey + '-tx-meta', item.tx_conv_meta.toFixed(2).replace('.', ',') + '%');
+          setTxt(chKey + '-tx-desv', fmtPctStr(item.tx_conv_desvio_pct));
+          setClass(chKey + '-tx-desv', item.tx_conv_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+        }}
+      }});
+
+      // 6. Atualiza Barra Combinada: Site e App
+      if (m.site_app) {{
+        setTxt('site_app-venda', fmtCurrency(m.site_app.venda));
+        setTxt('site_app-meta', fmtCurrency(m.site_app.meta_mtd));
+        setTxt('site_app-metames', (m.site_app.meta_mes / 1e6).toFixed(2) + ' Mi');
+        setTxt('site_app-desvio', fmtPctStr(m.site_app.desvio_venda_pct));
+        setClass('site_app-desvio', m.site_app.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('site_app-gap', fmtGapVal(m.site_app.gap_venda_val));
+        setTxt('site_app-evo', fmtGrowthStr(m.site_app.evo_yoy));
+        setClass('site_app-evo', m.site_app.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('site_app-cresc', fmtGrowthStr(m.site_app.cresc_mom));
+        setClass('site_app-cresc', m.site_app.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+      }}
+
+      // 7. Visão 4 Projeções (Atualiza valores com base em MTD ou D-1)
+      ['ecommerce_total', 'canais_digitais', 'app', 'site', 'marketplace', 'figital'].forEach(chKey => {{
+        if (m[chKey]) {{
+          setTxt('proj-real-' + chKey, fmtCurrency(m[chKey].venda));
+          const restante = Math.max(0, m[chKey].meta_mes - m[chKey].venda);
+          setTxt('proj-restante-' + chKey, fmtCurrency(restante));
+          const diasRest = Math.max(1, 30 - currentDay);
+          const diariaNec = restante / diasRest;
+          setTxt('proj-diaria-' + chKey, 'R$ ' + (diariaNec / 1e3).toFixed(0) + ' K/dia');
+        }}
+      }});
+
+      // 8. Se Visão 2 estiver ativa, re-renderiza gráficos
+      if (typeof renderDesviosCharts === 'function') {{
+        renderDesviosCharts(currentChannelV2);
+      }}
+    }}
+
+    // Aplica Toggle do Figital
+    function applyFigitalToggle(included) {{
+      isFigitalOn = included;
+      if (toggleFigitalInput) toggleFigitalInput.checked = included;
+
+      // Update Switch Header State
+      if (figitalSwitchBar && figitalStateBadge) {{
+        if (included) {{
+          figitalSwitchBar.classList.add('active-on');
+          figitalStateBadge.textContent = 'ON';
+          if (cardFigital) cardFigital.classList.add('figital-integrated');
+          if (figitalCardStatusBadge) figitalCardStatusBadge.style.display = 'inline-flex';
+        }} else {{
+          figitalSwitchBar.classList.remove('active-on');
+          figitalStateBadge.textContent = 'OFF';
+          if (cardFigital) cardFigital.classList.remove('figital-integrated');
+          if (figitalCardStatusBadge) figitalCardStatusBadge.style.display = 'none';
+        }}
+      }}
+
+      // Update Badges nos cards E-Com e Digitais
+      if (cardEcommerce) {{
+        if (included) cardEcommerce.classList.add('figital-integrated');
+        else cardEcommerce.classList.remove('figital-integrated');
+        if (ecomFigitalBadge) ecomFigitalBadge.style.display = included ? 'inline-flex' : 'none';
+      }}
+
+      if (cardDigitais) {{
+        if (included) cardDigitais.classList.add('figital-integrated');
+        else cardDigitais.classList.remove('figital-integrated');
+        if (digFigitalBadge) digFigitalBadge.style.display = included ? 'inline-flex' : 'none';
+      }}
+
+      if (projEcomBadge) projEcomBadge.style.display = included ? 'inline-flex' : 'none';
+      if (projDigBadge) projDigBadge.style.display = included ? 'inline-flex' : 'none';
+
+      if (btnPillCanaisDigitais) {{
+        btnPillCanaisDigitais.textContent = included ? 'Canais Digitais (+ Figital)' : 'Canais Digitais (Total)';
+      }}
+
+      localStorage.setItem('fsj_figital_included', included ? 'true' : 'false');
+      updateDashboardState();
+    }}
+
+    if (figitalSwitchBar && toggleFigitalInput) {{
+      figitalSwitchBar.addEventListener('click', (e) => {{
+        if (e.target !== toggleFigitalInput) {{
+          toggleFigitalInput.checked = !toggleFigitalInput.checked;
+        }}
+        applyFigitalToggle(toggleFigitalInput.checked);
+      }});
+
+      toggleFigitalInput.addEventListener('change', () => {{
+        applyFigitalToggle(toggleFigitalInput.checked);
+      }});
+    }}
+
+    // Eventos do Filtro de Data & Histórico
+    if (periodFilter) {{
+      periodFilter.addEventListener('change', (e) => {{
+        currentPeriod = e.target.value;
+        if (currentPeriod === 'day') {{
+          if (daySelectBox) daySelectBox.style.display = 'flex';
+          currentDay = parseInt(dayHistorySelect ? dayHistorySelect.value : dashData.max_dia, 10);
+        }} else {{
+          if (daySelectBox) daySelectBox.style.display = 'none';
+          currentDay = dashData.max_dia || 17;
+        }}
+        updateDashboardState();
+      }});
+    }}
+
+    if (dayHistorySelect) {{
+      dayHistorySelect.addEventListener('change', (e) => {{
+        currentDay = parseInt(e.target.value, 10);
+        currentPeriod = 'day';
+        updateDashboardState();
+      }});
+    }}
+
     // =========================================================================
     // RENDERIZADOR DE GRÁFICOS — VISÃO 2 (TENDÊNCIAS & DESVIOS)
     // =========================================================================
@@ -1852,7 +2175,7 @@ def build():
 
     function renderDesviosCharts(channelKey) {{
       let cData = dashData.charts[channelKey] || dashData.charts['marketplace'];
-      if (channelKey === 'canais_digitais' && typeof toggleFigitalInput !== 'undefined' && toggleFigitalInput && toggleFigitalInput.checked && dashData.charts['figital']) {{
+      if (channelKey === 'canais_digitais' && isFigitalOn && dashData.charts['figital']) {{
         const digData = dashData.charts['canais_digitais'];
         const figData = dashData.charts['figital'];
         cData = {{
@@ -1861,7 +2184,7 @@ def build():
             meta: digData.tkm.meta
           }},
           rent_op: {{
-            real: digData.rent_op.real.map((v, i) => Number((v * 0.96 + (figData.rent_op.real[i] || 22.4) * 0.04).toFixed(1))),
+            real: digData.rent_op.real.map((v, i) => Number((v * 0.95 + (figData.rent_op.real[i] || 22.4) * 0.05).toFixed(1))),
             desvio: digData.rent_op.desvio
           }},
           faturamento: {{
@@ -1940,7 +2263,7 @@ def build():
         }}
       }});
 
-      // 2. Chart Rentabilidade Operacional (Eixo Duplo Harmonizado)
+      // 2. Chart Rentabilidade Operacional
       if (chartRentInstance) chartRentInstance.destroy();
       const ctxRent = document.getElementById('chartRent').getContext('2d');
       chartRentInstance = new Chart(ctxRent, {{
@@ -1949,42 +2272,42 @@ def build():
           labels: labels,
           datasets: [
             {{
-              label: 'Rentabilidade %',
+              label: 'Rentabilidade Real %',
               data: cData.rent_op.real,
-              borderColor: '#003875',
-              backgroundColor: 'transparent',
-              borderWidth: 2.6,
+              borderColor: '#0056b3',
+              borderWidth: 2.8,
+              fill: false,
               tension: 0.25,
-              pointRadius: 4.5,
+              pointRadius: 5,
+              pointBackgroundColor: '#0056b3',
               yAxisID: 'y',
               datalabels: {{
                 display: true,
                 align: 'top',
-                offset: 6,
+                offset: 5,
                 font: {{ size: 10, weight: '700' }},
-                color: () => currentTheme === 'dark' ? '#f8fafc' : '#003875',
-                formatter: val => val.toFixed(1).replace('.', ',') + '%'
+                color: () => currentTheme === 'dark' ? '#93c5fd' : '#003875',
+                formatter: val => val.toFixed(1) + '%'
               }}
             }},
             {{
               label: 'Desvio % vs Meta',
               data: cData.rent_op.desvio,
-              borderColor: '#0077ff',
-              backgroundColor: 'transparent',
-              borderWidth: 2.2,
+              borderColor: '#38bdf8',
+              backgroundColor: 'rgba(56, 189, 248, 0.12)',
+              borderWidth: 2,
+              borderDash: [4, 4],
+              fill: true,
               tension: 0.25,
-              pointRadius: 4.5,
+              pointRadius: 4,
               yAxisID: 'y1',
               datalabels: {{
                 display: true,
                 align: 'bottom',
-                offset: 6,
-                borderRadius: 4,
-                padding: {{ top: 2, bottom: 2, left: 4, right: 4 }},
-                backgroundColor: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? (currentTheme === 'dark' ? 'rgba(34,197,94,0.2)' : '#dcfce7') : (currentTheme === 'dark' ? 'rgba(239,68,68,0.2)' : '#fee2e2'),
-                font: {{ size: 9.5, weight: '800' }},
+                offset: 5,
+                font: {{ size: 9, weight: '600' }},
                 color: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? '#16a34a' : '#dc2626',
-                formatter: val => (val > 0 ? '+' : '') + val.toFixed(1).replace('.', ',') + '%'
+                formatter: val => (val > 0 ? '+' : '') + val.toFixed(1) + '%'
               }}
             }}
           ]
@@ -1992,7 +2315,7 @@ def build():
         options: {{
           responsive: true,
           maintainAspectRatio: false,
-          layout: {{ padding: {{ top: 25, bottom: 15, left: 16, right: 16 }} }},
+          layout: {{ padding: {{ top: 25, bottom: 12, left: 16, right: 16 }} }},
           plugins: {{
             legend: {{ display: false }},
             tooltip: {{
@@ -2031,7 +2354,7 @@ def build():
         }}
       }});
 
-      // 3. Chart Faturamento & Desvio GAP (Eixo Harmonizado - Sem Sobreposição)
+      // 3. Chart Faturamento & Desvio GAP
       if (chartFatInstance) chartFatInstance.destroy();
       const ctxFat = document.getElementById('chartFat').getContext('2d');
       chartFatInstance = new Chart(ctxFat, {{
@@ -2098,7 +2421,7 @@ def build():
               position: 'left',
               grid: {{ color: getGridColor() }},
               suggestedMin: -50000,
-              suggestedMax: 820000,
+              suggestedMax: 1800000,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return 'R$ ' + (val/1000).toFixed(0) + 'K'; }}
@@ -2108,7 +2431,7 @@ def build():
               position: 'right',
               grid: {{ display: false }},
               suggestedMin: -50000,
-              suggestedMax: 820000,
+              suggestedMax: 1800000,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return (val/1000).toFixed(0) + 'K'; }}
@@ -2214,7 +2537,7 @@ def build():
         }}
       }});
 
-      // 2. Chart Sessões (Eixo Duplo com Separação de Zonas)
+      // 2. Chart Sessões
       if (chartSessInstance) chartSessInstance.destroy();
       const ctxSess = document.getElementById('chartSess').getContext('2d');
       chartSessInstance = new Chart(ctxSess, {{
@@ -2248,17 +2571,13 @@ def build():
               tension: 0.2,
               pointRadius: 5,
               yAxisID: 'y1',
-              order: 1,
               datalabels: {{
                 display: true,
                 align: 'top',
                 offset: 5,
-                borderRadius: 4,
-                padding: {{ top: 2, bottom: 2, left: 4, right: 4 }},
-                backgroundColor: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? '#16a34a' : '#dc2626',
-                font: {{ size: 9.5, weight: '800' }},
-                color: '#ffffff',
-                formatter: val => (val > 0 ? '+' : '') + val + '%'
+                font: {{ size: 9.5, weight: '700' }},
+                color: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? '#16a34a' : '#dc2626',
+                formatter: val => (val > 0 ? '+' : '') + val.toFixed(1) + '%'
               }}
             }}
           ]
@@ -2279,18 +2598,14 @@ def build():
             y: {{
               position: 'left',
               grid: {{ color: getGridColor() }},
-              min: 0,
-              max: channelKey === 'site' ? 120000 : 100000,
               ticks: {{
                 color: getTextColor(),
-                callback: function(val) {{ return (val/1000).toFixed(0) + ' Mil'; }}
+                callback: function(val) {{ return (val/1000).toFixed(0) + 'K'; }}
               }}
             }},
             y1: {{
               position: 'right',
               grid: {{ display: false }},
-              min: channelKey === 'site' ? -45 : -25,
-              max: channelKey === 'site' ? 25 : 65,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return val + '%'; }}
@@ -2306,253 +2621,8 @@ def build():
       }});
     }}
 
-    // ==========================================================================
-    // LOGICA INTERATIVA: ON / OFF INCORPORACAO FIGITAL AOS TOTAIS
-    // ==========================================================================
-    const figitalDataset = {{
-      baseline: {{
-        ecom: {{
-          venda: "R$ 30.436 Mi",
-          metaMes: "55.845 Mi",
-          metaMTD: "R$ 28,6 Mi",
-          desvioPct: "+6,24%",
-          desvioVal: "+1,79 Mi",
-          share: "Part: 6.76%",
-          tkm: "120,52",
-          tkmMeta: "131,25",
-          tkmDesvioPct: "-8,17%",
-          tkmDesvioVal: "-10,73",
-          evol: "⇑ 65,1%",
-          cresc: "⇑ 4,6%",
-          subtitle: "Venda Efetiva"
-        }},
-        dig: {{
-          venda: "R$ 29.766 Mi",
-          metaMes: "54.745 Mi",
-          metaMTD: "R$ 28,084 Mi",
-          desvioPct: "+5,99%",
-          desvioVal: "+1,682 Mi",
-          share: "Part: 6.61%",
-          tkm: "118,79",
-          tkmMeta: "137,23",
-          tkmDesvioPct: "-13,44%",
-          tkmDesvioVal: "-18,44",
-          evol: "⇑ 63,7%",
-          cresc: "⇑ 5,1%",
-          rentOp: "20,47%",
-          rentDre: "25,50%",
-          subtitle: "Site + App + Marketplace"
-        }},
-        projEcom: {{
-          real: "R$ 30.436 Mi",
-          metaMes: "Meta Mês: R$ 55.845 Mi",
-          restante: "R$ 25.409 Mi",
-          diaria: "R$ 1.694 K/dia",
-          fechamento: "R$ 60.872 Mi",
-          ating: "109.0% da Meta",
-          pct: 100,
-          isPos: true
-        }},
-        projDig: {{
-          real: "R$ 29.766 Mi",
-          metaMes: "Meta Mês: R$ 54.745 Mi",
-          restante: "R$ 24.979 Mi",
-          diaria: "R$ 1.665 K/dia",
-          fechamento: "R$ 59.532 Mi",
-          ating: "108.7% da Meta",
-          pct: 100,
-          isPos: true
-        }}
-      }},
-      withFigital: {{
-        ecom: {{
-          venda: "R$ 31.701 Mi",
-          metaMes: "58.373 Mi",
-          metaMTD: "R$ 29,912 Mi",
-          desvioPct: "+5,98%",
-          desvioVal: "+1,789 Mi",
-          share: "Part: 7.04%",
-          tkm: "121,26",
-          tkmMeta: "132,40",
-          tkmDesvioPct: "-8,41%",
-          tkmDesvioVal: "-11,14",
-          evol: "⇑ 65,4%",
-          cresc: "⇑ 4,9%",
-          subtitle: "Venda Efetiva + Figital"
-        }},
-        dig: {{
-          venda: "R$ 31.031 Mi",
-          metaMes: "57.273 Mi",
-          metaMTD: "R$ 29,348 Mi",
-          desvioPct: "+5,73%",
-          desvioVal: "+1,683 Mi",
-          share: "Part: 6.89%",
-          tkm: "119,60",
-          tkmMeta: "138,44",
-          tkmDesvioPct: "-13,61%",
-          tkmDesvioVal: "-18,84",
-          evol: "⇑ 64,1%",
-          cresc: "⇑ 5,4%",
-          rentOp: "20,55%",
-          rentDre: "25,57%",
-          subtitle: "Site + App + Marketplace + Figital"
-        }},
-        projEcom: {{
-          real: "R$ 31.701 Mi",
-          metaMes: "Meta Mês: R$ 58.373 Mi",
-          restante: "R$ 26.672 Mi",
-          diaria: "R$ 1.778 K/dia",
-          fechamento: "R$ 63.402 Mi",
-          ating: "108.6% da Meta",
-          pct: 100,
-          isPos: true
-        }},
-        projDig: {{
-          real: "R$ 31.031 Mi",
-          metaMes: "Meta Mês: R$ 57.273 Mi",
-          restante: "R$ 26.242 Mi",
-          diaria: "R$ 1.749 K/dia",
-          fechamento: "R$ 62.062 Mi",
-          ating: "108.4% da Meta",
-          pct: 100,
-          isPos: true
-        }}
-      }}
-    }};
-
-    const toggleFigitalInput = document.getElementById('toggleFigitalInput');
-    const figitalSwitchBar = document.getElementById('figitalSwitchBar');
-    const figitalStateBadge = document.getElementById('figitalStateBadge');
-    const cardFigital = document.getElementById('cardFigital');
-    const cardEcommerce = document.getElementById('cardEcommerce');
-    const cardDigitais = document.getElementById('cardDigitais');
-    const ecomFigitalBadge = document.getElementById('ecomFigitalBadge');
-    const digFigitalBadge = document.getElementById('digFigitalBadge');
-    const figitalCardStatusBadge = document.getElementById('figitalCardStatusBadge');
-    const projEcomBadge = document.getElementById('proj-ecommerce_total-figital-badge');
-    const projDigBadge = document.getElementById('proj-canais_digitais-figital-badge');
-    const btnPillCanaisDigitais = document.getElementById('btnPillCanaisDigitais');
-
-    function applyFigitalToggle(included) {{
-      const data = included ? figitalDataset.withFigital : figitalDataset.baseline;
-      if (toggleFigitalInput) toggleFigitalInput.checked = included;
-
-      // Update Switch Header State
-      if (figitalSwitchBar && figitalStateBadge) {{
-        if (included) {{
-          figitalSwitchBar.classList.add('active-on');
-          figitalStateBadge.textContent = 'ON';
-          if (cardFigital) cardFigital.classList.add('figital-integrated');
-          if (figitalCardStatusBadge) figitalCardStatusBadge.style.display = 'inline-flex';
-        }} else {{
-          figitalSwitchBar.classList.remove('active-on');
-          figitalStateBadge.textContent = 'OFF';
-          if (cardFigital) cardFigital.classList.remove('figital-integrated');
-          if (figitalCardStatusBadge) figitalCardStatusBadge.style.display = 'none';
-        }}
-      }}
-
-      // Update Card 1: E-Commerce
-      if (cardEcommerce) {{
-        if (included) {{
-          cardEcommerce.classList.add('figital-integrated');
-          if (ecomFigitalBadge) ecomFigitalBadge.style.display = 'inline-flex';
-        }} else {{
-          cardEcommerce.classList.remove('figital-integrated');
-          if (ecomFigitalBadge) ecomFigitalBadge.style.display = 'none';
-        }}
-        const setTxt = (id, val) => {{ const el = document.getElementById(id); if (el) el.textContent = val; }};
-        setTxt('ecomSubtitle', data.ecom.subtitle);
-        setTxt('ecomPartBadge', data.ecom.share);
-        setTxt('ecomMainVal', data.ecom.venda);
-        setTxt('ecomMetaMes', data.ecom.metaMes);
-        setTxt('ecomMetaMTD', data.ecom.metaMTD);
-        setTxt('ecomDesvioPct', data.ecom.desvioPct);
-        setTxt('ecomDesvioVal', data.ecom.desvioVal);
-        setTxt('ecomEvol', data.ecom.evol);
-        setTxt('ecomCresc', data.ecom.cresc);
-        setTxt('ecomTkm', data.ecom.tkm);
-        setTxt('ecomTkmMeta', data.ecom.tkmMeta);
-        setTxt('ecomTkmDesvioPct', data.ecom.tkmDesvioPct);
-        setTxt('ecomTkmDesvioVal', data.ecom.tkmDesvioVal);
-      }}
-
-      // Update Card 2: Canais Digitais
-      if (cardDigitais) {{
-        if (included) {{
-          cardDigitais.classList.add('figital-integrated');
-          if (digFigitalBadge) digFigitalBadge.style.display = 'inline-flex';
-        }} else {{
-          cardDigitais.classList.remove('figital-integrated');
-          if (digFigitalBadge) digFigitalBadge.style.display = 'none';
-        }}
-        const setTxt = (id, val) => {{ const el = document.getElementById(id); if (el) el.textContent = val; }};
-        setTxt('digSubtitle', data.dig.subtitle);
-        setTxt('digPartBadge', data.dig.share);
-        setTxt('digMainVal', data.dig.venda);
-        setTxt('digMetaMes', data.dig.metaMes);
-        setTxt('digMetaMTD', data.dig.metaMTD);
-        setTxt('digDesvioPct', data.dig.desvioPct);
-        setTxt('digDesvioVal', data.dig.desvioVal);
-        setTxt('digEvol', data.dig.evol);
-        setTxt('digCresc', data.dig.cresc);
-        setTxt('digRentOp', data.dig.rentOp);
-        setTxt('digRentDre', data.dig.rentDre);
-        setTxt('digTkm', data.dig.tkm);
-        setTxt('digTkmMeta', data.dig.tkmMeta);
-        setTxt('digTkmDesvioPct', data.dig.tkmDesvioPct);
-        setTxt('digTkmDesvioVal', data.dig.tkmDesvioVal);
-      }}
-
-      // Update Visão 4 Projections
-      const setTxt = (id, val) => {{ const el = document.getElementById(id); if (el) el.textContent = val; }};
-      setTxt('proj-real-ecommerce_total', data.projEcom.real);
-      setTxt('proj-metames-ecommerce_total', data.projEcom.metaMes);
-      setTxt('proj-restante-ecommerce_total', data.projEcom.restante);
-      setTxt('proj-diaria-ecommerce_total', data.projEcom.diaria);
-      setTxt('proj-fechamento-ecommerce_total', data.projEcom.fechamento);
-      setTxt('proj-ating-ecommerce_total', data.projEcom.ating);
-      const progEcom = document.getElementById('proj-progress-ecommerce_total');
-      if (progEcom) progEcom.style.width = data.projEcom.pct + '%';
-      if (projEcomBadge) projEcomBadge.style.display = included ? 'inline-flex' : 'none';
-
-      setTxt('proj-real-canais_digitais', data.projDig.real);
-      setTxt('proj-metames-canais_digitais', data.projDig.metaMes);
-      setTxt('proj-restante-canais_digitais', data.projDig.restante);
-      setTxt('proj-diaria-canais_digitais', data.projDig.diaria);
-      setTxt('proj-fechamento-canais_digitais', data.projDig.fechamento);
-      setTxt('proj-ating-canais_digitais', data.projDig.ating);
-      const progDig = document.getElementById('proj-progress-canais_digitais');
-      if (progDig) progDig.style.width = data.projDig.pct + '%';
-      if (projDigBadge) projDigBadge.style.display = included ? 'inline-flex' : 'none';
-
-      // Update Visão 2 Filter Button and Charts if applicable
-      if (btnPillCanaisDigitais) {{
-        btnPillCanaisDigitais.textContent = included ? 'Canais Digitais (+ Figital)' : 'Canais Digitais (Total)';
-      }}
-      if (typeof currentChannelV2 !== 'undefined' && currentChannelV2 === 'canais_digitais' && typeof renderDesviosCharts === 'function') {{
-        renderDesviosCharts('canais_digitais');
-      }}
-
-      localStorage.setItem('fsj_figital_included', included ? 'true' : 'false');
-    }}
-
-    if (figitalSwitchBar && toggleFigitalInput) {{
-      figitalSwitchBar.addEventListener('click', (e) => {{
-        if (e.target !== toggleFigitalInput) {{
-          toggleFigitalInput.checked = !toggleFigitalInput.checked;
-        }}
-        applyFigitalToggle(toggleFigitalInput.checked);
-      }});
-
-      toggleFigitalInput.addEventListener('change', () => {{
-        applyFigitalToggle(toggleFigitalInput.checked);
-      }});
-    }}
-
-    // Inicializar com preferência salva ou false por padrão (OFF)
-    const savedFigitalState = localStorage.getItem('fsj_figital_included') === 'true';
-    applyFigitalToggle(savedFigitalState);
+    // Inicialização da UI com preferências salvas
+    applyFigitalToggle(isFigitalOn);
   </script>
 </body>
 </html>
