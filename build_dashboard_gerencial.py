@@ -4383,16 +4383,16 @@ def build():
               </div>
             </td>
             <td style="text-align: right;">
-              <div style="font-weight: 700;">R$ ${{tkmReal.toFixed(2).replace('.', ',')}}</div>
+              <div style="font-weight: 700;">R$ ${{Math.round(tkmReal).toLocaleString('pt-BR')}}</div>
               <div style="font-size: 10.5px; color: var(--text-secondary);">
-                ${{tkmAnt > 0 ? 'Base: R$ ' + tkmAnt.toFixed(2).replace('.', ',') : '-'}}
+                ${{tkmAnt > 0 ? 'Base: R$ ' + Math.round(tkmAnt).toLocaleString('pt-BR') : '-'}}
               </div>
             </td>
             <td style="text-align: right; font-weight: 800; color: var(--text-primary); white-space: nowrap;">
-              R$ ${{o.receita.toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }})}}
+              R$ ${{Math.round(o.receita).toLocaleString('pt-BR')}}
             </td>
             <td style="text-align: right; font-weight: 600; color: var(--text-secondary); white-space: nowrap;">
-              R$ ${{recAnt.toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }})}}
+              R$ ${{Math.round(recAnt).toLocaleString('pt-BR')}}
             </td>
             <td style="text-align: right; white-space: nowrap;">
               <span style="display: inline-flex; align-items: center; gap: 3px; font-weight: 800; font-size: 11px; padding: 3px 8px; border-radius: var(--radius-pill); background: ${{isRecPos ? 'var(--badge-green-bg)' : 'var(--badge-red-bg)'}}; color: ${{isRecPos ? 'var(--badge-green-text)' : 'var(--badge-red-text)'}};">
@@ -4448,16 +4448,16 @@ def build():
               </div>
             </td>
             <td style="text-align: right;">
-              <div style="font-weight: 800;">R$ ${{totTkm.toFixed(2).replace('.', ',')}}</div>
+              <div style="font-weight: 800;">R$ ${{Math.round(totTkm).toLocaleString('pt-BR')}}</div>
               <div style="font-size: 11px; color: var(--text-secondary);">
-                ${{totTkmAnt > 0 ? 'Base: R$ ' + totTkmAnt.toFixed(2).replace('.', ',') : '-'}}
+                ${{totTkmAnt > 0 ? 'Base: R$ ' + Math.round(totTkmAnt).toLocaleString('pt-BR') : '-'}}
               </div>
             </td>
             <td style="text-align: right; font-weight: 800; color: var(--fsj-blue); white-space: nowrap;">
-              R$ ${{totRec.toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }})}}
+              R$ ${{Math.round(totRec).toLocaleString('pt-BR')}}
             </td>
             <td style="text-align: right; font-weight: 700; color: var(--text-secondary); white-space: nowrap;">
-              R$ ${{totRecAnt.toLocaleString('pt-BR', {{ minimumFractionDigits: 2, maximumFractionDigits: 2 }})}}
+              R$ ${{Math.round(totRecAnt).toLocaleString('pt-BR')}}
             </td>
             <td style="text-align: right; white-space: nowrap;">
               <span style="display: inline-flex; align-items: center; gap: 3px; font-weight: 800; font-size: 11.5px; padding: 3px 10px; border-radius: var(--radius-pill); background: ${{isTotRecPos ? 'var(--badge-green-bg)' : 'var(--badge-red-bg)'}}; color: ${{isTotRecPos ? 'var(--badge-green-text)' : 'var(--badge-red-text)'}};">
