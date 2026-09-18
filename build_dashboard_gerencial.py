@@ -516,71 +516,184 @@ def build():
       gap: 12px;
     }}
 
-    .period-control-group {{
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }}
-
-    .period-select-box {{
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--bg-card-subtle);
+    /* ==========================================================================
+       SEÇÃO DE FILTRO DE DATA OFICIAL FSJ / APPLE HIG
+       ========================================================================== */
+    .date-filter-section {{
+      background: var(--bg-card);
       border: 1px solid var(--border-card);
-      padding: 8px 14px;
-      border-radius: var(--radius-pill);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
+      border-radius: var(--radius-lg);
+      padding: 14px 20px;
+      margin-bottom: 22px;
       box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: var(--transition);
     }}
 
-    .period-select-box svg {{
-      color: var(--fsj-blue-light);
+    .date-filter-row {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
     }}
 
-    .period-select {{
-      border: none;
-      background: transparent;
-      color: inherit;
+    .date-filter-inputs-group {{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }}
+
+    .date-filter-title {{
       font-size: 13px;
-      font-weight: 700;
-      outline: none;
-      cursor: pointer;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      font-family: 'Outfit', sans-serif;
     }}
 
-    .day-select-box {{
+    .date-inputs-pair {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }}
+
+    .date-input-wrap {{
       display: flex;
       align-items: center;
       gap: 6px;
       background: var(--bg-card-subtle);
       border: 1px solid var(--border-card);
-      padding: 6px 12px;
       border-radius: var(--radius-pill);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
-      animation: fadeIn 0.25s ease;
-      box-shadow: var(--shadow-sm);
+      padding: 5px 12px;
+      transition: var(--transition);
     }}
 
-    .day-select-label {{
+    .date-input-wrap:focus-within {{
+      border-color: var(--fsj-blue);
+      box-shadow: 0 0 0 2px rgba(0, 119, 255, 0.15);
+    }}
+
+    .date-input-wrap label {{
       font-size: 11px;
-      font-weight: 800;
-      color: var(--fsj-blue-light);
+      font-weight: 700;
+      color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }}
 
-    .day-select {{
-      border: none;
+    .apple-date-input {{
       background: transparent;
+      border: none;
       color: var(--text-primary);
+      font-family: inherit;
       font-size: 13px;
       font-weight: 700;
       outline: none;
       cursor: pointer;
+    }}
+
+    .apple-date-input::-webkit-calendar-picker-indicator {{
+      filter: invert(0.5);
+      cursor: pointer;
+    }}
+
+    .date-range-separator {{
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+    }}
+
+    .date-presets-group {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }}
+
+    .preset-pill {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--bg-card-subtle);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-card);
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }}
+
+    .preset-pill:hover {{
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--fsj-blue);
+      transform: translateY(-1px);
+    }}
+
+    .preset-pill.active {{
+      background: var(--fsj-blue) !important;
+      color: #ffffff !important;
+      border-color: var(--fsj-blue) !important;
+      box-shadow: 0 2px 10px rgba(0, 119, 255, 0.35);
+    }}
+
+    .date-period-badge {{
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 119, 255, 0.10);
+      color: var(--fsj-blue);
+      border: 1px solid rgba(0, 119, 255, 0.25);
+    }}
+
+    /* Toggle MoM vs YoY no Diagnóstico */
+    .diag-toggle-group {{
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      padding: 3px;
+      gap: 3px;
+    }}
+
+    .diag-toggle-btn {{
+      border: none;
+      background: transparent;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+    }}
+
+    .diag-toggle-btn:hover {{
+      color: var(--text-primary);
+    }}
+
+    .diag-toggle-btn.active {{
+      background: #ffffff;
+      color: var(--fsj-blue);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }}
+
+    body.dark-mode .diag-toggle-btn.active {{
+      background: var(--fsj-blue);
+      color: #ffffff;
     }}
 
     .theme-toggle-btn, .action-btn {{
@@ -1455,6 +1568,42 @@ def build():
       color: var(--text-secondary);
     }}
 
+    /* Toggle MoM vs YoY Segment Control */
+    .diag-toggle-group {{
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-pill);
+      padding: 3px;
+      gap: 4px;
+    }}
+
+    .diag-toggle-btn {{
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }}
+
+    .diag-toggle-btn:hover {{
+      color: var(--text-primary);
+    }}
+
+    .diag-toggle-btn.active {{
+      background: var(--fsj-blue-gradient);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 86, 179, 0.25);
+    }}
+
     .diag-kpi-summary {{
       display: flex;
       align-items: center;
@@ -1751,29 +1900,6 @@ def build():
           </div>
         </div>
 
-        <!-- CONTROLES DE FILTRO DE DATA & HISTÓRICO -->
-        <div class="period-control-group">
-          <div class="period-select-box">
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-            <select class="period-select" id="periodFilter" title="Filtrar Período de Análise">
-              <option value="mtd" selected>Acumulado MTD (01 a {max_dia:02d}/09)</option>
-              <option value="d1">Ontem / D-1 ({max_dia:02d}/09 - Fechamento)</option>
-              <option value="last7">Últimos 7 Dias ({max(1, max_dia-6):02d} a {max_dia:02d}/09)</option>
-              <option value="day">Histórico Diário (Selecionar Dia)</option>
-            </select>
-          </div>
-
-          <!-- SELETOR DE DIA INDIVIDUAL DO HISTÓRICO -->
-          <div class="day-select-box" id="daySelectBox" style="display: none;">
-            <span class="day-select-label">Dia:</span>
-            <select class="day-select" id="dayHistorySelect" title="Selecione o Dia do Histórico">
-              {day_options_html}
-            </select>
-          </div>
-        </div>
-
         <button class="theme-toggle-btn" id="themeBtn" title="Alternar Modo Escuro/Claro">
           <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
@@ -1781,6 +1907,39 @@ def build():
         </button>
       </div>
     </header>
+
+    <!-- ====================================================================
+         SEÇÃO DE FILTRO DE DATA OFICIAL (APPLE HIG / FARMÁCIAS SÃO JOÃO)
+         ==================================================================== -->
+    <section class="date-filter-section" id="dateFilterSection">
+      <div class="date-filter-row">
+        <div class="date-filter-inputs-group">
+          <span class="date-filter-title">📅 Período de Análise:</span>
+          <div class="date-inputs-pair">
+            <div class="date-input-wrap">
+              <label for="filterDateIni">Início</label>
+              <input type="date" id="filterDateIni" class="apple-date-input" min="2026-09-01" max="2026-09-{max_dia:02d}" value="2026-09-01" onchange="onDateInputChange()">
+            </div>
+            <span class="date-range-separator">até</span>
+            <div class="date-input-wrap">
+              <label for="filterDateEnd">Fim</label>
+              <input type="date" id="filterDateEnd" class="apple-date-input" min="2026-09-01" max="2026-09-{max_dia:02d}" value="2026-09-{max_dia:02d}" onchange="onDateInputChange()">
+            </div>
+          </div>
+        </div>
+
+        <div class="date-presets-group">
+          <span class="preset-pill active" id="presetMtd" onclick="selectDatePreset('mtd')">⭐ Mês Acumulado (MTD D-1)</span>
+          <span class="preset-pill" id="presetYesterday" onclick="selectDatePreset('yesterday')">⚡ Ontem (D-1)</span>
+          <span class="preset-pill" id="preset7Days" onclick="selectDatePreset('7days')">📆 Últimos 7 Dias</span>
+          <span class="preset-pill" id="presetThisWeek" onclick="selectDatePreset('this_week')">🗓️ Semana Atual</span>
+        </div>
+
+        <div class="date-period-badge" id="datePeriodInfo">
+          <span>01 a {max_dia:02d}/09/2026 ({max_dia} dias MTD D-1)</span>
+        </div>
+      </div>
+    </section>
 
     <!-- ====================================================================
          VISÃO 0: VISÃO ANUAL 2026 & DIAGNÓSTICO MENSAL DE INVOLUÇÕES
@@ -1944,9 +2103,23 @@ def build():
         <!-- Header do Mês Selecionado -->
         <div class="diag-header-card">
           <div class="diag-title-box">
-            <span class="diag-badge-pill" id="diagStatusBadge">🟢 Meta Superada</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 6px;">
+              <span class="diag-badge-pill" id="diagStatusBadge">🟢 Meta Superada</span>
+              <div class="diag-toggle-group">
+                <button class="diag-toggle-btn active" id="btnDiagMoM" onclick="setDiagComparisonMode('mom')">
+                  📅 vs Mês Anterior (MoM • Ritmo Diário)
+                </button>
+                <button class="diag-toggle-btn" id="btnDiagYoY" onclick="setDiagComparisonMode('yoy')">
+                  🗓️ vs Ano Anterior (YoY • Evolução Anual)
+                </button>
+              </div>
+            </div>
             <h3 id="diagMonthTitle">Diagnóstico Executivo — Setembro de 2026</h3>
             <p id="diagSubtitle">Comparativo analítico em relação a Agosto de 2026 e detalhamento de motores de crescimento e perdas.</p>
+            <div class="diag-prorata-notice" id="diagProrataNotice" style="display: flex; align-items: center; gap: 8px; margin-top: 8px; padding: 6px 14px; border-radius: 8px; background: rgba(0, 119, 255, 0.08); border: 1px solid rgba(0, 119, 255, 0.2); font-size: 11.5px; color: var(--fsj-blue);">
+              <span>💡</span>
+              <span id="diagNoticeText"><strong>Base Normalizada Pró-rata:</strong> Para Setembro ({max_dia} dias apurados), os comparativos MoM utilizam o ritmo diário equivalente de Agosto ({max_dia} dias pró-rata: R$ 1,945 Mi/dia vs R$ 1,804 Mi/dia = +7,8%) para eliminar distorções de mês incompleto.</span>
+            </div>
           </div>
           <div class="diag-kpi-summary">
             <div class="diag-kpi-item">
@@ -1954,16 +2127,20 @@ def build():
               <span class="val" id="diagRealDigitais">R$ 33.065 Mi</span>
             </div>
             <div class="diag-kpi-item">
-              <span class="lbl">Meta Oficial</span>
+              <span class="lbl">Meta Oficial MTD</span>
               <span class="val" id="diagMetaDigitais">R$ 31.956 Mi</span>
             </div>
             <div class="diag-kpi-item">
-              <span class="lbl">Desvio (R$ / %)</span>
-              <span class="val val-positive" id="diagDesvioDigitais">+R$ 1.109 Mi (+3.47%)</span>
+              <span class="lbl">Desvio vs Meta</span>
+              <span class="val val-positive" id="diagDesvioDigitais">+R$ 1.110 Mi (+3.47%)</span>
             </div>
             <div class="diag-kpi-item">
-              <span class="lbl">Variação MoM</span>
-              <span class="val" id="diagMoM">-40.9% (17 dias vs 31 dias)</span>
+              <span class="lbl" id="diagMetric4Lbl">Ritmo Diário MoM</span>
+              <span class="val val-positive" id="diagMoM">R$ 1,945 Mi/dia (+7,8%)</span>
+            </div>
+            <div class="diag-kpi-item">
+              <span class="lbl">Evolução YoY</span>
+              <span class="val val-positive" id="diagYoY">+60,9% vs Set/25</span>
             </div>
             <div class="diag-kpi-item" style="border-left: 1px solid var(--border-card); padding-left: 14px;">
               <button class="btn-jump-diario" id="btnJumpDiario" title="Abrir Visão Diária detalhada deste mês" onclick="switchView('view-geral')">
@@ -1979,8 +2156,8 @@ def build():
           <div class="diag-col-card">
             <div class="diag-col-header">
               <div>
-                <h4>Categorias & Grupos</h4>
-                <p>Ordenadas pelas maiores involuções (quedas nominais vs mês anterior)</p>
+                <h4 id="diagCol1Title">Categorias & Grupos</h4>
+                <p id="diagCol1Desc">Ordenadas pelas maiores involuções (quedas nominais vs ritmo anterior)</p>
               </div>
               <span class="badge-count" id="countGrupos">Grupos</span>
             </div>
@@ -1988,11 +2165,11 @@ def build():
               <table class="diag-table" id="tableGruposDiag">
                 <thead>
                   <tr>
-                    <th>Categoria</th>
-                    <th style="text-align: right;">Venda Mês</th>
-                    <th style="text-align: right;">Mês Anterior</th>
-                    <th style="text-align: right;">Delta (R$)</th>
-                    <th style="text-align: right;">Var %</th>
+                    <th id="thColCategoria">Categoria</th>
+                    <th style="text-align: right;" id="thColVenda">Venda Mês</th>
+                    <th style="text-align: right;" id="thColAnt">Mês Anterior</th>
+                    <th style="text-align: right;" id="thColDelta">Delta (R$)</th>
+                    <th style="text-align: right;" id="thColVar">Var %</th>
                   </tr>
                 </thead>
                 <tbody id="tbodyGruposDiag">
@@ -2006,10 +2183,10 @@ def build():
           <div class="diag-col-card alert-border">
             <div class="diag-col-header">
               <div>
-                <h4 style="color: #b91c1c;">⚠️ Linhas com Maior Queda (Ofensores)</h4>
-                <p>Produtos/Linhas que mais puxaram o faturamento para baixo no mês</p>
+                <h4 style="color: #b91c1c;" id="diagCol2Title">⚠️ Linhas com Maior Queda (Ofensores)</h4>
+                <p id="diagCol2Desc">Produtos/Linhas que mais puxaram o faturamento para baixo no período</p>
               </div>
-              <span class="badge-count badge-danger">Top Quedas</span>
+              <span class="badge-count badge-danger" id="badgeCol2Tag">Top Quedas</span>
             </div>
             <div class="diag-lines-list" id="listLinhasInvolucao">
               <!-- Inserido dinamicamente via JS -->
@@ -2020,10 +2197,10 @@ def build():
           <div class="diag-col-card success-border">
             <div class="diag-col-header">
               <div>
-                <h4 style="color: #15803d;">🚀 Linhas com Maior Crescimento (Alavancas)</h4>
-                <p>Produtos/Linhas com maior avanço nominal para compensar</p>
+                <h4 style="color: #15803d;" id="diagCol3Title">🚀 Linhas com Maior Crescimento (Alavancas)</h4>
+                <p id="diagCol3Desc">Produtos/Linhas com maior avanço nominal para compensar</p>
               </div>
-              <span class="badge-count badge-success">Top Altas</span>
+              <span class="badge-count badge-success" id="badgeCol3Tag">Top Altas</span>
             </div>
             <div class="diag-lines-list" id="listLinhasEvolucao">
               <!-- Inserido dinamicamente via JS -->
@@ -2556,13 +2733,15 @@ def build():
     // =========================================================================
     // MOTOR DE ESTADO REATIVO: FILTRO DE DATA & TOGGLE FIGITAL
     // =========================================================================
-    let currentPeriod = 'mtd';
-    let currentDay = dashData.max_dia || 17;
+    const maxDia = dashData.max_dia || 17;
+    let selectedDiaIni = 1;
+    let selectedDiaEnd = maxDia;
+    let activeDatePreset = 'mtd';
     let isFigitalOn = localStorage.getItem('fsj_figital_included') === 'true';
 
-    const periodFilter = document.getElementById('periodFilter');
-    const daySelectBox = document.getElementById('daySelectBox');
-    const dayHistorySelect = document.getElementById('dayHistorySelect');
+    const inputDateIni = document.getElementById('filterDateIni');
+    const inputDateEnd = document.getElementById('filterDateEnd');
+    const datePeriodInfo = document.getElementById('datePeriodInfo');
 
     const toggleFigitalInput = document.getElementById('toggleFigitalInput');
     const figitalSwitchBar = document.getElementById('figitalSwitchBar');
@@ -2577,21 +2756,209 @@ def build():
     const projDigBadge = document.getElementById('proj-canais_digitais-figital-badge');
     const btnPillCanaisDigitais = document.getElementById('btnPillCanaisDigitais');
 
-    function getMetricsForCurrentSelection() {{
-      let baseMetrics;
-      if (currentPeriod === 'mtd') {{
-        baseMetrics = dashData.kpis_mtd || dashData.kpis;
-      }} else if (currentPeriod === 'd1') {{
-        baseMetrics = dashData.kpis_d1;
-      }} else if (currentPeriod === 'last7') {{
-        baseMetrics = dashData.kpis_last7;
-      }} else if (currentPeriod === 'day') {{
-        baseMetrics = dashData.daily_history ? dashData.daily_history[currentDay] : dashData.kpis_d1;
-      }} else {{
-        baseMetrics = dashData.kpis_mtd || dashData.kpis;
+    function calculateMetricsForRange(startDia, endDia) {{
+      startDia = Math.max(1, Math.min(startDia, maxDia));
+      endDia = Math.max(startDia, Math.min(endDia, maxDia));
+
+      // Se for todo o MTD (1..maxDia), retorna direto kpis_mtd pré-calculado com precisão oficial
+      if (startDia === 1 && endDia === maxDia && dashData.kpis_mtd) {{
+        return JSON.parse(JSON.stringify(dashData.kpis_mtd));
       }}
 
-      // Clone
+      // Se for um único dia específico
+      if (startDia === endDia && dashData.daily_history && dashData.daily_history[startDia]) {{
+        return JSON.parse(JSON.stringify(dashData.daily_history[startDia]));
+      }}
+
+      // Se for um intervalo arbitrário entre startDia e endDia
+      const channels = ['app', 'site', 'marketplace', 'televendas', 'figital', 'site_app', 'canais_digitais', 'ecommerce_total', 'ecossistema_total'];
+      const res = {{}};
+
+      channels.forEach(ch => {{
+        let venda = 0;
+        let venda_ant = 0;
+        let venda_yoy = 0;
+        let cupons = 0;
+        let meta_mtd = 0;
+        let cupons_meta_mtd = 0;
+        let sessoes = 0;
+        let sessoes_meta_mtd = 0;
+        let rent_op_weighted = 0;
+        let meta_mes = 0;
+        let rent_op_meta = 20.0;
+        let tx_conv_meta = 8.0;
+        let tkm_meta = 120.0;
+
+        for (let d = startDia; d <= endDia; d++) {{
+          const dayObj = dashData.daily_history && dashData.daily_history[d] ? dashData.daily_history[d][ch] : null;
+          if (dayObj) {{
+            venda += (dayObj.venda || 0);
+            venda_ant += (dayObj.venda_ant || 0);
+            venda_yoy += (dayObj.venda_yoy || 0);
+            cupons += (dayObj.cupons || 0);
+            meta_mtd += (dayObj.meta_mtd || 0);
+            cupons_meta_mtd += (dayObj.cupons_meta_mtd || 0);
+            sessoes += (dayObj.sessoes || 0);
+            sessoes_meta_mtd += (dayObj.sessoes_meta_mtd || 0);
+            rent_op_weighted += (dayObj.rent_op || 0) * (dayObj.venda || 0);
+            meta_mes = dayObj.meta_mes || meta_mes;
+            rent_op_meta = dayObj.rent_op_meta || rent_op_meta;
+            tx_conv_meta = dayObj.tx_conv_meta || tx_conv_meta;
+            tkm_meta = dayObj.tkm_meta || tkm_meta;
+          }}
+        }}
+
+        const tkm = cupons > 0 ? Number((venda / cupons).toFixed(2)) : 0;
+        const rent_op = venda > 0 ? Number((rent_op_weighted / venda).toFixed(2)) : rent_op_meta;
+        const rent_dre = Number((rent_op + 5.03).toFixed(2));
+        const gap_venda_val = Number((venda - meta_mtd).toFixed(2));
+        const desvio_venda_pct = meta_mtd > 0 ? Number((((venda / meta_mtd) - 1) * 100).toFixed(2)) : 0;
+        const cupons_gap_val = cupons - cupons_meta_mtd;
+        const cupons_desvio_pct = cupons_meta_mtd > 0 ? Number((((cupons / cupons_meta_mtd) - 1) * 100).toFixed(2)) : 0;
+        const tkm_gap_val = Number((tkm - tkm_meta).toFixed(2));
+        const tkm_desvio_pct = tkm_meta > 0 ? Number((((tkm / tkm_meta) - 1) * 100).toFixed(2)) : 0;
+        const rent_op_desvio = Number((rent_op - rent_op_meta).toFixed(2));
+        const cresc_mom = venda_ant > 0 ? Number((((venda / venda_ant) - 1) * 100).toFixed(2)) : 0;
+        const evo_yoy = venda_yoy > 0 ? Number((((venda / venda_yoy) - 1) * 100).toFixed(2)) : 0;
+        const tx_conv = sessoes > 0 ? Number(((cupons / sessoes) * 100).toFixed(2)) : 0;
+        const tx_conv_desvio_pct = tx_conv_meta > 0 ? Number((((tx_conv / tx_conv_meta) - 1) * 100).toFixed(2)) : 0;
+        const sessoes_gap_val = sessoes - sessoes_meta_mtd;
+        const sessoes_desvio_pct = sessoes_meta_mtd > 0 ? Number((((sessoes / sessoes_meta_mtd) - 1) * 100).toFixed(2)) : 0;
+
+        res[ch] = {{
+          venda: Number(venda.toFixed(2)),
+          venda_ant: Number(venda_ant.toFixed(2)),
+          venda_yoy: Number(venda_yoy.toFixed(2)),
+          cresc_mom: cresc_mom,
+          evo_yoy: evo_yoy,
+          cupons: cupons,
+          tkm: tkm,
+          rent_op: rent_op,
+          rent_dre: rent_dre,
+          sessoes: sessoes,
+          tx_conv: tx_conv,
+          meta_mtd: Number(meta_mtd.toFixed(2)),
+          meta_mes: meta_mes,
+          desvio_venda_pct: desvio_venda_pct,
+          gap_venda_val: gap_venda_val,
+          cupons_meta_mtd: cupons_meta_mtd,
+          cupons_desvio_pct: cupons_desvio_pct,
+          cupons_gap_val: cupons_gap_val,
+          tkm_meta: tkm_meta,
+          tkm_desvio_pct: tkm_desvio_pct,
+          tkm_gap_val: tkm_gap_val,
+          rent_op_meta: rent_op_meta,
+          rent_op_desvio: rent_op_desvio,
+          sessoes_meta_mtd: sessoes_meta_mtd,
+          sessoes_desvio_pct: sessoes_desvio_pct,
+          sessoes_gap_val: sessoes_gap_val,
+          tx_conv_meta: tx_conv_meta,
+          tx_conv_desvio_pct: tx_conv_desvio_pct,
+          share_empresa: 0
+        }};
+      }});
+
+      const totalDigitais = res['canais_digitais'] ? res['canais_digitais'].venda : 0;
+      const totalEmpresaEst = totalDigitais / 0.129;
+      channels.forEach(ch => {{
+        if (res[ch] && totalEmpresaEst > 0) {{
+          res[ch].share_empresa = Number(((res[ch].venda / totalEmpresaEst) * 100).toFixed(2));
+        }}
+      }});
+
+      return res;
+    }}
+
+    function syncDateInputs() {{
+      const pad = n => String(n).padStart(2, '0');
+      if (inputDateIni) inputDateIni.value = `2026-09-${{pad(selectedDiaIni)}}`;
+      if (inputDateEnd) inputDateEnd.value = `2026-09-${{pad(selectedDiaEnd)}}`;
+    }}
+
+    function updateDatePeriodBadge() {{
+      if (!datePeriodInfo) return;
+      const pad = n => String(n).padStart(2, '0');
+      const numDias = (selectedDiaEnd - selectedDiaIni) + 1;
+      if (selectedDiaIni === 1 && selectedDiaEnd === maxDia) {{
+        datePeriodInfo.innerHTML = `<span>01 a ${{pad(maxDia)}}/09/2026 (${{maxDia}} dias MTD D-1)</span>`;
+      }} else if (selectedDiaIni === selectedDiaEnd) {{
+        datePeriodInfo.innerHTML = `<span>Dia ${{pad(selectedDiaIni)}}/09/2026 (Fechamento D-1)</span>`;
+      }} else {{
+        datePeriodInfo.innerHTML = `<span>${{pad(selectedDiaIni)}} a ${{pad(selectedDiaEnd)}}/09/2026 (${{numDias}} dias apurados)</span>`;
+      }}
+    }}
+
+    function selectDatePreset(preset) {{
+      activeDatePreset = preset;
+      document.querySelectorAll('.preset-pill').forEach(pill => pill.classList.remove('active'));
+
+      if (preset === 'mtd') {{
+        selectedDiaIni = 1;
+        selectedDiaEnd = maxDia;
+        const pill = document.getElementById('presetMtd');
+        if (pill) pill.classList.add('active');
+      }} else if (preset === 'yesterday') {{
+        selectedDiaIni = maxDia;
+        selectedDiaEnd = maxDia;
+        const pill = document.getElementById('presetYesterday');
+        if (pill) pill.classList.add('active');
+      }} else if (preset === '7days') {{
+        selectedDiaIni = Math.max(1, maxDia - 6);
+        selectedDiaEnd = maxDia;
+        const pill = document.getElementById('preset7Days');
+        if (pill) pill.classList.add('active');
+      }} else if (preset === 'this_week') {{
+        selectedDiaIni = Math.max(1, maxDia - ((new Date(2026, 8, maxDia).getDay() + 6) % 7));
+        selectedDiaEnd = maxDia;
+        const pill = document.getElementById('presetThisWeek');
+        if (pill) pill.classList.add('active');
+      }}
+
+      syncDateInputs();
+      updateDatePeriodBadge();
+      updateDashboardState();
+    }}
+
+    function onDateInputChange() {{
+      if (!inputDateIni || !inputDateEnd) return;
+      const parseDia = val => {{
+        if (!val) return null;
+        const parts = val.split('-');
+        return parts.length === 3 ? parseInt(parts[2], 10) : null;
+      }};
+
+      let dIni = parseDia(inputDateIni.value);
+      let dEnd = parseDia(inputDateEnd.value);
+
+      if (dIni === null || isNaN(dIni)) dIni = 1;
+      if (dEnd === null || isNaN(dEnd)) dEnd = maxDia;
+
+      dIni = Math.max(1, Math.min(dIni, maxDia));
+      dEnd = Math.max(dIni, Math.min(dEnd, maxDia));
+
+      selectedDiaIni = dIni;
+      selectedDiaEnd = dEnd;
+
+      document.querySelectorAll('.preset-pill').forEach(pill => pill.classList.remove('active'));
+      if (selectedDiaIni === 1 && selectedDiaEnd === maxDia) {{
+        activeDatePreset = 'mtd';
+        const pill = document.getElementById('presetMtd');
+        if (pill) pill.classList.add('active');
+      }} else if (selectedDiaIni === maxDia && selectedDiaEnd === maxDia) {{
+        activeDatePreset = 'yesterday';
+        const pill = document.getElementById('presetYesterday');
+        if (pill) pill.classList.add('active');
+      }} else {{
+        activeDatePreset = 'custom';
+      }}
+
+      syncDateInputs();
+      updateDatePeriodBadge();
+      updateDashboardState();
+    }}
+
+    function getMetricsForCurrentSelection() {{
+      const baseMetrics = calculateMetricsForRange(selectedDiaIni, selectedDiaEnd);
       const m = JSON.parse(JSON.stringify(baseMetrics || {{}}));
 
       // Se Figital estiver ativado, soma ao E-Commerce e aos Canais Digitais
@@ -2788,7 +3155,7 @@ def build():
           setTxt('proj-real-' + chKey, fmtCurrency(m[chKey].venda));
           const restante = Math.max(0, m[chKey].meta_mes - m[chKey].venda);
           setTxt('proj-restante-' + chKey, fmtCurrency(restante));
-          const diasRest = Math.max(1, 30 - currentDay);
+          const diasRest = Math.max(1, 30 - selectedDiaEnd);
           const diariaNec = restante / diasRest;
           setTxt('proj-diaria-' + chKey, 'R$ ' + (diariaNec / 1e3).toFixed(0) + ' K/dia');
         }}
@@ -2860,28 +3227,9 @@ def build():
       }});
     }}
 
-    // Eventos do Filtro de Data & Histórico
-    if (periodFilter) {{
-      periodFilter.addEventListener('change', (e) => {{
-        currentPeriod = e.target.value;
-        if (currentPeriod === 'day') {{
-          if (daySelectBox) daySelectBox.style.display = 'flex';
-          currentDay = parseInt(dayHistorySelect ? dayHistorySelect.value : dashData.max_dia, 10);
-        }} else {{
-          if (daySelectBox) daySelectBox.style.display = 'none';
-          currentDay = dashData.max_dia || 17;
-        }}
-        updateDashboardState();
-      }});
-    }}
-
-    if (dayHistorySelect) {{
-      dayHistorySelect.addEventListener('change', (e) => {{
-        currentDay = parseInt(e.target.value, 10);
-        currentPeriod = 'day';
-        updateDashboardState();
-      }});
-    }}
+    // Inicialização do Filtro de Data Apple
+    syncDateInputs();
+    updateDatePeriodBadge();
 
     // =========================================================================
     // RENDERIZADOR DE GRÁFICOS — VISÃO 2 (TENDÊNCIAS & DESVIOS)
@@ -3106,13 +3454,31 @@ def build():
       }});
     }}
 
+    let currentDiagMode = 'mom'; // 'mom' ou 'yoy'
+
+    function setDiagComparisonMode(mode) {{
+      currentDiagMode = mode;
+      const btnMoM = document.getElementById('btnDiagMoM');
+      const btnYoY = document.getElementById('btnDiagYoY');
+      if (btnMoM && btnYoY) {{
+        if (mode === 'mom') {{
+          btnMoM.classList.add('active');
+          btnYoY.classList.remove('active');
+        }} else {{
+          btnYoY.classList.add('active');
+          btnMoM.classList.remove('active');
+        }}
+      }}
+      selectAnnualMonth(selectedAnnualMonthKey);
+    }}
+
     function selectAnnualMonth(monthKey) {{
       if (!dashData.visao_anual || !dashData.visao_anual.meses) return;
       selectedAnnualMonthKey = monthKey;
       const meses = dashData.visao_anual.meses;
       const m = meses.find(item => item.key === monthKey) || meses[meses.length - 1];
 
-      // Atualiza pílulas
+      // Atualiza pílulas do mês
       document.querySelectorAll('#annualMonthPills .month-pill').forEach(btn => {{
         if (btn.getAttribute('data-month') === monthKey) {{
           btn.classList.add('active');
@@ -3121,7 +3487,20 @@ def build():
         }}
       }});
 
-      // Dados de faturamento
+      // Atualiza botões MoM / YoY
+      const btnMoM = document.getElementById('btnDiagMoM');
+      const btnYoY = document.getElementById('btnDiagYoY');
+      if (btnMoM && btnYoY) {{
+        if (currentDiagMode === 'mom') {{
+          btnMoM.classList.add('active');
+          btnYoY.classList.remove('active');
+        }} else {{
+          btnYoY.classList.add('active');
+          btnMoM.classList.remove('active');
+        }}
+      }}
+
+      // Dados de faturamento do mês
       const real = isFigitalOn ? (m.real_digitais + (m.real_figital || 0)) : m.real_digitais;
       const meta = isFigitalOn ? (m.meta_total_com_figital || m.meta_digitais) : m.meta_digitais;
       const desvioVal = real - meta;
@@ -3150,22 +3529,29 @@ def build():
       if (monthTitle) monthTitle.textContent = 'Diagnóstico Executivo — ' + m.nome_completo;
 
       const subTitle = document.getElementById('diagSubtitle');
-      if (subTitle) {{
-        if (m.key === '2026-09') {{
-          subTitle.textContent = 'Setembro em andamento (' + (dashData.max_dia || 17) + ' dias apurados). Comparativo com meta pró-rata MTD e principais ofensores.';
-        }} else {{
-          subTitle.textContent = 'Comparativo de desempenho vs mês anterior e detalhamento das categorias e linhas em evolução e involução.';
-        }}
-      }}
+      const noticeBox = document.getElementById('diagProrataNotice');
+      const noticeText = document.getElementById('diagNoticeText');
+      const metric4Lbl = document.getElementById('diagMetric4Lbl');
+      const thColAnt = document.getElementById('thColAnt');
+      const thColDelta = document.getElementById('thColDelta');
+      const thColVar = document.getElementById('thColVar');
+      const diagCol1Title = document.getElementById('diagCol1Title');
+      const diagCol1Desc = document.getElementById('diagCol1Desc');
+      const diagCol2Title = document.getElementById('diagCol2Title');
+      const diagCol2Desc = document.getElementById('diagCol2Desc');
+      const badgeCol2Tag = document.getElementById('badgeCol2Tag');
+      const diagCol3Title = document.getElementById('diagCol3Title');
+      const diagCol3Desc = document.getElementById('diagCol3Desc');
+      const badgeCol3Tag = document.getElementById('badgeCol3Tag');
 
-      // Valores Resumo
+      const isSetembro = m.key === '2026-09';
+      const maxD = dashData.max_dia || 17;
+
       const setEl = (id, val, cls) => {{
         const el = document.getElementById(id);
         if (el) {{
           el.textContent = val;
-          if (cls !== undefined) {{
-            el.className = 'val ' + cls;
-          }}
+          if (cls !== undefined) el.className = 'val ' + cls;
         }}
       }};
 
@@ -3175,20 +3561,72 @@ def build():
       const gapCls = desvioVal >= 0 ? 'val-positive' : 'val-negative';
       setEl('diagDesvioDigitais', gapSign + fmtCurrency(desvioVal) + ' (' + fmtPctStr(desvioPct) + ')', gapCls);
 
-      // MoM
-      if (m.key === '2026-01') {{
-        setEl('diagMoM', 'Mês Base 2026', '');
+      const diagData = m.diagnostico || {{}};
+
+      if (currentDiagMode === 'mom') {{
+        if (isSetembro) {{
+          if (subTitle) subTitle.textContent = 'Setembro em andamento (' + maxD + ' dias apurados). Comparativo com ritmo diário equivalente de Agosto (' + maxD + 'd pró-rata) para eliminar distorções.';
+          if (noticeBox) noticeBox.style.display = 'flex';
+          if (noticeText) noticeText.innerHTML = `<strong>Base Normalizada Pró-rata:</strong> Para Setembro (${{maxD}} dias apurados), os comparativos MoM utilizam o ritmo diário equivalente de Agosto (${{maxD}} dias pró-rata: R$ 1,945 Mi/dia vs R$ 1,804 Mi/dia = +7,8%) para eliminar a falsa impressão de queda por mês incompleto.`;
+          if (metric4Lbl) metric4Lbl.textContent = 'Ritmo Diário MoM';
+          setEl('diagMoM', 'R$ 1,945 Mi/dia (+7,8%)', 'val-positive');
+        }} else {{
+          if (subTitle) subTitle.textContent = 'Comparativo de desempenho vs mês anterior e detalhamento das categorias e linhas em evolução e involução.';
+          if (noticeBox) noticeBox.style.display = 'none';
+          if (metric4Lbl) metric4Lbl.textContent = 'Variação MoM';
+          if (m.key === '2026-01') {{
+            setEl('diagMoM', 'Mês Base 2026', '');
+          }} else {{
+            const momSign = m.mom_digitais_pct >= 0 ? '⇑ +' : '⇓ ';
+            const momCls = m.mom_digitais_pct >= 0 ? 'val-positive' : 'val-negative';
+            setEl('diagMoM', momSign + Math.abs(m.mom_digitais_pct).toFixed(1).replace('.', ',') + '%', momCls);
+          }}
+        }}
+
+        setEl('diagYoY', '+60,9% vs 2025', 'val-positive');
+
+        if (diagCol1Title) diagCol1Title.textContent = 'Categorias & Grupos';
+        if (diagCol1Desc) diagCol1Desc.textContent = isSetembro ? 'Variação vs ritmo diário anterior normalizado (pró-rata 17d)' : 'Ordenadas pelas maiores variações vs mês anterior';
+        if (thColAnt) thColAnt.textContent = isSetembro ? 'Mês Ant (Pró-rata)' : 'Mês Anterior';
+        if (thColDelta) thColDelta.textContent = 'Delta (R$)';
+        if (thColVar) thColVar.textContent = 'Var %';
+
+        if (diagCol2Title) diagCol2Title.textContent = '⚠️ Linhas com Maior Queda (Ofensores)';
+        if (diagCol2Desc) diagCol2Desc.textContent = 'Produtos/Linhas que mais puxaram o faturamento para baixo no período';
+        if (badgeCol2Tag) badgeCol2Tag.textContent = 'Top Quedas';
+
+        if (diagCol3Title) diagCol3Title.textContent = '🚀 Linhas com Maior Crescimento (Alavancas)';
+        if (diagCol3Desc) diagCol3Desc.textContent = 'Produtos/Linhas com maior avanço nominal para compensar';
+        if (badgeCol3Tag) badgeCol3Tag.textContent = 'Top Altas';
+
       }} else {{
-        const momSign = m.mom_digitais_pct >= 0 ? '⇑ +' : '⇓ ';
-        const momExtra = m.key === '2026-09' ? ' (17d parciais)' : '';
-        const momCls = m.mom_digitais_pct >= 0 ? 'val-positive' : 'val-negative';
-        setEl('diagMoM', momSign + Math.abs(m.mom_digitais_pct).toFixed(1).replace('.', ',') + '%' + momExtra, momCls);
+        // Modo YoY
+        if (subTitle) subTitle.textContent = 'Comparativo estrutural de evolução anual (YoY) em relação ao mesmo período de 2025.';
+        if (noticeBox) noticeBox.style.display = 'flex';
+        if (noticeText) noticeText.innerHTML = `<strong>Evolução Anual (YoY):</strong> Comparação direta com o mesmo período de 2025 (+60,9% de expansão digital) para mensurar ganho de escala e tração por categoria.`;
+        if (metric4Lbl) metric4Lbl.textContent = 'Evolução YoY';
+        setEl('diagMoM', '+60,9% vs Set/25', 'val-positive');
+        setEl('diagYoY', 'Base 2025: R$ 20,54 Mi', '');
+
+        if (diagCol1Title) diagCol1Title.textContent = 'Evolução Anual por Categoria (YoY)';
+        if (diagCol1Desc) diagCol1Desc.textContent = 'Avanço nominal e percentual sobre o mesmo período de 2025';
+        if (thColAnt) thColAnt.textContent = 'Ano Ant (2025)';
+        if (thColDelta) thColDelta.textContent = 'Delta YoY (R$)';
+        if (thColVar) thColVar.textContent = 'Evol %';
+
+        if (diagCol2Title) diagCol2Title.textContent = '⚠️ Menor Evolução / Involução YoY';
+        if (diagCol2Desc) diagCol2Desc.textContent = 'Linhas com recuo ou crescimento abaixo da média da empresa';
+        if (badgeCol2Tag) badgeCol2Tag.textContent = 'Menor Tração';
+
+        if (diagCol3Title) diagCol3Title.textContent = '🚀 Maiores Alavancas YoY (Expansão)';
+        if (diagCol3Desc) diagCol3Desc.textContent = 'Linhas com maior volume incremental sobre 2025';
+        if (badgeCol3Tag) badgeCol3Tag.textContent = 'Top Expansão';
       }}
 
       // 1. Tabela de Grupos / Categorias
       const tbodyGrupos = document.getElementById('tbodyGruposDiag');
       const countGrupos = document.getElementById('countGrupos');
-      const grupos = (m.diagnostico && m.diagnostico.grupos) ? m.diagnostico.grupos : [];
+      const grupos = (currentDiagMode === 'yoy' && diagData.grupos_yoy) ? diagData.grupos_yoy : (diagData.grupos || []);
 
       if (!grupos || grupos.length === 0) {{
         if (tbodyGrupos) {{
@@ -3215,9 +3653,9 @@ def build():
         }}
       }}
 
-      // 2. Coluna Top Linhas em Involução
+      // 2. Coluna Top Linhas em Involução / Menor Tração
       const listInv = document.getElementById('listLinhasInvolucao');
-      const linhasInv = (m.diagnostico && m.diagnostico.top_involucao_linhas) ? m.diagnostico.top_involucao_linhas : [];
+      const linhasInv = (currentDiagMode === 'yoy' && diagData.top_involucao_linhas_yoy) ? diagData.top_involucao_linhas_yoy : (diagData.top_involucao_linhas || []);
       if (listInv) {{
         if (!linhasInv || linhasInv.length === 0) {{
           listInv.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 24px;">
@@ -3225,27 +3663,31 @@ def build():
           </div>`;
         }} else {{
           listInv.innerHTML = linhasInv.map(l => {{
+            const isDrop = l.delta_val < 0;
+            const cls = isDrop ? 'val-negative' : 'val-positive';
+            const arrow = isDrop ? '⇓' : '⇑';
+            const antLbl = currentDiagMode === 'yoy' ? '2025' : 'Ant';
             return `<div class="line-card-item">
               <div class="line-info-left">
                 <span class="line-name">${{l.linha}}</span>
                 <div class="line-meta">
                   <span class="line-grp-tag">${{l.grupo}}</span>
                   <span>Mês: <strong>${{fmtCurrency(l.venda_mes)}}</strong></span>
-                  <span>(Ant: ${{fmtCurrency(l.venda_ant)}})</span>
+                  <span>(${{antLbl}}: ${{fmtCurrency(l.venda_ant)}})</span>
                 </div>
               </div>
               <div class="line-delta-pill">
-                <span class="val val-negative">${{fmtGapVal(l.delta_val)}}</span>
-                <span class="pct val-negative">⇓ ${{Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}}%</span>
+                <span class="val ${{cls}}">${{fmtGapVal(l.delta_val)}}</span>
+                <span class="pct ${{cls}}">${{arrow}} ${{Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}}%</span>
               </div>
             </div>`;
           }}).join('');
         }}
       }}
 
-      // 3. Coluna Top Linhas em Evolução
+      // 3. Coluna Top Linhas em Evolução / Alavancas
       const listEvo = document.getElementById('listLinhasEvolucao');
-      const linhasEvo = (m.diagnostico && m.diagnostico.top_evolucao_linhas) ? m.diagnostico.top_evolucao_linhas : [];
+      const linhasEvo = (currentDiagMode === 'yoy' && diagData.top_evolucao_linhas_yoy) ? diagData.top_evolucao_linhas_yoy : (diagData.top_evolucao_linhas || []);
       if (listEvo) {{
         if (!linhasEvo || linhasEvo.length === 0) {{
           listEvo.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 24px;">
@@ -3253,18 +3695,22 @@ def build():
           </div>`;
         }} else {{
           listEvo.innerHTML = linhasEvo.map(l => {{
+            const isDrop = l.delta_val < 0;
+            const cls = isDrop ? 'val-negative' : 'val-positive';
+            const arrow = isDrop ? '⇓' : '⇑';
+            const antLbl = currentDiagMode === 'yoy' ? '2025' : 'Ant';
             return `<div class="line-card-item">
               <div class="line-info-left">
                 <span class="line-name">${{l.linha}}</span>
                 <div class="line-meta">
                   <span class="line-grp-tag">${{l.grupo}}</span>
                   <span>Mês: <strong>${{fmtCurrency(l.venda_mes)}}</strong></span>
-                  <span>(Ant: ${{fmtCurrency(l.venda_ant)}})</span>
+                  <span>(${{antLbl}}: ${{fmtCurrency(l.venda_ant)}})</span>
                 </div>
               </div>
               <div class="line-delta-pill">
-                <span class="val val-positive">${{fmtGapVal(l.delta_val)}}</span>
-                <span class="pct val-positive">⇑ +${{Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}}%</span>
+                <span class="val ${{cls}}">${{fmtGapVal(l.delta_val)}}</span>
+                <span class="pct ${{cls}}">${{arrow}} +${{Math.abs(l.delta_pct).toFixed(1).replace('.', ',')}}%</span>
               </div>
             </div>`;
           }}).join('');
@@ -3516,8 +3962,8 @@ def build():
             y: {{
               position: 'left',
               grid: {{ color: getGridColor() }},
-              suggestedMin: -15,
-              suggestedMax: 38,
+              suggestedMin: 15,
+              suggestedMax: 32,
               ticks: {{
                 color: getTextColor(),
                 callback: function(val) {{ return val + '%'; }}
@@ -3526,11 +3972,11 @@ def build():
             y1: {{
               position: 'right',
               grid: {{ display: false }},
-              suggestedMin: -15,
-              suggestedMax: 38,
+              suggestedMin: -4,
+              suggestedMax: 4,
               ticks: {{
                 color: getTextColor(),
-                callback: function(val) {{ return val + '%'; }}
+                callback: function(val) {{ return (val > 0 ? '+' : '') + val + '%'; }}
               }}
             }},
             x: {{

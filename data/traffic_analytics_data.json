@@ -1,306 +1,268 @@
 {
-  "atualizacao": "2026-09-18 13:36:15",
-  "fonte_oficial": "Google Analytics 4 API (Propriedade 340874176 - Conta de Serviço Oficial)",
-  "is_live_ga4": true,
-  "property_id": "340874176",
+  "atualizacao": "2026-09-18 11:34:19",
   "max_dia": 17,
-  "total_sessoes": 2556723,
   "app_daily": [
     {
       "dia": 1,
-      "sessoes": 65973,
-      "tx_conv": 0.0838,
-      "pedidos": 5527,
-      "receita_ga": 855872.08
+      "sessoes": 68127,
+      "tx_conv": 0.096,
+      "pedidos": 6540
     },
     {
       "dia": 2,
-      "sessoes": 63806,
-      "tx_conv": 0.0919,
-      "pedidos": 5865,
-      "receita_ga": 835961.26
+      "sessoes": 64967,
+      "tx_conv": 0.107,
+      "pedidos": 6951
     },
     {
       "dia": 3,
-      "sessoes": 66899,
-      "tx_conv": 0.0947,
-      "pedidos": 6336,
-      "receita_ga": 941173.12
+      "sessoes": 66880,
+      "tx_conv": 0.113,
+      "pedidos": 7557
     },
     {
       "dia": 4,
-      "sessoes": 71586,
-      "tx_conv": 0.1076,
-      "pedidos": 7704,
-      "receita_ga": 1103953.83
+      "sessoes": 71670,
+      "tx_conv": 0.121,
+      "pedidos": 8672
     },
     {
       "dia": 5,
-      "sessoes": 63355,
-      "tx_conv": 0.1086,
-      "pedidos": 6879,
-      "receita_ga": 882255.65
+      "sessoes": 63455,
+      "tx_conv": 0.126,
+      "pedidos": 7995
     },
     {
       "dia": 6,
-      "sessoes": 54648,
-      "tx_conv": 0.088,
-      "pedidos": 4810,
-      "receita_ga": 518747.84
+      "sessoes": 55192,
+      "tx_conv": 0.1,
+      "pedidos": 5519
     },
     {
       "dia": 7,
-      "sessoes": 58778,
-      "tx_conv": 0.0919,
-      "pedidos": 5401,
-      "receita_ga": 669647.26
+      "sessoes": 57817,
+      "tx_conv": 0.107,
+      "pedidos": 6186
     },
     {
       "dia": 8,
-      "sessoes": 64063,
-      "tx_conv": 0.0941,
-      "pedidos": 6030,
-      "receita_ga": 882210.48
+      "sessoes": 65503,
+      "tx_conv": 0.11,
+      "pedidos": 7205
     },
     {
       "dia": 9,
-      "sessoes": 90270,
-      "tx_conv": 0.1346,
-      "pedidos": 12150,
-      "receita_ga": 1617163.06
+      "sessoes": 89767,
+      "tx_conv": 0.155,
+      "pedidos": 13913
     },
     {
       "dia": 10,
-      "sessoes": 76280,
-      "tx_conv": 0.1034,
-      "pedidos": 7885,
-      "receita_ga": 1045435.31
+      "sessoes": 78051,
+      "tx_conv": 0.124,
+      "pedidos": 9678
     },
     {
       "dia": 11,
-      "sessoes": 69828,
-      "tx_conv": 0.1002,
-      "pedidos": 6997,
-      "receita_ga": 926480.76
+      "sessoes": 69851,
+      "tx_conv": 0.119,
+      "pedidos": 8312
     },
     {
       "dia": 12,
-      "sessoes": 58918,
-      "tx_conv": 0.1083,
-      "pedidos": 6380,
-      "receita_ga": 811939.77
+      "sessoes": 59457,
+      "tx_conv": 0.127,
+      "pedidos": 7551
     },
     {
       "dia": 13,
-      "sessoes": 53799,
-      "tx_conv": 0.0967,
-      "pedidos": 5200,
-      "receita_ga": 617701.86
+      "sessoes": 52504,
+      "tx_conv": 0.114,
+      "pedidos": 5985
     },
     {
       "dia": 14,
-      "sessoes": 64993,
-      "tx_conv": 0.092,
-      "pedidos": 5981,
-      "receita_ga": 746890.88
+      "sessoes": 64663,
+      "tx_conv": 0.11,
+      "pedidos": 7112
     },
     {
       "dia": 15,
-      "sessoes": 78569,
-      "tx_conv": 0.0951,
-      "pedidos": 7474,
-      "receita_ga": 924962.15
+      "sessoes": 76701,
+      "tx_conv": 0.114,
+      "pedidos": 8744
     },
     {
       "dia": 16,
-      "sessoes": 65070,
-      "tx_conv": 0.0881,
-      "pedidos": 5730,
-      "receita_ga": 722869.75
+      "sessoes": 74200,
+      "tx_conv": 0.118,
+      "pedidos": 8755
     },
     {
       "dia": 17,
-      "sessoes": 67838,
-      "tx_conv": 0.0901,
-      "pedidos": 6113,
-      "receita_ga": 760472.58
+      "sessoes": 72800,
+      "tx_conv": 0.113,
+      "pedidos": 8226
     }
   ],
   "site_daily": [
     {
       "dia": 1,
-      "sessoes": 81952,
-      "tx_conv": 0.019,
-      "pedidos": 1556,
-      "receita_ga": 286537.21
+      "sessoes": 86250,
+      "tx_conv": 0.0242,
+      "pedidos": 2087
     },
     {
       "dia": 2,
-      "sessoes": 78128,
-      "tx_conv": 0.0212,
-      "pedidos": 1654,
-      "receita_ga": 312737.31
+      "sessoes": 84120,
+      "tx_conv": 0.0238,
+      "pedidos": 2002
     },
     {
       "dia": 3,
-      "sessoes": 78917,
-      "tx_conv": 0.0229,
-      "pedidos": 1811,
-      "receita_ga": 367362.77
+      "sessoes": 85980,
+      "tx_conv": 0.0251,
+      "pedidos": 2158
     },
     {
       "dia": 4,
-      "sessoes": 84972,
-      "tx_conv": 0.0219,
-      "pedidos": 1864,
-      "receita_ga": 361962.67
+      "sessoes": 91400,
+      "tx_conv": 0.026,
+      "pedidos": 2376
     },
     {
       "dia": 5,
-      "sessoes": 77363,
-      "tx_conv": 0.0175,
-      "pedidos": 1354,
-      "receita_ga": 231417.73
+      "sessoes": 82600,
+      "tx_conv": 0.0248,
+      "pedidos": 2048
     },
     {
       "dia": 6,
-      "sessoes": 63189,
-      "tx_conv": 0.0149,
-      "pedidos": 941,
-      "receita_ga": 149060.49
+      "sessoes": 71800,
+      "tx_conv": 0.0215,
+      "pedidos": 1543
     },
     {
       "dia": 7,
-      "sessoes": 65633,
-      "tx_conv": 0.0178,
-      "pedidos": 1166,
-      "receita_ga": 172300.46
+      "sessoes": 73900,
+      "tx_conv": 0.0229,
+      "pedidos": 1692
     },
     {
       "dia": 8,
-      "sessoes": 83038,
-      "tx_conv": 0.0199,
-      "pedidos": 1653,
-      "receita_ga": 313836.61
+      "sessoes": 81500,
+      "tx_conv": 0.0235,
+      "pedidos": 1915
     },
     {
       "dia": 9,
-      "sessoes": 107065,
-      "tx_conv": 0.0291,
-      "pedidos": 3116,
-      "receita_ga": 527119.84
+      "sessoes": 99200,
+      "tx_conv": 0.0285,
+      "pedidos": 2827
     },
     {
       "dia": 10,
-      "sessoes": 94628,
-      "tx_conv": 0.0218,
-      "pedidos": 2065,
-      "receita_ga": 380484.07
+      "sessoes": 88400,
+      "tx_conv": 0.0256,
+      "pedidos": 2263
     },
     {
       "dia": 11,
-      "sessoes": 87354,
-      "tx_conv": 0.0219,
-      "pedidos": 1911,
-      "receita_ga": 317254.4
+      "sessoes": 84900,
+      "tx_conv": 0.0244,
+      "pedidos": 2071
     },
     {
       "dia": 12,
-      "sessoes": 83114,
-      "tx_conv": 0.0162,
-      "pedidos": 1347,
-      "receita_ga": 206915.23
+      "sessoes": 77800,
+      "tx_conv": 0.0239,
+      "pedidos": 1859
     },
     {
       "dia": 13,
-      "sessoes": 79813,
-      "tx_conv": 0.0131,
-      "pedidos": 1047,
-      "receita_ga": 158637.99
+      "sessoes": 69400,
+      "tx_conv": 0.022,
+      "pedidos": 1526
     },
     {
       "dia": 14,
-      "sessoes": 97325,
-      "tx_conv": 0.0161,
-      "pedidos": 1565,
-      "receita_ga": 253071.25
+      "sessoes": 82500,
+      "tx_conv": 0.024,
+      "pedidos": 1980
     },
     {
       "dia": 15,
-      "sessoes": 98350,
-      "tx_conv": 0.0213,
-      "pedidos": 2095,
-      "receita_ga": 315547.92
+      "sessoes": 89850,
+      "tx_conv": 0.0256,
+      "pedidos": 2300
     },
     {
       "dia": 16,
-      "sessoes": 88050,
-      "tx_conv": 0.0182,
-      "pedidos": 1600,
-      "receita_ga": 296047.35
+      "sessoes": 84100,
+      "tx_conv": 0.0242,
+      "pedidos": 2035
     },
     {
       "dia": 17,
-      "sessoes": 89404,
-      "tx_conv": 0.0181,
-      "pedidos": 1616,
-      "receita_ga": 306448.52
+      "sessoes": 85600,
+      "tx_conv": 0.0245,
+      "pedidos": 2097
     }
   ],
   "origens": [
     {
-      "origem": "Google Ads (PMax, Shopping & Search)",
+      "origem": "Google Ads (PMax & Search)",
       "canal": "Site + App",
-      "sessoes": 984072,
-      "pedidos": 69581,
-      "tx_conv": 0.0707,
-      "receita": 9138803.95,
-      "share": 0.385
+      "sessoes": 961518,
+      "pedidos": 52883,
+      "tx_conv": 0.055,
+      "receita": 8196944.96,
+      "share": 0.374
+    },
+    {
+      "origem": "Direto / App Orgânico",
+      "canal": "App",
+      "sessoes": 637584,
+      "pedidos": 78359,
+      "tx_conv": 0.1229,
+      "receita": 10813559.62,
+      "share": 0.248
     },
     {
       "origem": "Google Orgânico (SEO)",
       "canal": "Site",
-      "sessoes": 428124,
-      "pedidos": 20223,
-      "tx_conv": 0.0472,
-      "receita": 3201573.4,
-      "share": 0.167
+      "sessoes": 431912,
+      "pedidos": 11229,
+      "tx_conv": 0.026,
+      "receita": 1740605.52,
+      "share": 0.168
     },
     {
-      "origem": "Direto / App Orgânico",
-      "canal": "App + Site",
-      "sessoes": 367894,
-      "pedidos": 24865,
-      "tx_conv": 0.0676,
-      "receita": 3612785.05,
-      "share": 0.144
-    },
-    {
-      "origem": "Outros Canais & Afiliados",
+      "origem": "Meta Ads (Instagram / FB)",
       "canal": "Site + App",
-      "sessoes": 329190,
-      "pedidos": 9993,
-      "tx_conv": 0.0304,
-      "receita": 1754565.18,
-      "share": 0.129
+      "sessoes": 277657,
+      "pedidos": 12772,
+      "tx_conv": 0.046,
+      "receita": 1851977.13,
+      "share": 0.108
     },
     {
-      "origem": "Meta Ads (Instagram & Facebook)",
-      "canal": "Site + App",
-      "sessoes": 261518,
-      "pedidos": 1011,
-      "tx_conv": 0.0039,
-      "receita": 111739.76,
-      "share": 0.102
-    },
-    {
-      "origem": "CRM / Push Notifications & Mensagens",
+      "origem": "CRM / Push & WhatsApp",
       "canal": "App",
-      "sessoes": 185925,
-      "pedidos": 15150,
-      "tx_conv": 0.0815,
-      "receita": 2001012.12,
-      "share": 0.073
+      "sessoes": 174821,
+      "pedidos": 20419,
+      "tx_conv": 0.1168,
+      "receita": 2838262.67,
+      "share": 0.068
+    },
+    {
+      "origem": "Outros / Afiliados",
+      "canal": "Site + App",
+      "sessoes": 87410,
+      "pedidos": 2674,
+      "tx_conv": 0.0306,
+      "receita": 427963.13,
+      "share": 0.034
     }
   ]
 }
