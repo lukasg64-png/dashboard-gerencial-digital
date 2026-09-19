@@ -477,18 +477,26 @@
        ========================================================================== */
     .top-hero-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 18px;
     }
 
-    @media (max-width: 1400px) {
+    @media (max-width: 1200px) {
       .top-hero-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 768px) {
-      .top-hero-grid {
+    /* Linha 2: Inteligência Executiva & Storytelling (Motores, Eficiência, Meta de Fechamento) */
+    .insights-hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 1200px) {
+      .insights-hero-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -2221,47 +2229,110 @@
          VISÃO 1: ACOMPANHAMENTO DIÁRIO & MTD (VISÃO GERAL)
          ==================================================================== -->
     <section class="view-panel" id="view-geral">
-      <!-- 4 Top Hero Cards — Nova Arquitetura de Storytelling Executivo -->
+      <!-- 3 Top Hero Cards — Pilares Estratégicos: E-Commerce, Canais Digitais e Televendas Central -->
       <div class="top-hero-grid">
-        <!-- Card 1: Faturamento Consolidado (O Grande Veredito) -->
-        <div class="hero-card highlight-card" id="cardConsolidado">
+        <!-- Card 1: E-COMMERCE TOTAL -->
+        <div class="hero-card highlight-card" id="cardEcommerce">
           <div class="hero-header">
             <div class="hero-title-group">
               <div style="display: flex; align-items: center; gap: 6px;">
-                <h3 id="consTitle">Canais Digitais</h3>
-                <span class="badge-figital-pill" id="consFigitalBadge" style="display: none;">+ Figital</span>
+                <h3>E-Commerce</h3>
+                <span class="badge-figital-pill" id="ecomFigitalBadge" style="display: none;">+ Figital</span>
               </div>
-              <span class="hero-subtitle" id="consSubtitle">Venda Efetiva no Período</span>
+              <span class="hero-subtitle" id="ecomSubtitle">Venda Efetiva Consolidada</span>
             </div>
-            <span class="hero-part-badge" id="consPartBadge">Part: 12.85%</span>
+            <span class="hero-part-badge" id="ecomPartBadge">Part: 13.15%</span>
           </div>
-
           <div class="hero-val-group">
-            <span class="hero-main-val" id="consMainVal">R$ 34,701 Mi</span>
-            <span class="hero-meta-mes">Meta Proporcional: <strong id="consMetaMTD">R$ 33,877 Mi</strong></span>
+            <span class="hero-main-val" id="ecomMainVal">R$ 35,507 Mi</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="ecomMetaMes">55.845 Mi</strong></span>
           </div>
-
-          <div class="hero-gap-banner" id="consGapBanner">
-            <span>GAP R$: <strong class="gap-highlight" id="consGapVal">+R$ 823,4 K</strong></span>
-            <span>Desvio: <strong id="consDesvioPct">+2,43%</strong></span>
+          <div class="hero-meta-pill " id="ecomMetaPill">
+            <span>Meta: <strong id="ecomMetaMTD">R$ 34,558 Mi</strong></span>
+            <span>Desvio (%): <strong class="val-positive" id="ecomDesvioPct">+2,74%</strong></span>
+            <span>GAP R$: <strong id="ecomDesvioVal">+R$ 948,5 K</strong></span>
           </div>
-
-          <div class="month-progress-box">
-            <div class="month-progress-labels">
-              <span>Progresso Meta Mês: <strong id="consProgPct">63.4%</strong></span>
-              <span id="consMetaMes">Meta: R$ 54,745 Mi</span>
-            </div>
-            <div class="mini-progress-track">
-              <div class="mini-progress-fill over-target" id="consProgFill" style="width: 63.4%;"></div>
-            </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Evolução: <strong class="val-positive" id="ecomEvol">⇑ +61,5%</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="val-positive" id="ecomCresc">⇑ +2,8%</strong></span>
           </div>
-
-          <div class="card-insight-footer" id="consInsight">
-            <span>💡</span> <span id="consInsightTxt">Superando a meta proporcional em <strong>+R$ 823,4 K</strong> (+2,43%)</span>
+          <div class="hero-tkm-box " id="ecomTkmBox">
+            <span>Ticket Médio: <strong id="ecomTkm">117.75</strong></span>
+            <span>Meta: <strong id="ecomTkmMeta">128.22</strong></span>
+            <span>Desvio (%): <strong class="val-negative" id="ecomTkmDesvioPct">-8,17%</strong></span>
+            <span>GAP R$: <strong id="ecomTkmDesvioVal">-R$ 10</strong></span>
           </div>
         </div>
 
-        <!-- Card 2: Motores de Crescimento (Drivers & Ofensores) -->
+        <!-- Card 2: CANAIS DIGITAIS -->
+        <div class="hero-card highlight-card" id="cardDigitais">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3>Canais Digitais</h3>
+                <span class="badge-figital-pill" id="digFigitalBadge" style="display: none;">+ Figital</span>
+              </div>
+              <span class="hero-subtitle" id="digSubtitle">Site + App + Marketplace</span>
+            </div>
+            <span class="hero-part-badge" id="digPartBadge">Part: 12.85%</span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" id="digMainVal">R$ 34,701 Mi</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="digMetaMes">54.745 Mi</strong></span>
+          </div>
+          <div class="hero-meta-pill " id="digMetaPill">
+            <span>Meta: <strong id="digMetaMTD">R$ 33,877 Mi</strong></span>
+            <span>Desvio (%): <strong class="val-positive" id="digDesvioPct">+2,43%</strong></span>
+            <span>GAP R$: <strong id="digDesvioVal">+R$ 823,4 K</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Evolução: <strong class="val-positive" id="digEvol">⇑ +60,0%</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="val-positive" id="digCresc">⇑ +3,2%</strong></span>
+            <span class="indicator-item">Rent. Op: <strong id="digRentOp">20.49%</strong></span>
+            <span class="indicator-item">Rent. DRE: <strong id="digRentDre">25.52%</strong></span>
+          </div>
+          <div class="hero-tkm-box " id="digTkmBox">
+            <span>Ticket Médio: <strong id="digTkm">115.99</strong></span>
+            <span>Meta: <strong id="digTkmMeta">128.56</strong></span>
+            <span>Desvio (%): <strong class="val-negative" id="digTkmDesvioPct">-9,78%</strong></span>
+            <span>GAP R$: <strong id="digTkmDesvioVal">-R$ 13</strong></span>
+          </div>
+        </div>
+
+        <!-- Card 3: TELEVENDAS (CENTRAL) -->
+        <div class="hero-card" id="cardTelevendas">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <h3>Televendas</h3>
+              <span class="hero-subtitle" id="teleSubtitle">Canal Televendas Central</span>
+            </div>
+            <span class="hero-part-badge" id="telePartBadge">Part: 0.30%</span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" id="teleMainVal">R$ 805,8 K</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="teleMetaMes">1.100 Mi</strong></span>
+          </div>
+          <div class="hero-meta-pill " id="teleMetaPill">
+            <span>Meta: <strong id="teleMetaMTD">R$ 680,7 K</strong></span>
+            <span>Desvio (%): <strong class="val-positive" id="teleDesvioPct">+18,37%</strong></span>
+            <span>GAP R$: <strong id="teleDesvioVal">+R$ 125,1 K</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Evolução: <strong class="val-positive" id="teleEvol">⇑ +169,0%</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="val-negative" id="teleCresc">⇓ -13,0%</strong></span>
+          </div>
+          <div class="hero-tkm-box positive" id="teleTkmBox">
+            <span>Ticket Médio: <strong id="teleTkm">338.70</strong></span>
+            <span>Meta: <strong id="teleTkmMeta">113.29</strong></span>
+            <span>Desvio (%): <strong class="val-positive" id="teleTkmDesvioPct">+198,97%</strong></span>
+            <span>GAP R$: <strong id="teleTkmDesvioVal">+R$ 225</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Linha 2: Inteligência Executiva & Storytelling (Motores, Eficiência, Meta de Fechamento) -->
+      <div class="insights-hero-grid">
+        <!-- Card 4: Motores de Crescimento (Drivers & Ofensores) -->
         <div class="hero-card" id="cardMotores">
           <div class="hero-header">
             <div class="hero-title-group">
@@ -2326,7 +2397,7 @@
           </div>
         </div>
 
-        <!-- Card 3: Eficiência Comercial (Ticket Médio & Margem) -->
+        <!-- Card 5: Eficiência Comercial (Ticket Médio & Margem) -->
         <div class="hero-card" id="cardEficiencia">
           <div class="hero-header">
             <div class="hero-title-group">
@@ -2367,7 +2438,7 @@
           </div>
         </div>
 
-        <!-- Card 4: Ritmo Diário & Meta de Fechamento -->
+        <!-- Card 6: Ritmo Diário & Meta de Fechamento -->
         <div class="hero-card" id="cardRitmo">
           <div class="hero-header">
             <div class="hero-title-group">
@@ -15537,51 +15608,100 @@
         }
       };
 
-      // 1. Atualiza Card 1: Faturamento Consolidado
-      const targetCons = m.canais_digitais || m.ecommerce_total;
-      if (targetCons) {
-        setTxt('consTitle', isFigitalOn ? 'Canais Digitais (+ Figital)' : 'Canais Digitais');
-        const consFigBadge = document.getElementById('consFigitalBadge');
-        if (consFigBadge) consFigBadge.style.display = isFigitalOn ? 'inline-flex' : 'none';
-        setTxt('consSubtitle', isFigitalOn ? 'Venda Efetiva (+ Figital no Período)' : 'Venda Efetiva no Período');
-        setTxt('consPartBadge', 'Part: ' + targetCons.share_empresa.toFixed(2).replace('.', ',') + '%');
-        setTxt('consMainVal', fmtCurrency(targetCons.venda));
-        setTxt('consMetaMTD', fmtCurrency(targetCons.meta_mtd));
-        setTxt('consGapVal', fmtGapVal(targetCons.gap_venda_val));
-        setTxt('consDesvioPct', fmtPctStr(targetCons.desvio_venda_pct));
-
-        const gapBanner = document.getElementById('consGapBanner');
-        if (gapBanner) {
-          if (targetCons.gap_venda_val >= 0) {
-            gapBanner.className = 'hero-gap-banner';
-          } else {
-            gapBanner.className = 'hero-gap-banner negative';
-          }
+      // 1. Atualiza Card 1: E-Commerce
+      if (m.ecommerce_total) {
+        setTxt('ecomSubtitle', isFigitalOn ? 'Venda Efetiva + Figital' : 'Venda Efetiva Consolidada');
+        setTxt('ecomPartBadge', 'Part: ' + m.ecommerce_total.share_empresa.toFixed(2).replace('.', ',') + '%');
+        setTxt('ecomMainVal', fmtCurrency(m.ecommerce_total.venda));
+        setTxt('ecomMetaMes', (m.ecommerce_total.meta_mes / 1e6).toFixed(3).replace('.', ',') + ' Mi');
+        setTxt('ecomMetaMTD', fmtCurrency(m.ecommerce_total.meta_mtd));
+        setTxt('ecomDesvioPct', fmtPctStr(m.ecommerce_total.desvio_venda_pct));
+        setClass('ecomDesvioPct', m.ecommerce_total.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('ecomDesvioVal', fmtGapVal(m.ecommerce_total.gap_venda_val));
+        setTxt('ecomEvol', fmtGrowthStr(m.ecommerce_total.evo_yoy));
+        setClass('ecomEvol', m.ecommerce_total.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('ecomCresc', fmtGrowthStr(m.ecommerce_total.cresc_mom));
+        setClass('ecomCresc', m.ecommerce_total.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('ecomTkm', m.ecommerce_total.tkm.toFixed(2).replace('.', ','));
+        setTxt('ecomTkmMeta', m.ecommerce_total.tkm_meta.toFixed(2).replace('.', ','));
+        setTxt('ecomTkmDesvioPct', fmtPctStr(m.ecommerce_total.tkm_desvio_pct));
+        setClass('ecomTkmDesvioPct', m.ecommerce_total.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('ecomTkmDesvioVal', fmtGapVal(m.ecommerce_total.tkm_gap_val));
+        const ecomMetaPill = document.getElementById('ecomMetaPill');
+        if (ecomMetaPill) {
+          ecomMetaPill.className = 'hero-meta-pill ' + (m.ecommerce_total.gap_venda_val >= 0 ? '' : 'negative');
         }
-
-        const atingMesPct = targetCons.meta_mes > 0 ? (targetCons.venda / targetCons.meta_mes * 100) : 0;
-        setTxt('consProgPct', atingMesPct.toFixed(1).replace('.', ',') + '%');
-        setTxt('consMetaMes', 'Meta: ' + fmtCurrency(targetCons.meta_mes));
-        const progFill = document.getElementById('consProgFill');
-        if (progFill) {
-          progFill.style.width = Math.min(100, atingMesPct).toFixed(1) + '%';
-          const expectedMonthPct = (selectedDiaEnd / 30) * 100;
-          if (atingMesPct >= expectedMonthPct) {
-            progFill.className = 'mini-progress-fill over-target';
-          } else {
-            progFill.className = 'mini-progress-fill';
-          }
+        const ecomTkmBox = document.getElementById('ecomTkmBox');
+        if (ecomTkmBox) {
+          ecomTkmBox.className = 'hero-tkm-box ' + (m.ecommerce_total.tkm_gap_val >= 0 ? 'positive' : '');
         }
+        const ecomFigBadge = document.getElementById('ecomFigitalBadge');
+        if (ecomFigBadge) ecomFigBadge.style.display = isFigitalOn ? 'inline-flex' : 'none';
+      }
 
-        const consInsightTxt = document.getElementById('consInsightTxt');
-        if (consInsightTxt) {
-          if (targetCons.gap_venda_val >= 0) {
-            consInsightTxt.innerHTML = `Superando a meta proporcional em <strong>${fmtGapVal(targetCons.gap_venda_val)}</strong> (${fmtPctStr(targetCons.desvio_venda_pct)})`;
-          } else {
-            consInsightTxt.innerHTML = `Abaixo da meta proporcional em <strong style="color: #dc2626;">${fmtGapVal(targetCons.gap_venda_val)}</strong> (${fmtPctStr(targetCons.desvio_venda_pct)})`;
-          }
+      // 2. Atualiza Card 2: Canais Digitais
+      if (m.canais_digitais) {
+        setTxt('digSubtitle', isFigitalOn ? 'Site + App + MKP + Figital' : 'Site + App + Marketplace');
+        setTxt('digPartBadge', 'Part: ' + m.canais_digitais.share_empresa.toFixed(2).replace('.', ',') + '%');
+        setTxt('digMainVal', fmtCurrency(m.canais_digitais.venda));
+        setTxt('digMetaMes', (m.canais_digitais.meta_mes / 1e6).toFixed(3).replace('.', ',') + ' Mi');
+        setTxt('digMetaMTD', fmtCurrency(m.canais_digitais.meta_mtd));
+        setTxt('digDesvioPct', fmtPctStr(m.canais_digitais.desvio_venda_pct));
+        setClass('digDesvioPct', m.canais_digitais.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('digDesvioVal', fmtGapVal(m.canais_digitais.gap_venda_val));
+        setTxt('digEvol', fmtGrowthStr(m.canais_digitais.evo_yoy));
+        setClass('digEvol', m.canais_digitais.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('digCresc', fmtGrowthStr(m.canais_digitais.cresc_mom));
+        setClass('digCresc', m.canais_digitais.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('digRentOp', m.canais_digitais.rent_op.toFixed(2).replace('.', ',') + '%');
+        setTxt('digRentDre', m.canais_digitais.rent_dre.toFixed(2).replace('.', ',') + '%');
+        setTxt('digTkm', m.canais_digitais.tkm.toFixed(2).replace('.', ','));
+        setTxt('digTkmMeta', m.canais_digitais.tkm_meta.toFixed(2).replace('.', ','));
+        setTxt('digTkmDesvioPct', fmtPctStr(m.canais_digitais.tkm_desvio_pct));
+        setClass('digTkmDesvioPct', m.canais_digitais.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('digTkmDesvioVal', fmtGapVal(m.canais_digitais.tkm_gap_val));
+        const digMetaPill = document.getElementById('digMetaPill');
+        if (digMetaPill) {
+          digMetaPill.className = 'hero-meta-pill ' + (m.canais_digitais.gap_venda_val >= 0 ? '' : 'negative');
+        }
+        const digTkmBox = document.getElementById('digTkmBox');
+        if (digTkmBox) {
+          digTkmBox.className = 'hero-tkm-box ' + (m.canais_digitais.tkm_gap_val >= 0 ? 'positive' : '');
+        }
+        const digFigBadge = document.getElementById('digFigitalBadge');
+        if (digFigBadge) digFigBadge.style.display = isFigitalOn ? 'inline-flex' : 'none';
+      }
+
+      // 3. Atualiza Card 3: Televendas (Central)
+      if (m.televendas) {
+        setTxt('teleSubtitle', 'Canal Televendas Central');
+        setTxt('telePartBadge', 'Part: ' + m.televendas.share_empresa.toFixed(2).replace('.', ',') + '%');
+        setTxt('teleMainVal', fmtCurrency(m.televendas.venda));
+        setTxt('teleMetaMes', (m.televendas.meta_mes / 1e6).toFixed(3).replace('.', ',') + ' Mi');
+        setTxt('teleMetaMTD', fmtCurrency(m.televendas.meta_mtd));
+        setTxt('teleDesvioPct', fmtPctStr(m.televendas.desvio_venda_pct));
+        setClass('teleDesvioPct', m.televendas.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleDesvioVal', fmtGapVal(m.televendas.gap_venda_val));
+        setTxt('teleEvol', fmtGrowthStr(m.televendas.evo_yoy));
+        setClass('teleEvol', m.televendas.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleCresc', fmtGrowthStr(m.televendas.cresc_mom));
+        setClass('teleCresc', m.televendas.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleTkm', m.televendas.tkm.toFixed(2).replace('.', ','));
+        setTxt('teleTkmMeta', m.televendas.tkm_meta.toFixed(2).replace('.', ','));
+        setTxt('teleTkmDesvioPct', fmtPctStr(m.televendas.tkm_desvio_pct));
+        setClass('teleTkmDesvioPct', m.televendas.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleTkmDesvioVal', fmtGapVal(m.televendas.tkm_gap_val));
+        const teleMetaPill = document.getElementById('teleMetaPill');
+        if (teleMetaPill) {
+          teleMetaPill.className = 'hero-meta-pill ' + (m.televendas.gap_venda_val >= 0 ? '' : 'negative');
+        }
+        const teleTkmBox = document.getElementById('teleTkmBox');
+        if (teleTkmBox) {
+          teleTkmBox.className = 'hero-tkm-box ' + (m.televendas.tkm_gap_val >= 0 ? 'positive' : '');
         }
       }
+
+      const targetCons = m.canais_digitais || m.ecommerce_total;
 
       // 2. Atualiza Card 2: Motores de Venda
       const updateDriverRow = (prefix, data) => {

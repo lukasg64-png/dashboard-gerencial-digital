@@ -266,6 +266,7 @@ def build():
     # Precomputações Visão 1 — Storytelling Executivo (Cards Diários/MTD)
     k_dig = kpis.get('canais_digitais', {})
     k_ecom = kpis.get('ecommerce_total', {})
+    k_tele = kpis.get('televendas', {})
     k_app = kpis.get('app', {})
     k_mkp = kpis.get('marketplace', {})
     k_site = kpis.get('site', {})
@@ -809,18 +810,26 @@ def build():
        ========================================================================== */
     .top-hero-grid {{
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 18px;
     }}
 
-    @media (max-width: 1400px) {{
+    @media (max-width: 1200px) {{
       .top-hero-grid {{
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
       }}
     }}
 
-    @media (max-width: 768px) {{
-      .top-hero-grid {{
+    /* Linha 2: Inteligência Executiva & Storytelling (Motores, Eficiência, Meta de Fechamento) */
+    .insights-hero-grid {{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }}
+
+    @media (max-width: 1200px) {{
+      .insights-hero-grid {{
         grid-template-columns: 1fr;
       }}
     }}
@@ -2553,47 +2562,110 @@ def build():
          VISÃO 1: ACOMPANHAMENTO DIÁRIO & MTD (VISÃO GERAL)
          ==================================================================== -->
     <section class="view-panel" id="view-geral">
-      <!-- 4 Top Hero Cards — Nova Arquitetura de Storytelling Executivo -->
+      <!-- 3 Top Hero Cards — Pilares Estratégicos: E-Commerce, Canais Digitais e Televendas Central -->
       <div class="top-hero-grid">
-        <!-- Card 1: Faturamento Consolidado (O Grande Veredito) -->
-        <div class="hero-card highlight-card" id="cardConsolidado">
+        <!-- Card 1: E-COMMERCE TOTAL -->
+        <div class="hero-card highlight-card" id="cardEcommerce">
           <div class="hero-header">
             <div class="hero-title-group">
               <div style="display: flex; align-items: center; gap: 6px;">
-                <h3 id="consTitle">Canais Digitais</h3>
-                <span class="badge-figital-pill" id="consFigitalBadge" style="display: none;">+ Figital</span>
+                <h3>E-Commerce</h3>
+                <span class="badge-figital-pill" id="ecomFigitalBadge" style="display: none;">+ Figital</span>
               </div>
-              <span class="hero-subtitle" id="consSubtitle">Venda Efetiva no Período</span>
+              <span class="hero-subtitle" id="ecomSubtitle">Venda Efetiva Consolidada</span>
             </div>
-            <span class="hero-part-badge" id="consPartBadge">Part: {k_dig.get('share_empresa', 0):.2f}%</span>
+            <span class="hero-part-badge" id="ecomPartBadge">Part: {k_ecom.get('share_empresa', 0):.2f}%</span>
           </div>
-
           <div class="hero-val-group">
-            <span class="hero-main-val" id="consMainVal">{card1_venda_str}</span>
-            <span class="hero-meta-mes">Meta Proporcional: <strong id="consMetaMTD">{card1_meta_mtd_str}</strong></span>
+            <span class="hero-main-val" id="ecomMainVal">{fmt_curr(k_ecom.get('venda', 0))}</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="ecomMetaMes">{k_ecom.get('meta_mes', 0)/1e6:.3f} Mi</strong></span>
           </div>
-
-          <div class="{card1_banner_cls}" id="consGapBanner">
-            <span>GAP R$: <strong class="gap-highlight" id="consGapVal">{card1_gap_val_str}</strong></span>
-            <span>Desvio: <strong id="consDesvioPct">{card1_desvio_pct_str}</strong></span>
+          <div class="hero-meta-pill {'negative' if k_ecom.get('gap_venda_val', 0) < 0 else ''}" id="ecomMetaPill">
+            <span>Meta: <strong id="ecomMetaMTD">{fmt_curr(k_ecom.get('meta_mtd', 0))}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if k_ecom.get('desvio_venda_pct', 0)>=0 else 'val-negative'}" id="ecomDesvioPct">{fmt_pct(k_ecom.get('desvio_venda_pct', 0))}</strong></span>
+            <span>GAP R$: <strong id="ecomDesvioVal">{fmt_gap(k_ecom.get('gap_venda_val', 0))}</strong></span>
           </div>
-
-          <div class="month-progress-box">
-            <div class="month-progress-labels">
-              <span>Progresso Meta Mês: <strong id="consProgPct">{card1_ating_mes_pct:.1f}%</strong></span>
-              <span id="consMetaMes">Meta: {card1_meta_mes_str}</span>
-            </div>
-            <div class="mini-progress-track">
-              <div class="{card1_prog_cls}" id="consProgFill" style="width: {min(100, card1_ating_mes_pct):.1f}%;"></div>
-            </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Evolução: <strong class="{'val-positive' if k_ecom.get('evo_yoy', 0)>=0 else 'val-negative'}" id="ecomEvol">{fmt_growth(k_ecom.get('evo_yoy', 0))}</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="{'val-positive' if k_ecom.get('cresc_mom', 0)>=0 else 'val-negative'}" id="ecomCresc">{fmt_growth(k_ecom.get('cresc_mom', 0))}</strong></span>
           </div>
-
-          <div class="card-insight-footer" id="consInsight">
-            <span>💡</span> <span id="consInsightTxt">Superando a meta proporcional em <strong>{card1_gap_val_str}</strong> ({card1_desvio_pct_str})</span>
+          <div class="hero-tkm-box {'positive' if k_ecom.get('tkm_gap_val', 0)>=0 else ''}" id="ecomTkmBox">
+            <span>Ticket Médio: <strong id="ecomTkm">{k_ecom.get('tkm', 0):.2f}</strong></span>
+            <span>Meta: <strong id="ecomTkmMeta">{k_ecom.get('tkm_meta', 0):.2f}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if k_ecom.get('tkm_desvio_pct', 0)>=0 else 'val-negative'}" id="ecomTkmDesvioPct">{fmt_pct(k_ecom.get('tkm_desvio_pct', 0))}</strong></span>
+            <span>GAP R$: <strong id="ecomTkmDesvioVal">{fmt_gap(k_ecom.get('tkm_gap_val', 0))}</strong></span>
           </div>
         </div>
 
-        <!-- Card 2: Motores de Crescimento (Drivers & Ofensores) -->
+        <!-- Card 2: CANAIS DIGITAIS -->
+        <div class="hero-card highlight-card" id="cardDigitais">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <h3>Canais Digitais</h3>
+                <span class="badge-figital-pill" id="digFigitalBadge" style="display: none;">+ Figital</span>
+              </div>
+              <span class="hero-subtitle" id="digSubtitle">Site + App + Marketplace</span>
+            </div>
+            <span class="hero-part-badge" id="digPartBadge">Part: {k_dig.get('share_empresa', 0):.2f}%</span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" id="digMainVal">{fmt_curr(k_dig.get('venda', 0))}</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="digMetaMes">{k_dig.get('meta_mes', 0)/1e6:.3f} Mi</strong></span>
+          </div>
+          <div class="hero-meta-pill {'negative' if k_dig.get('gap_venda_val', 0) < 0 else ''}" id="digMetaPill">
+            <span>Meta: <strong id="digMetaMTD">{fmt_curr(k_dig.get('meta_mtd', 0))}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if k_dig.get('desvio_venda_pct', 0)>=0 else 'val-negative'}" id="digDesvioPct">{fmt_pct(k_dig.get('desvio_venda_pct', 0))}</strong></span>
+            <span>GAP R$: <strong id="digDesvioVal">{fmt_gap(k_dig.get('gap_venda_val', 0))}</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Evolução: <strong class="{'val-positive' if k_dig.get('evo_yoy', 0)>=0 else 'val-negative'}" id="digEvol">{fmt_growth(k_dig.get('evo_yoy', 0))}</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="{'val-positive' if k_dig.get('cresc_mom', 0)>=0 else 'val-negative'}" id="digCresc">{fmt_growth(k_dig.get('cresc_mom', 0))}</strong></span>
+            <span class="indicator-item">Rent. Op: <strong id="digRentOp">{k_dig.get('rent_op', 0):.2f}%</strong></span>
+            <span class="indicator-item">Rent. DRE: <strong id="digRentDre">{k_dig.get('rent_dre', 0):.2f}%</strong></span>
+          </div>
+          <div class="hero-tkm-box {'positive' if k_dig.get('tkm_gap_val', 0)>=0 else ''}" id="digTkmBox">
+            <span>Ticket Médio: <strong id="digTkm">{k_dig.get('tkm', 0):.2f}</strong></span>
+            <span>Meta: <strong id="digTkmMeta">{k_dig.get('tkm_meta', 0):.2f}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if k_dig.get('tkm_desvio_pct', 0)>=0 else 'val-negative'}" id="digTkmDesvioPct">{fmt_pct(k_dig.get('tkm_desvio_pct', 0))}</strong></span>
+            <span>GAP R$: <strong id="digTkmDesvioVal">{fmt_gap(k_dig.get('tkm_gap_val', 0))}</strong></span>
+          </div>
+        </div>
+
+        <!-- Card 3: TELEVENDAS (CENTRAL) -->
+        <div class="hero-card" id="cardTelevendas">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <h3>Televendas</h3>
+              <span class="hero-subtitle" id="teleSubtitle">Canal Televendas Central</span>
+            </div>
+            <span class="hero-part-badge" id="telePartBadge">Part: {k_tele.get('share_empresa', 0):.2f}%</span>
+          </div>
+          <div class="hero-val-group">
+            <span class="hero-main-val" id="teleMainVal">{fmt_curr(k_tele.get('venda', 0))}</span>
+            <span class="hero-meta-mes">Meta Mês: <strong id="teleMetaMes">{k_tele.get('meta_mes', 0)/1e6:.3f} Mi</strong></span>
+          </div>
+          <div class="hero-meta-pill {'negative' if k_tele.get('gap_venda_val', 0) < 0 else ''}" id="teleMetaPill">
+            <span>Meta: <strong id="teleMetaMTD">{fmt_curr(k_tele.get('meta_mtd', 0))}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if k_tele.get('desvio_venda_pct', 0)>=0 else 'val-negative'}" id="teleDesvioPct">{fmt_pct(k_tele.get('desvio_venda_pct', 0))}</strong></span>
+            <span>GAP R$: <strong id="teleDesvioVal">{fmt_gap(k_tele.get('gap_venda_val', 0))}</strong></span>
+          </div>
+          <div class="hero-sub-indicators">
+            <span class="indicator-item">Evolução: <strong class="{'val-positive' if k_tele.get('evo_yoy', 0)>=0 else 'val-negative'}" id="teleEvol">{fmt_growth(k_tele.get('evo_yoy', 0))}</strong></span>
+            <span class="indicator-item">Crescimento: <strong class="{'val-positive' if k_tele.get('cresc_mom', 0)>=0 else 'val-negative'}" id="teleCresc">{fmt_growth(k_tele.get('cresc_mom', 0))}</strong></span>
+          </div>
+          <div class="hero-tkm-box {'positive' if k_tele.get('tkm_gap_val', 0)>=0 else ''}" id="teleTkmBox">
+            <span>Ticket Médio: <strong id="teleTkm">{k_tele.get('tkm', 0):.2f}</strong></span>
+            <span>Meta: <strong id="teleTkmMeta">{k_tele.get('tkm_meta', 0):.2f}</strong></span>
+            <span>Desvio (%): <strong class="{'val-positive' if k_tele.get('tkm_desvio_pct', 0)>=0 else 'val-negative'}" id="teleTkmDesvioPct">{fmt_pct(k_tele.get('tkm_desvio_pct', 0))}</strong></span>
+            <span>GAP R$: <strong id="teleTkmDesvioVal">{fmt_gap(k_tele.get('tkm_gap_val', 0))}</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Linha 2: Inteligência Executiva & Storytelling (Motores, Eficiência, Meta de Fechamento) -->
+      <div class="insights-hero-grid">
+        <!-- Card 4: Motores de Crescimento (Drivers & Ofensores) -->
         <div class="hero-card" id="cardMotores">
           <div class="hero-header">
             <div class="hero-title-group">
@@ -2658,7 +2730,7 @@ def build():
           </div>
         </div>
 
-        <!-- Card 3: Eficiência Comercial (Ticket Médio & Margem) -->
+        <!-- Card 5: Eficiência Comercial (Ticket Médio & Margem) -->
         <div class="hero-card" id="cardEficiencia">
           <div class="hero-header">
             <div class="hero-title-group">
@@ -2699,7 +2771,7 @@ def build():
           </div>
         </div>
 
-        <!-- Card 4: Ritmo Diário & Meta de Fechamento -->
+        <!-- Card 6: Ritmo Diário & Meta de Fechamento -->
         <div class="hero-card" id="cardRitmo">
           <div class="hero-header">
             <div class="hero-title-group">
@@ -3410,51 +3482,100 @@ def build():
         }}
       }};
 
-      // 1. Atualiza Card 1: Faturamento Consolidado
-      const targetCons = m.canais_digitais || m.ecommerce_total;
-      if (targetCons) {{
-        setTxt('consTitle', isFigitalOn ? 'Canais Digitais (+ Figital)' : 'Canais Digitais');
-        const consFigBadge = document.getElementById('consFigitalBadge');
-        if (consFigBadge) consFigBadge.style.display = isFigitalOn ? 'inline-flex' : 'none';
-        setTxt('consSubtitle', isFigitalOn ? 'Venda Efetiva (+ Figital no Período)' : 'Venda Efetiva no Período');
-        setTxt('consPartBadge', 'Part: ' + targetCons.share_empresa.toFixed(2).replace('.', ',') + '%');
-        setTxt('consMainVal', fmtCurrency(targetCons.venda));
-        setTxt('consMetaMTD', fmtCurrency(targetCons.meta_mtd));
-        setTxt('consGapVal', fmtGapVal(targetCons.gap_venda_val));
-        setTxt('consDesvioPct', fmtPctStr(targetCons.desvio_venda_pct));
-
-        const gapBanner = document.getElementById('consGapBanner');
-        if (gapBanner) {{
-          if (targetCons.gap_venda_val >= 0) {{
-            gapBanner.className = 'hero-gap-banner';
-          }} else {{
-            gapBanner.className = 'hero-gap-banner negative';
-          }}
+      // 1. Atualiza Card 1: E-Commerce
+      if (m.ecommerce_total) {{
+        setTxt('ecomSubtitle', isFigitalOn ? 'Venda Efetiva + Figital' : 'Venda Efetiva Consolidada');
+        setTxt('ecomPartBadge', 'Part: ' + m.ecommerce_total.share_empresa.toFixed(2).replace('.', ',') + '%');
+        setTxt('ecomMainVal', fmtCurrency(m.ecommerce_total.venda));
+        setTxt('ecomMetaMes', (m.ecommerce_total.meta_mes / 1e6).toFixed(3).replace('.', ',') + ' Mi');
+        setTxt('ecomMetaMTD', fmtCurrency(m.ecommerce_total.meta_mtd));
+        setTxt('ecomDesvioPct', fmtPctStr(m.ecommerce_total.desvio_venda_pct));
+        setClass('ecomDesvioPct', m.ecommerce_total.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('ecomDesvioVal', fmtGapVal(m.ecommerce_total.gap_venda_val));
+        setTxt('ecomEvol', fmtGrowthStr(m.ecommerce_total.evo_yoy));
+        setClass('ecomEvol', m.ecommerce_total.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('ecomCresc', fmtGrowthStr(m.ecommerce_total.cresc_mom));
+        setClass('ecomCresc', m.ecommerce_total.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('ecomTkm', m.ecommerce_total.tkm.toFixed(2).replace('.', ','));
+        setTxt('ecomTkmMeta', m.ecommerce_total.tkm_meta.toFixed(2).replace('.', ','));
+        setTxt('ecomTkmDesvioPct', fmtPctStr(m.ecommerce_total.tkm_desvio_pct));
+        setClass('ecomTkmDesvioPct', m.ecommerce_total.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('ecomTkmDesvioVal', fmtGapVal(m.ecommerce_total.tkm_gap_val));
+        const ecomMetaPill = document.getElementById('ecomMetaPill');
+        if (ecomMetaPill) {{
+          ecomMetaPill.className = 'hero-meta-pill ' + (m.ecommerce_total.gap_venda_val >= 0 ? '' : 'negative');
         }}
-
-        const atingMesPct = targetCons.meta_mes > 0 ? (targetCons.venda / targetCons.meta_mes * 100) : 0;
-        setTxt('consProgPct', atingMesPct.toFixed(1).replace('.', ',') + '%');
-        setTxt('consMetaMes', 'Meta: ' + fmtCurrency(targetCons.meta_mes));
-        const progFill = document.getElementById('consProgFill');
-        if (progFill) {{
-          progFill.style.width = Math.min(100, atingMesPct).toFixed(1) + '%';
-          const expectedMonthPct = (selectedDiaEnd / 30) * 100;
-          if (atingMesPct >= expectedMonthPct) {{
-            progFill.className = 'mini-progress-fill over-target';
-          }} else {{
-            progFill.className = 'mini-progress-fill';
-          }}
+        const ecomTkmBox = document.getElementById('ecomTkmBox');
+        if (ecomTkmBox) {{
+          ecomTkmBox.className = 'hero-tkm-box ' + (m.ecommerce_total.tkm_gap_val >= 0 ? 'positive' : '');
         }}
+        const ecomFigBadge = document.getElementById('ecomFigitalBadge');
+        if (ecomFigBadge) ecomFigBadge.style.display = isFigitalOn ? 'inline-flex' : 'none';
+      }}
 
-        const consInsightTxt = document.getElementById('consInsightTxt');
-        if (consInsightTxt) {{
-          if (targetCons.gap_venda_val >= 0) {{
-            consInsightTxt.innerHTML = `Superando a meta proporcional em <strong>${{fmtGapVal(targetCons.gap_venda_val)}}</strong> (${{fmtPctStr(targetCons.desvio_venda_pct)}})`;
-          }} else {{
-            consInsightTxt.innerHTML = `Abaixo da meta proporcional em <strong style="color: #dc2626;">${{fmtGapVal(targetCons.gap_venda_val)}}</strong> (${{fmtPctStr(targetCons.desvio_venda_pct)}})`;
-          }}
+      // 2. Atualiza Card 2: Canais Digitais
+      if (m.canais_digitais) {{
+        setTxt('digSubtitle', isFigitalOn ? 'Site + App + MKP + Figital' : 'Site + App + Marketplace');
+        setTxt('digPartBadge', 'Part: ' + m.canais_digitais.share_empresa.toFixed(2).replace('.', ',') + '%');
+        setTxt('digMainVal', fmtCurrency(m.canais_digitais.venda));
+        setTxt('digMetaMes', (m.canais_digitais.meta_mes / 1e6).toFixed(3).replace('.', ',') + ' Mi');
+        setTxt('digMetaMTD', fmtCurrency(m.canais_digitais.meta_mtd));
+        setTxt('digDesvioPct', fmtPctStr(m.canais_digitais.desvio_venda_pct));
+        setClass('digDesvioPct', m.canais_digitais.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('digDesvioVal', fmtGapVal(m.canais_digitais.gap_venda_val));
+        setTxt('digEvol', fmtGrowthStr(m.canais_digitais.evo_yoy));
+        setClass('digEvol', m.canais_digitais.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('digCresc', fmtGrowthStr(m.canais_digitais.cresc_mom));
+        setClass('digCresc', m.canais_digitais.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('digRentOp', m.canais_digitais.rent_op.toFixed(2).replace('.', ',') + '%');
+        setTxt('digRentDre', m.canais_digitais.rent_dre.toFixed(2).replace('.', ',') + '%');
+        setTxt('digTkm', m.canais_digitais.tkm.toFixed(2).replace('.', ','));
+        setTxt('digTkmMeta', m.canais_digitais.tkm_meta.toFixed(2).replace('.', ','));
+        setTxt('digTkmDesvioPct', fmtPctStr(m.canais_digitais.tkm_desvio_pct));
+        setClass('digTkmDesvioPct', m.canais_digitais.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('digTkmDesvioVal', fmtGapVal(m.canais_digitais.tkm_gap_val));
+        const digMetaPill = document.getElementById('digMetaPill');
+        if (digMetaPill) {{
+          digMetaPill.className = 'hero-meta-pill ' + (m.canais_digitais.gap_venda_val >= 0 ? '' : 'negative');
+        }}
+        const digTkmBox = document.getElementById('digTkmBox');
+        if (digTkmBox) {{
+          digTkmBox.className = 'hero-tkm-box ' + (m.canais_digitais.tkm_gap_val >= 0 ? 'positive' : '');
+        }}
+        const digFigBadge = document.getElementById('digFigitalBadge');
+        if (digFigBadge) digFigBadge.style.display = isFigitalOn ? 'inline-flex' : 'none';
+      }}
+
+      // 3. Atualiza Card 3: Televendas (Central)
+      if (m.televendas) {{
+        setTxt('teleSubtitle', 'Canal Televendas Central');
+        setTxt('telePartBadge', 'Part: ' + m.televendas.share_empresa.toFixed(2).replace('.', ',') + '%');
+        setTxt('teleMainVal', fmtCurrency(m.televendas.venda));
+        setTxt('teleMetaMes', (m.televendas.meta_mes / 1e6).toFixed(3).replace('.', ',') + ' Mi');
+        setTxt('teleMetaMTD', fmtCurrency(m.televendas.meta_mtd));
+        setTxt('teleDesvioPct', fmtPctStr(m.televendas.desvio_venda_pct));
+        setClass('teleDesvioPct', m.televendas.desvio_venda_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleDesvioVal', fmtGapVal(m.televendas.gap_venda_val));
+        setTxt('teleEvol', fmtGrowthStr(m.televendas.evo_yoy));
+        setClass('teleEvol', m.televendas.evo_yoy >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleCresc', fmtGrowthStr(m.televendas.cresc_mom));
+        setClass('teleCresc', m.televendas.cresc_mom >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleTkm', m.televendas.tkm.toFixed(2).replace('.', ','));
+        setTxt('teleTkmMeta', m.televendas.tkm_meta.toFixed(2).replace('.', ','));
+        setTxt('teleTkmDesvioPct', fmtPctStr(m.televendas.tkm_desvio_pct));
+        setClass('teleTkmDesvioPct', m.televendas.tkm_desvio_pct >= 0 ? 'val-positive' : 'val-negative');
+        setTxt('teleTkmDesvioVal', fmtGapVal(m.televendas.tkm_gap_val));
+        const teleMetaPill = document.getElementById('teleMetaPill');
+        if (teleMetaPill) {{
+          teleMetaPill.className = 'hero-meta-pill ' + (m.televendas.gap_venda_val >= 0 ? '' : 'negative');
+        }}
+        const teleTkmBox = document.getElementById('teleTkmBox');
+        if (teleTkmBox) {{
+          teleTkmBox.className = 'hero-tkm-box ' + (m.televendas.tkm_gap_val >= 0 ? 'positive' : '');
         }}
       }}
+
+      const targetCons = m.canais_digitais || m.ecommerce_total;
 
       // 2. Atualiza Card 2: Motores de Venda
       const updateDriverRow = (prefix, data) => {{
