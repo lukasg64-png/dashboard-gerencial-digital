@@ -81,38 +81,57 @@ def load_fallback_snapshot():
     print("Carregando snapshot auditado e validado do ecossistema...", flush=True)
     src_raw = os.path.abspath(os.path.join(BASE_DIR, '..', 'Acompanhamento Categorias Digital', 'data', 'qlik_digital_raw.json'))
     full_cache = os.path.join(DATA_DIR, 'test_full_extracted.json')
-    raw_data = {}
-    if os.path.exists(OUTPUT_RAW_JSON):
-        with open(OUTPUT_RAW_JSON, 'r', encoding='utf-8') as f:
-            raw_data = json.load(f)
-    elif os.path.exists(full_cache):
-        with open(full_cache, 'r', encoding='utf-8') as f:
-            raw_data = json.load(f)
-    elif os.path.exists(src_raw):
-        with open(src_raw, 'r', encoding='utf-8') as f:
-            raw_data = json.load(f)
-    else:
+    
+    candidates = []
+    for p in [src_raw, OUTPUT_RAW_JSON, full_cache]:
+        if os.path.exists(p):
+            try:
+                with open(p, 'r', encoding='utf-8') as f:
+                    d = json.load(f)
+                    c_dia = d.get('canais_dia', [])
+                    detected = [int(r[1]) for r in c_dia if len(r) > 2 and float(r[2] or 0) > 0]
+                    m_d = max(detected) if detected else int(d.get('maxDia', 0))
+                    candidates.append({
+                        'path': p,
+                        'data': d,
+                        'maxDia': m_d,
+                        'mtime': os.path.getmtime(p)
+                    })
+            except Exception:
+                pass
+
+    if not candidates:
         raw_data = {"canais_dia": [], "maxDia": 17}
+    else:
+        # Prioriza maior maxDia; havendo empate, o arquivo mais recente
+        candidates.sort(key=lambda c: (c['maxDia'], c['mtime']), reverse=True)
+        best_candidate = candidates[0]
+        raw_data = best_candidate['data']
+        print(f"   Utilizando melhor base disponível: {best_candidate['path']} (D-1: {best_candidate['maxDia']})", flush=True)
 
     canais_dia = raw_data.get('canais_dia', [])
     canais_mes = raw_data.get('canais_mes', [])
     grupos_mes = raw_data.get('grupos_mes', [])
     linhas_mes = raw_data.get('linhas_mes', [])
 
-    # Se ainda não tiver histórico anual carregado, tenta importar do test_full_extracted
-    if not canais_mes and os.path.exists(full_cache):
-        try:
-            with open(full_cache, 'r', encoding='utf-8') as f:
-                c_data = json.load(f)
-                canais_mes = c_data.get('canais_mes', [])
-                grupos_mes = c_data.get('grupos_mes', [])
-                linhas_mes = c_data.get('linhas_mes', [])
-        except Exception:
-            pass
+    # Se ainda não tiver histórico anual carregado, tenta importar do test_full_extracted ou OUTPUT_RAW_JSON anterior
+    if not canais_mes:
+        for backup_path in [full_cache, OUTPUT_RAW_JSON]:
+            if os.path.exists(backup_path):
+                try:
+                    with open(backup_path, 'r', encoding='utf-8') as f:
+                        c_data = json.load(f)
+                        if c_data.get('canais_mes'):
+                            canais_mes = c_data.get('canais_mes', [])
+                            grupos_mes = c_data.get('grupos_mes', [])
+                            linhas_mes = c_data.get('linhas_mes', [])
+                            break
+                except Exception:
+                    pass
     
     # Detecta dinamicamente o maior dia com faturamento real registrado em Setembro/2026
     detected_days = [int(r[1]) for r in canais_dia if len(r) > 2 and float(r[2] or 0) > 0]
-    max_dia = max(detected_days) if detected_days else int(raw_data.get('maxDia', 17))
+    max_dia = max(detected_days) if detected_days else int(raw_data.get('maxDia', 18))
 
     tele_dia = generate_televendas_series(max_dia)
     all_canais = [r for r in canais_dia if str(r[0]).upper() != 'TELEVENDAS'] + tele_dia
@@ -131,6 +150,49 @@ def load_fallback_snapshot():
 
     print(f"✅ Snapshot salvo com sucesso em: {OUTPUT_RAW_JSON} (D-1 Oficial: Dia {max_dia}, Meses: {len(canais_mes)}, Grupos: {len(grupos_mes)}, Linhas: {len(linhas_mes)})")
     return payload
+
+async def fetch_qlik_cloud():
+    t0 = time.time()
+    print("=" * 70)
+    print("  EXTRAÇÃO DE CANAIS DIGITAIS & FIGITAL — QLIK CLOUD (SaaS)")
+    print("=" * 70)
+
+    try:
+        from playwright.async_api import async_playwright
+    except ImportError:
+        print("Playwright não disponível, utilizando snapshot.")
+        return load_fallback_snapshot()
+
+    storage_state_file = find_best_storage_state()
+    print(f"Sessão Qlik Cloud: {storage_state_file if storage_state_file else 'Nova sessão'}")
+
+async def do_keycloak_login(page, context):
+    print("🔑 Formulário do Keycloak SSO detectado. Preenchendo credenciais...", flush=True)
+    for attempt in range(3):
+        try:
+            await page.fill('input#username, input[name="username"]', USERNAME)
+            await page.fill('input#password, input[name="password"]', PASSWORD)
+            await page.click('input#kc-login, button[type="submit"], input[type="submit"]')
+            print(f"Credenciais enviadas (tentativa {attempt + 1}/3). Aguardando Qlik Cloud...", flush=True)
+            await page.wait_for_url("**/analytics/**", timeout=60000)
+            print("✅ Autenticação SSO concluída com sucesso!", flush=True)
+            await page.wait_for_timeout(3000)
+            target_state = os.path.join(DATA_DIR, 'qlik_cloud_storage_state.json')
+            await context.storage_state(path=target_state)
+            # Propaga para diretórios irmãos para sincronizar todos os dashboards
+            for sp in STORAGE_STATE_PATHS:
+                try:
+                    if sp != target_state and os.path.exists(os.path.dirname(sp)):
+                        shutil.copy2(target_state, sp)
+                except Exception:
+                    pass
+            return True
+        except Exception as err:
+            print(f"   Tentativa {attempt + 1} falhou: {err}. Aguardando 3s...", flush=True)
+            await page.wait_for_timeout(3000)
+            if "/analytics/" in page.url:
+                return True
+    return False
 
 async def fetch_qlik_cloud():
     t0 = time.time()
@@ -167,12 +229,9 @@ async def fetch_qlik_cloud():
 
             # Verifica se precisa de login
             if "idp.farmaciassaojoao.com.br" in page.url or "login" in page.url.lower():
-                print("Autenticando no Keycloak SSO...", flush=True)
-                await page.fill('input[name="username"], input#username', USERNAME)
-                await page.fill('input[name="password"], input#password', PASSWORD)
-                await page.click('input[type="submit"], button[type="submit"], #kc-login')
-                await page.wait_for_url(f"**{QLIK_CLOUD_HOST}/analytics/**", timeout=60000)
-                await context.storage_state(path=os.path.join(DATA_DIR, 'qlik_cloud_storage_state.json'))
+                login_ok = await do_keycloak_login(page, context)
+                if not login_ok and "/analytics/" not in page.url:
+                    raise RuntimeError("Falha no login Keycloak SSO")
 
             print("2/3 Conexão estabelecida! Extraindo hipercubos da QIX Engine...", flush=True)
             queries_js = f"""async () => {{
@@ -256,38 +315,8 @@ async def fetch_qlik_cloud():
                             const l3 = await send("GetLayout", c3.result.qReturn.qHandle, []);
                             const grupos_mes = (l3.result.qLayout.qHyperCube.qDataPages[0]?.qMatrix || []).map(r => [r[0].qText, r[1].qText, r[2].qNum || 0]);
 
-                            // 4. Linhas x Mês (2025 e 2026)
-                            const c4 = await send("CreateSessionObject", docHandle, [{{
-                                "qInfo": {{ "qType": "q_linhas_mes" }},
-                                "qHyperCubeDef": {{
-                                    "qDimensions": [
-                                        {{ "qDef": {{ "qFieldDefs": ["Ano-Mês Venda"] }} }},
-                                        {{ "qDef": {{ "qFieldDefs": ["Desc_Grupo"] }} }},
-                                        {{ "qDef": {{ "qFieldDefs": ["Desc_Linha"] }} }}
-                                    ],
-                                    "qMeasures": [
-                                        {{ "qDef": {{ "qDef": "Sum({{1<[Ano-Mês Venda]={{{MONTHS_HISTORICAL}}}, [Canal Detalhado]={{{DIGITAL_CHANNELS_FILTER}}}>}} [Vl_Mercadoria])" }} }}
-                                    ],
-                                    "qInitialDataFetch": [{{ "qTop": 0, "qLeft": 0, "qHeight": 1500, "qWidth": 4 }}],
-                                    "qSuppressZero": true
-                                }}
-                            }}]);
-                            const h4 = c4.result.qReturn.qHandle;
-                            const l4 = await send("GetLayout", h4, []);
-                            const totalRows4 = l4.result.qLayout.qHyperCube.qSize.qcy;
-                            let linhas_mes = [];
-                            let top4 = 0;
-                            while (top4 < totalRows4) {{
-                                const fetchH = Math.min(1500, totalRows4 - top4);
-                                const pData = await send("GetHyperCubeData", h4, ["/qHyperCubeDef", [{{ "qTop": top4, "qLeft": 0, "qHeight": fetchH, "qWidth": 4 }}]]);
-                                const mat = pData.result.qDataPages[0]?.qMatrix || [];
-                                if (mat.length === 0) break;
-                                mat.forEach(r => linhas_mes.push([r[0].qText, r[1].qText, r[2].qText, r[3].qNum || 0]));
-                                top4 += mat.length;
-                            }}
-
                             ws.close();
-                            resolve({{ canais_dia, canais_mes, grupos_mes, linhas_mes }});
+                            resolve({{ canais_dia, canais_mes, grupos_mes }});
                         }} catch (e) {{
                             ws.close();
                             reject(e.toString());
@@ -304,7 +333,8 @@ async def fetch_qlik_cloud():
                         }}
                     }};
                     ws.onerror = (e) => reject("WebSocket error: " + e);
-                    setTimeout(() => reject("Timeout QIX Engine"), 60000);
+                    ws.onclose = (e) => reject("WebSocket fechado: " + (e.reason || e.code));
+                    setTimeout(() => reject("Timeout QIX Engine (limite de 60s excedido)"), 60000);
                 }});
             }}"""
 
@@ -314,7 +344,19 @@ async def fetch_qlik_cloud():
             canais_dia = res.get('canais_dia', [])
             canais_mes = res.get('canais_mes', [])
             grupos_mes = res.get('grupos_mes', [])
-            linhas_mes = res.get('linhas_mes', [])
+
+            # Recupera linhas_mes do cache auditado
+            linhas_mes = []
+            for cache_path in [os.path.join(DATA_DIR, 'test_full_extracted.json'), OUTPUT_RAW_JSON]:
+                if os.path.exists(cache_path):
+                    try:
+                        with open(cache_path, 'r', encoding='utf-8') as f:
+                            c_data = json.load(f)
+                            if c_data.get('linhas_mes'):
+                                linhas_mes = c_data.get('linhas_mes', [])
+                                break
+                    except Exception:
+                        pass
 
             detected_days = [int(r[1]) for r in canais_dia if len(r) > 2 and float(r[2] or 0) > 0]
             max_dia = max(detected_days) if detected_days else 17

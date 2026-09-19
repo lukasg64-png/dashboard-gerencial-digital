@@ -12,7 +12,7 @@ Write-Host "  CONFIGURANDO AGENDAMENTO AUTOMÁTICO NO WINDOWS TASK SCHEDULER" -F
 Write-Host "==============================================================================" -ForegroundColor Cyan
 Write-Host "Tarefa: $TaskName"
 Write-Host "Script: $BatPath"
-Write-Host "Horário: Diariamente às 07:20 AM"
+Write-Host "Horário: Diariamente às 07:25 AM"
 
 # Verifica se a tarefa já existe e remove para recriar limpa
 $ExistingTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
@@ -24,8 +24,8 @@ if ($ExistingTask) {
 # Define a Ação (executar atualizar_dashboard.bat com modo não-interativo)
 $Action = New-ScheduledTaskAction -Execute $BatPath -Argument "--unattended" -WorkingDirectory $ScriptDir
 
-# Define o Gatilho (diário às 07:20)
-$Trigger = New-ScheduledTaskTrigger -Daily -At "07:20"
+# Define o Gatilho (diário às 07:25 - 5 minutos após a Diretoria C às 07:20)
+$Trigger = New-ScheduledTaskTrigger -Daily -At "07:25"
 
 # Configurações de Resiliência
 $Settings = New-ScheduledTaskSettingsSet `
